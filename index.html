@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>CineTechFlow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="icon" href="logo_black.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,7 +15,6 @@
       --text:#f1f1f1;
       --glass:rgba(0,0,0,.6);
     }
-
     *{box-sizing:border-box;user-select:none}
     body{
       margin:0;
@@ -92,7 +90,7 @@
     }
     .cta:hover{background:var(--red);color:#000}
 
-    /* STATS (BIGGER) */
+    /* STATS */
     .stats{
       margin-top:36px;
       display:flex;
@@ -109,7 +107,6 @@
       font-size:2.8rem;
       font-weight:800;
       color:var(--red);
-      line-height:1;
     }
     .stat .label{
       font-size:.9rem;
@@ -151,7 +148,7 @@
     }
     @keyframes rain{to{transform:translateY(130vh)}}
 
-    /* DESKTOP RAIN CARD */
+    /* DESKTOP CARD */
     .rain-card{
       position:absolute;
       top:100%;
@@ -173,7 +170,7 @@
       margin-bottom:4px;
     }
 
-    /* MOBILE BOTTOM CARD */
+    /* MOBILE CARD */
     .mobile-card{
       position:fixed;
       left:0;
@@ -213,7 +210,7 @@
     }
     h2{text-transform:uppercase;margin-bottom:34px}
 
-    /* FLOW CARDS */
+    /* CARDS */
     .cards{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -289,7 +286,6 @@
   <img src="logo_black.png">
 </header>
 
-<!-- HERO -->
 <div class="hero" id="hero">
   <div class="rain" id="rain"></div>
 
@@ -318,37 +314,32 @@
   <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
 </div>
 
-<!-- MOBILE CARD -->
 <div class="mobile-card" id="mobileCard">
   <div class="close" id="closeMobile">✕</div>
   <div class="title" id="mobileTitle"></div>
   <div class="desc" id="mobileDesc"></div>
 </div>
 
-<!-- WHAT'S IN IT -->
 <section>
-  <h2>WHAT’S IN IT</h2>
+  <h2>👇WHAT’S IN IT</h2>
   <div class="cards">
-    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates, breakdowns and behind-the-scenes.</p></div>
-    <div class="card"><h3>TECH FLOW</h3><p>Global news, digital trends, and curious tech experiments.</p></div>
-    <div class="card"><h3>CREATOR FLOW</h3><p>Tips to help new YouTubers grow based on real experience.</p></div>
-    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook from the very first frame.</p></div>
+    <div class="card"><h3>🎬 Cinema FLOW</h3><p> Fast-tracked movie updates, breakdowns and Behind the scenes.</p></div>
+    <div class="card"><h3>🌍 Tech FLOW</h3><p>Global news, digital trends, curious tech experiments, and complex ideas explained with speed and clarity.</p></div>
+    <div class="card"><h3>💡 Creator FLOW</h3><p>Tips to help new youtube creators instantly grow their channel based on MY PERSONAL EXPERIENCES.</p></div>
+    <div class="card"><h3>✍️ Narrativew FLOW</h3><p>Unique digital stories and entertaining narratives that hook you from the very first frame.</p></div>
   </div>
 </section>
 
-<!-- RECENT VIDEOS -->
 <section>
   <h2>OUR RECENT VIDEOS</h2>
   <div id="longVideos" class="grid"></div>
 </section>
 
-<!-- SHORTS -->
 <section>
   <h2>SHORTS</h2>
   <div id="shortVideos" class="grid"></div>
 </section>
 
-<!-- AUDIENCE -->
 <section>
   <h2>OUR AUDIENCE</h2>
   <div class="tabs">
@@ -359,7 +350,6 @@
   <canvas id="geoCanvas" style="display:none"></canvas>
 </section>
 
-<!-- FOLLOW -->
 <div class="follow">
   <strong>Follow us on</strong>
   <div class="follow-icons">
@@ -411,42 +401,27 @@
   });
 
   /* AUDIENCE */
-  const citiesCanvas=document.getElementById("citiesCanvas");
-  const geoCanvas=document.getElementById("geoCanvas");
-
   fetch("cities.csv").then(r=>r.text()).then(t=>{
     const rows=t.split("\n").slice(2,12)
       .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
     new Chart(citiesCanvas,{
       type:"bar",
-      data:{
-        labels:rows.map(r=>r[1].replace(/"/g,"")),
-        datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
-      },
-      options:{
-        indexAxis:"y",
-        plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}
-      }
+      data:{labels:rows.map(r=>r[1].replace(/"/g,"")),
+      datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
+      options:{indexAxis:"y",plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
     });
   });
-
   fetch("geography.csv").then(r=>r.text()).then(t=>{
     const rows=t.split("\n").slice(1,7).map(r=>r.split(","));
     new Chart(geoCanvas,{
       type:"bar",
-      data:{
-        labels:rows.map(r=>r[0]),
-        datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]
-      },
-      options:{
-        indexAxis:"y",
-        plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}
-      }
+      data:{labels:rows.map(r=>r[0]),
+      datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]},
+      options:{indexAxis:"y",plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
     });
   });
-
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.onclick=()=>{
       document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
@@ -456,7 +431,7 @@
     };
   });
 
-  /* RAIN */
+  /* RAIN LOGIC */
   const mobileCard=document.getElementById("mobileCard");
   const mTitle=document.getElementById("mobileTitle");
   const mDesc=document.getElementById("mobileDesc");
@@ -468,26 +443,32 @@
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
     const COLS=isMobile?4:9;
-    let hintCount=0;
+    let tapCount=0;
+    let showTap=true;
 
     const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
-    function spawn(lane){
+    function spawn(lane,fast=false){
       const d=words[Math.floor(Math.random()*words.length)];
       const el=document.createElement("span");
       el.textContent=d.word;
       el.style.left=lane.x+"%";
-      el.style.animationDuration=(isMobile?26:18)+Math.random()*6+"s";
+      el.style.animationDuration=(fast?10:(isMobile?26:18))+Math.random()*6+"s";
 
-      if(hintCount<3){
-        const s=document.createElement("small");
-        s.textContent="(Tap)";
-        el.appendChild(s);
-        hintCount++;
+      let tapLabel;
+      if(isMobile && showTap){
+        tapLabel=document.createElement("small");
+        tapLabel.textContent="(Tap)";
+        el.appendChild(tapLabel);
       }
 
       if(isMobile){
         el.onclick=()=>{
+          tapCount++;
+          if(tapCount>=2){
+            showTap=false;
+            document.querySelectorAll(".rain span small").forEach(s=>s.remove());
+          }
           mTitle.textContent=d.word;
           mDesc.textContent=d.description;
           mobileCard.classList.add("active");
@@ -497,22 +478,16 @@
         card.className="rain-card";
         card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
         el.appendChild(card);
-
-        el.onmouseenter=()=>{
-          el.classList.add("active");
-          card.style.display="block";
-        };
-        el.onmouseleave=()=>{
-          el.classList.remove("active");
-          card.style.display="none";
-        };
+        el.onmouseenter=()=>{el.classList.add("active");card.style.display="block";};
+        el.onmouseleave=()=>{el.classList.remove("active");card.style.display="none";};
       }
 
       el.onanimationend=()=>el.remove();
       rain.appendChild(el);
       setTimeout(()=>spawn(lane),(isMobile?3500:2500)+Math.random()*3000);
     }
-    lanes.forEach(l=>spawn(l));
+
+    lanes.forEach((l,i)=>spawn(l,i<5));
   });
 </script>
 
