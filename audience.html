@@ -1,0 +1,44 @@
+<section class="section">
+<h2 style="font-size:2.4rem;margin-bottom:30px">Our Audience</h2>
+
+<canvas id="citiesChart" height="120"></canvas>
+<br><br>
+<canvas id="geoChart" height="120"></canvas>
+
+<script>
+function parseCSV(t){
+  return t.trim().split("\n").slice(1).map(r=>r.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/));
+}
+
+// Cities BAR
+fetch("cities.csv").then(r=>r.text()).then(t=>{
+  const d=parseCSV(t).slice(1,12);
+  new Chart(citiesChart,{
+    type:"bar",
+    data:{
+      labels:d.map(r=>r[1].replace(/".*?,/,"")),
+      datasets:[{
+        data:d.map(r=>+r[2]),
+        backgroundColor:"#ff2c2c"
+      }]
+    },
+    options:{indexAxis:'y',plugins:{legend:{display:false}}}
+  });
+});
+
+// Geography PIE
+fetch("geography.csv").then(r=>r.text()).then(t=>{
+  const d=parseCSV(t).slice(1,6);
+  new Chart(geoChart,{
+    type:"doughnut",
+    data:{
+      labels:d.map(r=>r[0]),
+      datasets:[{
+        data:d.map(r=>+r[1]),
+        backgroundColor:["#ff2c2c","#444","#666","#888","#aaa"]
+      }]
+    }
+  });
+});
+</script>
+</section>
