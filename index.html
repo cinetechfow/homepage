@@ -127,7 +127,6 @@
     /* RAIN */
     .rain span{
       position:absolute;
-      top:-15%;
       font-weight:600;
       opacity:.25;
       cursor:pointer;
@@ -146,7 +145,9 @@
       opacity:.6;
       margin-top:4px;
     }
-    @keyframes rain{to{transform:translateY(130vh)}}
+    @keyframes rain{
+      to{transform:translateY(140vh)}
+    }
 
     /* DESKTOP CARD */
     .rain-card{
@@ -210,7 +211,7 @@
     }
     h2{text-transform:uppercase;margin-bottom:34px}
 
-    /* CARDS */
+    /* FLOW CARDS */
     .cards{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -321,12 +322,12 @@
 </div>
 
 <section>
-  <h2>👇WHAT’S IN IT</h2>
+  <h2>WHAT’S IN IT</h2>
   <div class="cards">
-    <div class="card"><h3>🎬 Cinema FLOW</h3><p> Fast-tracked movie updates, breakdowns and Behind the scenes.</p></div>
-    <div class="card"><h3>🌍 Tech FLOW</h3><p>Global news, digital trends, curious tech experiments, and complex ideas explained with speed and clarity.</p></div>
-    <div class="card"><h3>💡 Creator FLOW</h3><p>Tips to help new youtube creators instantly grow their channel based on MY PERSONAL EXPERIENCES.</p></div>
-    <div class="card"><h3>✍️ Narrativew FLOW</h3><p>Unique digital stories and entertaining narratives that hook you from the very first frame.</p></div>
+    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates, breakdowns and BTS.</p></div>
+    <div class="card"><h3>TECH FLOW</h3><p>Global news, digital trends, curious tech experiments.</p></div>
+    <div class="card"><h3>CREATOR FLOW</h3><p>YouTube growth tips from real experience.</p></div>
+    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook from the first frame.</p></div>
   </div>
 </section>
 
@@ -431,35 +432,32 @@
     };
   });
 
-  /* RAIN LOGIC */
+  /* CONTINUOUS RAIN WITH PRESEED */
   const mobileCard=document.getElementById("mobileCard");
   const mTitle=document.getElementById("mobileTitle");
   const mDesc=document.getElementById("mobileDesc");
-  document.getElementById("closeMobile").onclick=()=>{
-    mobileCard.classList.remove("active");
-  };
+  document.getElementById("closeMobile").onclick=()=>mobileCard.classList.remove("active");
 
   fetch("rain_texts.json").then(r=>r.json()).then(words=>{
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
     const COLS=isMobile?4:9;
-    let tapCount=0;
-    let showTap=true;
+    let tapCount=0,showTap=true;
 
     const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
-    function spawn(lane,fast=false){
+    function spawn(lane,fast=false,seed=false){
       const d=words[Math.floor(Math.random()*words.length)];
       const el=document.createElement("span");
       el.textContent=d.word;
       el.style.left=lane.x+"%";
-      el.style.animationDuration=(fast?10:(isMobile?26:18))+Math.random()*6+"s";
+      el.style.top=seed?(10+Math.random()*70)+"%":"-15%";
+      el.style.animationDuration=(fast?9:(isMobile?26:18))+Math.random()*6+"s";
 
-      let tapLabel;
       if(isMobile && showTap){
-        tapLabel=document.createElement("small");
-        tapLabel.textContent="(Tap)";
-        el.appendChild(tapLabel);
+        const s=document.createElement("small");
+        s.textContent="(Tap)";
+        el.appendChild(s);
       }
 
       if(isMobile){
@@ -484,10 +482,14 @@
 
       el.onanimationend=()=>el.remove();
       rain.appendChild(el);
-      setTimeout(()=>spawn(lane),(isMobile?3500:2500)+Math.random()*3000);
+
+      setTimeout(()=>spawn(lane,false,false),(isMobile?2000:1500)+Math.random()*2000);
     }
 
-    lanes.forEach((l,i)=>spawn(l,i<5));
+    lanes.forEach((lane,i)=>{
+      spawn(lane,true,true);
+      setTimeout(()=>spawn(lane,true,true),600);
+    });
   });
 </script>
 
