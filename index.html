@@ -27,7 +27,7 @@
       text-align: center;
       padding: 40px 20px;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.95)),
+        linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.95)),
         url("hero.jpg");
       background-size: cover;
       background-position: center;
@@ -37,7 +37,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(255,44,44,0.15), transparent 60%);
+      background: radial-gradient(circle at center, rgba(255,44,44,0.18), transparent 60%);
       pointer-events: none;
     }
 
@@ -61,8 +61,8 @@
     .hero p {
       margin-top: 22px;
       font-size: 1.25rem;
-      opacity: 0.9;
       line-height: 1.6;
+      opacity: 0.9;
     }
 
     .cta {
@@ -70,7 +70,7 @@
       display: inline-block;
       background: #ff2c2c;
       color: #fff;
-      padding: 16px 40px;
+      padding: 16px 42px;
       border-radius: 10px;
       font-weight: 600;
       font-size: 1rem;
@@ -109,12 +109,40 @@
       letter-spacing: -0.5px;
     }
 
-    /* DESCRIPTION */
-    #description p {
-      font-size: 1.15rem;
-      line-height: 1.9;
+    /* DESCRIPTION CARDS */
+    #description {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .desc-card {
+      background: linear-gradient(180deg, #111, #0b0b0b);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desc-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255,44,44,0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .desc-card h3 {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+      color: #ff2c2c;
+    }
+
+    .desc-card p {
+      font-size: 1.05rem;
+      line-height: 1.8;
       opacity: 0.9;
-      max-width: 900px;
     }
 
     /* VIDEOS */
@@ -162,8 +190,8 @@
     <div class="hero-content">
       <h1><span>Cine</span>TechFlow</h1>
       <p>
-        Not movie news. Not tech noise.<br>
-        This is cinema and technology <strong>decoded</strong> — logically, visually, honestly.
+        Cinema and technology decoded.<br>
+        Not hype. Not noise. Just clarity.
       </p>
 
       <a class="cta"
@@ -189,7 +217,7 @@
     </div>
   </div>
 
-  <!-- ABOUT -->
+  <!-- DESCRIPTION -->
   <div class="section">
     <h2>What is CineTechFlow?</h2>
     <div id="description"></div>
@@ -197,7 +225,7 @@
 
   <!-- LONG VIDEOS -->
   <div class="section">
-    <h2>Featured Deep-Dive Videos</h2>
+    <h2>Deep-Dive Videos</h2>
     <div id="longVideos" class="video-grid"></div>
   </div>
 
@@ -222,7 +250,7 @@
   <script>
     fetch("description.html")
       .then(r => r.text())
-      .then(html => document.getElementById("description").innerHTML = html);
+      .then(html => description.innerHTML = html);
 
     fetch("stats.json")
       .then(r => r.json())
