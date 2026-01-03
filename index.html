@@ -5,25 +5,27 @@
 <title>CineTechFlow</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="logo_black.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --red:#ff2c2c;
   --bg:#050505;
-  --panel:#0e0e0e;
   --text:#eaeaea;
+  --muted:#9a9a9a;
 }
 
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
+  overflow-x:hidden;
 }
-
 a{text-decoration:none;color:var(--red)}
 
 /* HEADER */
@@ -35,41 +37,63 @@ header{
 }
 header img{height:34px}
 
-/* HERO */
+/* ===== FLUID HERO ===== */
 .hero{
+  position:relative;
+  min-height:100vh;
+  overflow:hidden;
+}
+.bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  animation:fade 28s infinite;
+}
+.bg1{background-image:url("cinema_flow1.jpg");animation-delay:0s}
+.bg2{background-image:url("cinema_flow2.jpg");animation-delay:7s}
+.bg3{background-image:url("cinema_flow3.jpg");animation-delay:14s}
+.bg4{background-image:url("cinema_flow4.jpg");animation-delay:21s}
+
+@keyframes fade{
+  0%{opacity:0}
+  10%{opacity:1}
+  25%{opacity:1}
+  35%{opacity:0}
+  100%{opacity:0}
+}
+
+.hero-overlay{
+  position:relative;
+  z-index:2;
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  background:
-    linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,.95)),
-    url("cinema_flow1.jpg");
-  background-size:cover;
-  background-position:center;
+  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92));
 }
 
 .hero-content{
   max-width:900px;
 }
-
 .hero h1{
-  font-size:4rem;
-  margin:0;
+  font-size:clamp(2.8rem,6vw,4.3rem);
   font-weight:800;
+  margin:0;
 }
-
 .hero p{
-  margin-top:24px;
-  font-size:1.25rem;
-  opacity:.9;
+  margin-top:22px;
+  font-size:1.3rem;
+  color:#f1f1f1;
 }
 
-/* CTA – CINEMA STYLE */
+/* CTA */
 .cta{
-  margin-top:40px;
+  margin-top:42px;
   display:inline-block;
-  padding:14px 44px;
+  padding:14px 46px;
   border:1.5px solid var(--red);
   border-radius:30px;
   font-weight:600;
@@ -79,6 +103,21 @@ header img{height:34px}
 .cta:hover{
   background:var(--red);
   color:#000;
+}
+
+/* HERO WORD CLOUD (VISIBLE BUT SUBTLE) */
+.word-cloud span{
+  position:absolute;
+  color:#ffffff;
+  opacity:.12;
+  font-weight:600;
+  letter-spacing:1px;
+  animation:float linear infinite;
+  white-space:nowrap;
+}
+@keyframes float{
+  from{transform:translateY(120vh)}
+  to{transform:translateY(-20vh)}
 }
 
 /* STATS */
@@ -91,41 +130,29 @@ header img{height:34px}
 }
 .stat h2{
   color:var(--red);
-  margin:0;
   font-size:2.4rem;
+  margin:0;
 }
-.stat span{opacity:.7}
+.stat span{color:var(--muted)}
 
-/* SECTION */
+/* ===== SECTIONS ===== */
 .section{
   max-width:1200px;
   margin:auto;
-  padding:110px 20px;
+  padding:120px 20px;
 }
-
 .section h2{
   font-size:2.6rem;
-  margin-bottom:50px;
+  margin-bottom:60px;
 }
 
-/* INFO CARDS */
-.info-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:32px;
-}
-.info-card{
-  background:var(--panel);
-  padding:32px;
-  border-radius:18px;
-}
-.info-card h3{
-  color:var(--red);
-  margin-bottom:14px;
-}
-.info-card p{
-  line-height:1.7;
-  opacity:.9;
+/* FLOW (FLUID TEXT) */
+.flow-line{
+  max-width:900px;
+  margin:0 auto 70px;
+  font-size:1.4rem;
+  line-height:1.8;
+  color:#ddd;
 }
 
 /* VIDEOS */
@@ -142,14 +169,12 @@ header img{height:34px}
   background:#000;
   transition:.3s;
 }
-.video-grid iframe:hover{
-  transform:scale(1.03);
-}
+.video-grid iframe:hover{transform:scale(1.03)}
 
 /* FOLLOW */
 .follow{
   text-align:center;
-  padding:80px 20px;
+  padding:90px 20px;
   background:#000;
 }
 .follow a{
@@ -165,7 +190,6 @@ footer{
 }
 
 @media(max-width:768px){
-  .hero h1{font-size:2.7rem}
   .video-grid iframe{height:180px}
 }
 </style>
@@ -177,27 +201,48 @@ footer{
   <img src="logo_black.png" alt="CineTechFlow">
 </header>
 
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-content">
-    <h1>CineTechFlow</h1>
-    <p>Cinema decoded. Technology explained. Stories engineered.</p>
+  <div class="bg bg1"></div>
+  <div class="bg bg2"></div>
+  <div class="bg bg3"></div>
+  <div class="bg bg4"></div>
 
-    <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1" target="_blank">
-      Subscribe on YouTube
-    </a>
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <h1>CineTechFlow</h1>
+      <p>Cinema decoded. Technology explained. Stories engineered.</p>
 
-    <div class="stats">
-      <div class="stat"><h2 id="subs">—</h2><span>Subscribers</span></div>
-      <div class="stat"><h2 id="views">—</h2><span>Views</span></div>
-      <div class="stat"><h2 id="videos">—</h2><span>Videos</span></div>
+      <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1" target="_blank">
+        Subscribe on YouTube
+      </a>
+
+      <div class="stats">
+        <div class="stat"><h2 id="subs">—</h2><span>Subscribers</span></div>
+        <div class="stat"><h2 id="views">—</h2><span>Views</span></div>
+        <div class="stat"><h2 id="videos">—</h2><span>Videos</span></div>
+      </div>
     </div>
+  </div>
+
+  <!-- HERO WORDS -->
+  <div class="word-cloud">
+    <span style="left:8%;animation-duration:32s;font-size:22px">Rajamouli</span>
+    <span style="left:18%;animation-duration:28s;font-size:18px">Nolan</span>
+    <span style="left:28%;animation-duration:34s;font-size:20px">Prabhas</span>
+    <span style="left:38%;animation-duration:30s;font-size:19px">Spielberg</span>
+    <span style="left:48%;animation-duration:36s;font-size:21px">IMAX</span>
+    <span style="left:58%;animation-duration:29s;font-size:18px">VFX</span>
+    <span style="left:68%;animation-duration:33s;font-size:20px">Cinematography</span>
+    <span style="left:78%;animation-duration:27s;font-size:19px">Screenplay</span>
   </div>
 </div>
 
-<!-- INFO -->
+<!-- FLOW -->
 <div class="section">
   <h2>What does CineTechFlow consist of?</h2>
-  <div id="description" class="info-grid"></div>
+
+  <div id="description"></div>
 </div>
 
 <!-- RECENT -->
@@ -225,18 +270,12 @@ footer{
 </footer>
 
 <script>
-fetch("description.html")
-  .then(r=>r.text())
-  .then(t=>description.innerHTML=t);
-
-fetch("stats.json")
-  .then(r=>r.json())
-  .then(s=>{
-    subs.innerText=s.subscribers;
-    views.innerText=s.views;
-    videos.innerText=s.videos;
-  });
-
+fetch("description.html").then(r=>r.text()).then(t=>description.innerHTML=t);
+fetch("stats.json").then(r=>r.json()).then(s=>{
+  subs.innerText=s.subscribers;
+  views.innerText=s.views;
+  videos.innerText=s.videos;
+});
 function loadVideos(file,id){
   fetch(file).then(r=>r.json()).then(list=>{
     const box=document.getElementById(id);
