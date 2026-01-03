@@ -13,7 +13,7 @@
       --red:#ff3b3b;
       --bg:#050505;
       --text:#f1f1f1;
-      --glass:rgba(0,0,0,.55);
+      --glass:rgba(0,0,0,.6);
     }
     *{box-sizing:border-box;user-select:none}
     body{
@@ -60,11 +60,28 @@
       flex-wrap:wrap;
     }
     .action-pill{
+      position:relative;
       padding:10px 24px;
       border-radius:30px;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.25);
+      cursor:pointer;
     }
+    .telugu-tip{
+      position:absolute;
+      bottom:-52px;
+      left:50%;
+      transform:translateX(-50%);
+      background:var(--glass);
+      backdrop-filter:blur(10px);
+      border-radius:12px;
+      padding:8px 12px;
+      font-size:.75rem;
+      white-space:nowrap;
+      display:none;
+    }
+    .action-pill.active .telugu-tip{display:block}
+
     .cta{
       padding:12px 36px;
       border-radius:30px;
@@ -84,7 +101,6 @@
       border-radius:22px;
       background:var(--glass);
       backdrop-filter:blur(14px);
-      border:1px solid rgba(255,255,255,.18);
     }
     .stat .num{
       font-size:1.9rem;
@@ -96,14 +112,13 @@
       opacity:.75;
     }
 
-    /* SCROLL CUE */
+    /* SCROLL */
     .scroll-cue{
       position:absolute;
       bottom:22px;
       left:50%;
       transform:translateX(-50%);
-      opacity:1;
-      transition:opacity .3s ease;
+      transition:opacity .3s;
     }
 
     /* RAIN */
@@ -114,7 +129,7 @@
       opacity:.25;
       cursor:pointer;
       animation:rain linear forwards;
-      transition:transform .35s,color .25s,opacity .25s;
+      transition:transform .3s,color .3s,opacity .3s;
     }
     .rain span.active{
       opacity:1;
@@ -235,7 +250,7 @@
   <img src="logo_black.png">
 </header>
 
-<div class="hero">
+<div class="hero" id="hero">
   <div class="rain" id="rain"></div>
 
   <div>
@@ -244,7 +259,10 @@
     <div class="line2">Official website of the CineTechFlow <span>YouTube channel</span></div>
 
     <div class="actions">
-      <div class="action-pill">🎧 Telugu Content</div>
+      <div class="action-pill" id="teluguBtn">
+        🎧 Telugu Content
+        <div class="telugu-tip">Every story. Every breakdown. Explained in Telugu.</div>
+      </div>
       <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">
         Subscribe our channel
       </a>
@@ -283,8 +301,8 @@
 <section>
   <h2>OUR AUDIENCE</h2>
   <div class="tabs">
-    <div class="tab active" data-tab="cities">Cities</div>
-    <div class="tab" data-tab="geo">Geography</div>
+    <div class="tab active" data-tab="cities">CITIES</div>
+    <div class="tab" data-tab="world">WORLD WIDE</div>
   </div>
   <canvas id="citiesCanvas"></canvas>
   <canvas id="geoCanvas" style="display:none"></canvas>
@@ -306,7 +324,11 @@
 </footer>
 
 <script>
-  /* SCROLL CUE FADE */
+  /* TELUGU TOOLTIP */
+  const telBtn=document.getElementById("teluguBtn");
+  telBtn.onclick=()=>telBtn.classList.toggle("active");
+
+  /* SCROLL CUE */
   const cue=document.getElementById("scrollCue");
   window.addEventListener("scroll",()=>{
     cue.style.opacity=window.scrollY<80?1:0;
@@ -340,26 +362,22 @@
   const geoCanvas=document.getElementById("geoCanvas");
 
   fetch("cities.csv").then(r=>r.text()).then(t=>{
-    const rows=t.split("\n").slice(2,12)
-      .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
+    const rows=t.split("\n").slice(2,12).map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
     new Chart(citiesCanvas,{
       type:"bar",
       data:{labels:rows.map(r=>r[1].replace(/"/g,"")),
         datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
-      options:{indexAxis:"y",
-        plugins:{legend:{display:false},
+      options:{indexAxis:"y",plugins:{legend:{display:false},
         tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
     });
   });
-
   fetch("geography.csv").then(r=>r.text()).then(t=>{
     const rows=t.split("\n").slice(1,7).map(r=>r.split(","));
     new Chart(geoCanvas,{
       type:"bar",
       data:{labels:rows.map(r=>r[0]),
         datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]},
-      options:{indexAxis:"y",
-        plugins:{legend:{display:false},
+      options:{indexAxis:"y",plugins:{legend:{display:false},
         tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
     });
   });
@@ -369,20 +387,29 @@
       document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
       tab.classList.add("active");
       citiesCanvas.style.display=tab.dataset.tab==="cities"?"block":"none";
-      geoCanvas.style.display=tab.dataset.tab==="geo"?"block":"none";
+      geoCanvas.style.display=tab.dataset.tab==="world"?"block":"none";
     };
   });
 
-  /* CONTINUOUS RAIN */
+  /* RAIN WITH FOCUS CONTROL */
+  let rainActive=true;
+  const observer=new IntersectionObserver(entries=>{
+    rainActive=entries[0].isIntersecting;
+  },{threshold:.2});
+  observer.observe(document.getElementById("hero"));
+
   fetch("rain_texts.json").then(r=>r.json()).then(words=>{
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
     const COLS=isMobile?4:9;
     let hintCount=0;
+    let openCard=null;
 
     const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
     function spawn(lane){
+      if(!rainActive) return;
+
       const d=words[Math.floor(Math.random()*words.length)];
       const el=document.createElement("span");
       el.textContent=d.word;
@@ -401,23 +428,28 @@
       card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
       el.appendChild(card);
 
-      const show=()=>{
+      const open=()=>{
+        if(openCard && openCard!==card){
+          openCard.style.display="none";
+          openCard.parentElement.classList.remove("active");
+        }
+        openCard=card;
         el.classList.add("active");
         card.style.display="block";
       };
-      const hide=()=>{
+      const close=()=>{
         el.classList.remove("active");
         card.style.display="none";
       };
 
-      el.addEventListener("mouseenter",()=>!isMobile&&show());
-      el.addEventListener("mouseleave",()=>!isMobile&&hide());
-      el.addEventListener("click",()=>isMobile&&show());
+      el.onmouseenter=()=>!isMobile&&open();
+      el.onmouseleave=()=>!isMobile&&close();
+      el.onclick=()=>isMobile&&open();
 
-      el.addEventListener("animationend",()=>el.remove());
+      el.onanimationend=()=>el.remove();
       rain.appendChild(el);
 
-      setTimeout(()=>spawn(lane),(isMobile?4000:3000)+Math.random()*3000);
+      setTimeout(()=>spawn(lane),(isMobile?3500:2500)+Math.random()*3000);
     }
 
     lanes.forEach(l=>spawn(l));
