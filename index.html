@@ -16,13 +16,26 @@
   --text:#f1f1f1;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text)}
-section{padding:70px 20px;max-width:1200px;margin:auto}
-h2{text-transform:uppercase;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:32px}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
 /* HEADER */
-header{position:fixed;top:16px;left:20px;z-index:50}
-header img{height:34px}
+header{
+  position:fixed;
+  top:16px;
+  left:20px;
+  z-index:100;
+}
+header img{
+  height:48px;
+}
+@media(max-width:600px){
+  header img{height:40px}
+}
 
 /* HERO */
 .hero{
@@ -30,76 +43,169 @@ header img{height:34px}
   background:
     linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92)),
     url("cinema_flow4.jpg") center/cover no-repeat;
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;position:relative;overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
 }
-.hero h1{font-size:clamp(2.5rem,6vw,4rem);margin:0}
-.hero .line1{margin-top:12px;font-size:clamp(1rem,3vw,1.3rem)}
-.hero .line2{margin-top:6px;font-size:.95rem;opacity:.85}
+.hero h1{
+  font-size:clamp(2.6rem,6vw,4rem);
+  margin:0;
+}
+.hero .line1{
+  margin-top:12px;
+  font-size:clamp(1.05rem,3vw,1.35rem);
+}
+.hero .line2{
+  margin-top:6px;
+  font-size:.95rem;
+  opacity:.85;
+}
 
 /* ACTION ROW */
-.actions{margin-top:20px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.actions{
+  margin-top:22px;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 .lang{
-  padding:7px 16px;border:1px solid rgba(255,255,255,.3);
-  border-radius:20px;font-size:.85rem;position:relative
+  padding:7px 16px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:20px;
+  font-size:.85rem;
+  position:relative;
 }
 .lang:hover{border-color:var(--red)}
 .lang .tip{
-  position:absolute;bottom:-44px;left:50%;
+  position:absolute;
+  bottom:-44px;
+  left:50%;
   transform:translateX(-50%);
-  background:#000;padding:8px 14px;border-radius:12px;
-  opacity:0;transition:.3s;white-space:nowrap
+  background:#000;
+  padding:8px 14px;
+  border-radius:12px;
+  opacity:0;
+  transition:.3s;
+  white-space:nowrap;
 }
 .lang:hover .tip{opacity:1}
 .cta{
-  padding:13px 36px;border:1.5px solid var(--red);
-  border-radius:30px;color:var(--red);
-  text-decoration:none;font-weight:600
+  padding:13px 36px;
+  border:1.5px solid var(--red);
+  border-radius:30px;
+  color:var(--red);
+  text-decoration:none;
+  font-weight:600;
 }
 .cta:hover{background:var(--red);color:#000}
 
-/* RAIN */
-.rain span{
-  position:absolute;top:-10%;
-  opacity:.25;font-weight:600;
-  animation:rain linear infinite;
-  transition:.25s
+/* SECTIONS */
+section{
+  padding:70px 20px;
+  max-width:1200px;
+  margin:auto;
 }
-.rain span:hover{
-  animation-play-state:paused;
-  color:var(--red);
-  transform:scale(1.3)
-}
-@keyframes rain{to{transform:translateY(120vh)}}
-
-/* RAIN TOOLTIP */
-.rain-card{
-  position:fixed;bottom:20px;left:50%;
-  transform:translateX(-50%);
-  background:#000;padding:18px 22px;
-  border-radius:18px;max-width:90%;
-  display:none;border:1px solid rgba(255,255,255,.2)
+h2{
+  text-transform:uppercase;
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  margin-bottom:32px;
 }
 
 /* CARDS */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px}
-.card{background:#111;padding:26px;border-radius:16px}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:26px;
+}
+.card{
+  background:#111;
+  padding:26px;
+  border-radius:16px;
+}
 .card h3{color:var(--red)}
 
 /* VIDEOS */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px}
-iframe{width:100%;height:200px;border:none;border-radius:16px}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:26px;
+}
+iframe{
+  width:100%;
+  height:200px;
+  border:none;
+  border-radius:16px;
+}
+
+/* RAIN */
+.rain span{
+  position:absolute;
+  top:-10%;
+  opacity:.25;
+  font-weight:600;
+  cursor:pointer;
+  animation:rain linear infinite;
+  transition:.25s;
+}
+.rain span.active{
+  animation-play-state:paused;
+  color:var(--red);
+  transform:scale(1.5);
+  z-index:10;
+}
+@keyframes rain{to{transform:translateY(120vh)}}
+
+/* RAIN CARD */
+.rain-card{
+  position:absolute;
+  margin-top:12px;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(6px);
+  padding:16px 18px;
+  border-radius:14px;
+  max-width:320px;
+  border:1px solid rgba(255,255,255,.2);
+  animation:fadeUp .25s ease-out;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
 /* AUDIENCE */
-.tabs{display:flex;gap:16px;margin-bottom:24px}
-.tab{padding:8px 20px;border:1px solid #333;border-radius:20px;cursor:pointer}
-.tab.active{border-color:var(--red);color:var(--red)}
+.tabs{
+  display:flex;
+  gap:16px;
+  margin-bottom:24px;
+}
+.tab{
+  padding:8px 20px;
+  border:1px solid #333;
+  border-radius:20px;
+  cursor:pointer;
+}
+.tab.active{
+  border-color:var(--red);
+  color:var(--red);
+}
 .tab-content{display:none}
 .tab-content.active{display:block}
 
-/* FOLLOW + FOOTER */
-.follow{text-align:center;padding:60px 20px;border-top:1px solid #222}
-footer{text-align:center;padding:30px;opacity:.6}
+/* FOLLOW & FOOTER */
+.follow{
+  text-align:center;
+  padding:60px 20px;
+  border-top:1px solid #222;
+}
+footer{
+  text-align:center;
+  padding:30px;
+  opacity:.6;
+}
 </style>
 </head>
 
@@ -107,7 +213,7 @@ footer{text-align:center;padding:30px;opacity:.6}
 
 <header>
   <a href="https://www.youtube.com/@CineTechFlow" target="_blank">
-    <img src="logo_black.png">
+    <img src="logo_black.png" alt="CineTechFlow">
   </a>
 </header>
 
@@ -171,8 +277,6 @@ footer{text-align:center;padding:30px;opacity:.6}
 <a href="mailto:justctrllaugh@gmail.com" style="color:#ff2c2c">Heisenberg</a>
 </footer>
 
-<div class="rain-card" id="rainCard"></div>
-
 <script>
 /* LOAD VIDEOS */
 fetch("long_videos.json").then(r=>r.json()).then(v=>{
@@ -182,27 +286,75 @@ fetch("shorts.json").then(r=>r.json()).then(v=>{
   shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
 
+/* CSV PARSER */
+function parseCSV(text){
+  return text.trim().split("\n").slice(1).map(r =>
+    r.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+  );
+}
+
+/* AUDIENCE CHARTS */
+fetch("cities.csv").then(r=>r.text()).then(t=>{
+  const d=parseCSV(t).slice(1,12);
+  new Chart(citiesChart,{
+    type:"bar",
+    data:{labels:d.map(r=>r[1]),datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff2c2c"}]},
+    options:{indexAxis:"y",responsive:true,plugins:{legend:{display:false}}}
+  });
+});
+fetch("geography.csv").then(r=>r.text()).then(t=>{
+  const d=parseCSV(t).slice(1,6);
+  new Chart(geoChart,{
+    type:"doughnut",
+    data:{labels:d.map(r=>r[0]),datasets:[{data:d.map(r=>+r[1])}]},
+    options:{responsive:true}
+  });
+});
+
 /* RAIN SYSTEM */
+let activeRain=null;
 fetch("rain_texts.json").then(r=>r.json()).then(data=>{
   const rain=document.getElementById("rain");
-  const card=document.getElementById("rainCard");
-  data.forEach((item,i)=>{
+  data.forEach(item=>{
     const s=document.createElement("span");
     s.textContent=item.word;
     s.style.left=Math.random()*100+"%";
     s.style.fontSize=14+Math.random()*10+"px";
     s.style.animationDuration=22+Math.random()*18+"s";
     s.style.animationDelay=Math.random()*10+"s";
-    s.onmouseenter=()=>{
+
+    const card=document.createElement("div");
+    card.className="rain-card";
+    card.innerHTML="<strong>"+item.word+"</strong><br>"+item.description;
+    card.style.display="none";
+    s.appendChild(card);
+
+    function activate(){
+      if(activeRain && activeRain!==s){
+        activeRain.classList.remove("active");
+        activeRain.querySelector(".rain-card").style.display="none";
+      }
+      s.classList.add("active");
       card.style.display="block";
-      card.innerHTML="<strong>"+item.word+"</strong><br>"+item.description;
-    };
-    s.onmouseleave=()=>card.style.display="none";
+      activeRain=s;
+    }
+    function deactivate(){
+      s.classList.remove("active");
+      card.style.display="none";
+      activeRain=null;
+    }
+
+    s.addEventListener("mouseenter",activate);
+    s.addEventListener("mouseleave",deactivate);
+    s.addEventListener("click",e=>{
+      e.stopPropagation();
+      s.classList.contains("active")?deactivate():activate();
+    });
+
     rain.appendChild(s);
   });
 });
-
-/* TABS */
+document.addEventListener("click",()=>{if(activeRain){activeRain.classList.remove("active");activeRain.querySelector(".rain-card").style.display="none";activeRain=null;}});
 function showTab(id){
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
