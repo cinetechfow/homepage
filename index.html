@@ -5,13 +5,15 @@
 <title>CineTechFlow</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- FAVICON -->
 <link rel="icon" type="image/png" href="logo_black.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --red:#ff2c2c;
-  --bg:#040404;
+  --bg:#050505;
   --text:#f1f1f1;
   --muted:#9a9a9a;
 }
@@ -37,7 +39,7 @@ header{
 }
 header img{height:34px}
 
-/* ===== FULL FLUID HERO ===== */
+/* ===== FLUID HERO WITH CAROUSEL ===== */
 .hero{
   position:relative;
   min-height:100vh;
@@ -76,8 +78,8 @@ header img{height:34px}
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.95));
   text-align:center;
+  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92));
 }
 
 .hero-content{
@@ -112,7 +114,7 @@ header img{height:34px}
   color:#000;
 }
 
-/* HERO WORDS (VISIBLE + CINEMATIC) */
+/* HERO WORDS (VISIBLE, CINEMATIC) */
 .word-layer span{
   position:absolute;
   color:#fff;
@@ -143,21 +145,40 @@ header img{height:34px}
 }
 .stat span{color:var(--muted)}
 
-/* ===== FLOW EXPERIENCE ===== */
+/* ===== DESCRIPTION CARDS ===== */
 .flow-experience{
   padding:160px 20px;
-  max-width:900px;
-  margin:auto;
 }
 
-.flow-line{
-  font-size:1.6rem;
-  line-height:1.9;
-  margin-bottom:80px;
-  opacity:.95;
+.desc-grid{
+  max-width:1100px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:32px;
 }
 
-/* VIDEOS */
+.desc-card{
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(6px);
+  border-radius:18px;
+  padding:34px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.desc-card h3{
+  margin:0 0 14px;
+  font-size:1.35rem;
+  color:var(--red);
+}
+
+.desc-card p{
+  font-size:1.05rem;
+  line-height:1.75;
+  color:#ddd;
+}
+
+/* ===== VIDEOS ===== */
 .section{
   max-width:1200px;
   margin:auto;
@@ -242,23 +263,23 @@ footer{
     </div>
   </div>
 
-  <!-- CINEMA WORDS -->
+  <!-- HERO NAMES -->
   <div class="word-layer">
-    <span style="left:8%;animation-duration:34s;font-size:22px">Rajamouli</span>
-    <span style="left:18%;animation-duration:28s;font-size:18px">Nolan</span>
-    <span style="left:28%;animation-duration:36s;font-size:20px">Prabhas</span>
-    <span style="left:38%;animation-duration:30s;font-size:19px">Spielberg</span>
-    <span style="left:48%;animation-duration:40s;font-size:22px">Rajinikanth</span>
-    <span style="left:58%;animation-duration:32s;font-size:18px">Kamal Haasan</span>
-    <span style="left:68%;animation-duration:38s;font-size:20px">IMAX</span>
-    <span style="left:78%;animation-duration:29s;font-size:19px">VFX</span>
-    <span style="left:88%;animation-duration:35s;font-size:21px">Screenplay</span>
+    <span style="left:6%;animation-duration:34s;font-size:22px">Rajamouli</span>
+    <span style="left:16%;animation-duration:28s;font-size:18px">Nolan</span>
+    <span style="left:26%;animation-duration:36s;font-size:20px">Prabhas</span>
+    <span style="left:36%;animation-duration:30s;font-size:19px">Spielberg</span>
+    <span style="left:46%;animation-duration:40s;font-size:22px">Rajinikanth</span>
+    <span style="left:56%;animation-duration:32s;font-size:18px">Kamal Haasan</span>
+    <span style="left:66%;animation-duration:38s;font-size:20px">IMAX</span>
+    <span style="left:76%;animation-duration:29s;font-size:19px">VFX</span>
+    <span style="left:86%;animation-duration:35s;font-size:21px">Screenplay</span>
   </div>
 </div>
 
-<!-- FLOW EXPERIENCE -->
+<!-- DESCRIPTION -->
 <div class="flow-experience">
-  <div id="description"></div>
+  <div id="description" class="desc-grid"></div>
 </div>
 
 <!-- RECENT -->
