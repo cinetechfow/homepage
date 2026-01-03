@@ -131,7 +131,7 @@
       border-radius:16px;
     }
 
-    /* ===== RAIN SYSTEM ===== */
+    /* ===== CONTINUOUS RAIN ===== */
     .rain span{
       position:absolute;
       top:-12%;
@@ -152,7 +152,6 @@
       opacity:.6;
       margin-left:4px;
     }
-
     @keyframes rain{
       to{transform:translateY(120vh)}
     }
@@ -180,7 +179,7 @@
       margin-bottom:4px;
     }
 
-    /* FOLLOW – WHITE SECTION */
+    /* FOLLOW – WHITE */
     .follow{
       background:#fff;
       color:#000;
@@ -285,7 +284,7 @@
 </footer>
 
 <script>
-  /* COUNT UP */
+  /* STATS COUNT */
   document.querySelectorAll('.num').forEach(el=>{
     const t=+el.dataset.target;
     let c=0;
@@ -327,47 +326,71 @@
     });
   });
 
-  /* RAIN – FIXED DENSITY + HOVER */
-  fetch("rain_texts.json").then(r=>r.json()).then(data=>{
+  /* CONTINUOUS RAIN ENGINE */
+  fetch("rain_texts.json")
+  .then(r=>r.json())
+  .then(words=>{
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
-    const max=isMobile?12:24;
-    const cols=isMobile?3:6;
-    const colWidth=100/cols;
+    const COLS=isMobile?4:9;
+    const FALL_MIN=isMobile?28:18;
+    const FALL_MAX=isMobile?36:26;
 
-    data.slice(0,max).forEach((item,i)=>{
-      const s=document.createElement("span");
-      s.textContent=item.word;
+    let hintCount=0;
+    const columns=[...Array(COLS)].map((_,i)=>({
+      x:(i+0.5)*(100/COLS),
+      busy:false
+    }));
 
-      if(i<3 && isMobile){
-        const hint=document.createElement("small");
-        hint.textContent="(tap)";
-        s.appendChild(hint);
+    function spawn(col){
+      if(col.busy) return;
+      col.busy=true;
+
+      const data=words[Math.floor(Math.random()*words.length)];
+      const el=document.createElement("span");
+      el.textContent=data.word;
+
+      if(hintCount<3){
+        const h=document.createElement("small");
+        h.textContent="(Tap)";
+        el.appendChild(h);
+        hintCount++;
       }
 
-      s.style.left=(i%cols)*colWidth+colWidth/2+"%";
-      s.style.fontSize=14+Math.random()*8+"px";
-      s.style.animationDuration=(isMobile?34:24)+Math.random()*8+"s";
+      el.style.left=col.x+"%";
+      el.style.fontSize=(14+Math.random()*8)+"px";
+      el.style.animationDuration=
+        (FALL_MIN+Math.random()*(FALL_MAX-FALL_MIN))+"s";
 
       const card=document.createElement("div");
       card.className="rain-card";
-      card.innerHTML=`<div class="title">${item.word}</div>${item.description}`;
-      s.appendChild(card);
+      card.innerHTML=`<div class="title">${data.word}</div>${data.description}`;
+      el.appendChild(card);
 
-      s.addEventListener("mouseenter",()=>{
+      el.addEventListener("mouseenter",()=>{
         if(!isMobile){
-          s.classList.add("active");
+          el.classList.add("active");
           card.style.display="block";
         }
       });
-      s.addEventListener("mouseleave",()=>{
+      el.addEventListener("mouseleave",()=>{
         if(!isMobile){
-          s.classList.remove("active");
+          el.classList.remove("active");
           card.style.display="none";
         }
       });
 
-      rain.appendChild(s);
+      el.addEventListener("animationend",()=>{
+        el.remove();
+        col.busy=false;
+        setTimeout(()=>spawn(col),800+Math.random()*1200);
+      });
+
+      rain.appendChild(el);
+    }
+
+    columns.forEach((c,i)=>{
+      setTimeout(()=>spawn(c),i*700);
     });
   });
 </script>
