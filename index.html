@@ -16,12 +16,18 @@
   --text:#f1f1f1;
 }
 
-*{box-sizing:border-box}
+/* GLOBAL */
+*{
+  box-sizing:border-box;
+  user-select:none;
+  -webkit-user-select:none;
+}
 body{
   margin:0;
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
+  overflow-x:hidden;
 }
 
 /* HEADER */
@@ -31,12 +37,8 @@ header{
   left:22px;
   z-index:100;
 }
-header img{
-  height:48px;
-}
-@media(max-width:600px){
-  header img{height:40px}
-}
+header img{height:48px}
+@media(max-width:600px){header img{height:40px}}
 
 /* HERO */
 .hero{
@@ -69,29 +71,22 @@ header img{
   font-weight:600;
 }
 
-/* ACTION ROW */
+/* ACTIONS */
 .actions{
-  margin-top:30px;
+  margin-top:32px;
   display:flex;
-  gap:16px;
+  gap:18px;
   justify-content:center;
   flex-wrap:wrap;
 }
-
-/* LANGUAGE + SUBSCRIBE STYLE */
 .action-pill{
   position:relative;
-  padding:11px 24px;
+  padding:11px 26px;
   border-radius:30px;
   font-size:.9rem;
-  backdrop-filter:blur(8px);
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,.25);
-  cursor:pointer;
-  transition:.35s;
-}
-.action-pill:hover{
-  border-color:var(--red);
+  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,.28);
 }
 .action-pill .tip{
   position:absolute;
@@ -113,7 +108,6 @@ header img{
   border-radius:30px;
   font-weight:600;
   text-decoration:none;
-  background:transparent;
   border:1.6px solid var(--red);
   color:var(--red);
   transition:.3s;
@@ -121,6 +115,21 @@ header img{
 .cta:hover{
   background:var(--red);
   color:#000;
+}
+
+/* SCROLL CUE */
+.scroll-cue{
+  position:absolute;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:.8rem;
+  opacity:.7;
+  animation:pulse 4s infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:.3}
+  50%{opacity:.8}
 }
 
 /* SECTIONS */
@@ -161,16 +170,18 @@ iframe{
   border-radius:16px;
 }
 
-/* RAIN TEXT */
+/* RAIN */
 .rain span{
   position:absolute;
   top:-10%;
   font-weight:600;
   opacity:.25;
   cursor:pointer;
+  transform-origin:center;
+  will-change:transform;
   animation:rain linear infinite;
   transition:
-    transform .5s cubic-bezier(.22,1,.36,1),
+    transform .45s cubic-bezier(.22,1,.36,1),
     color .25s,
     opacity .25s,
     text-shadow .25s;
@@ -179,24 +190,33 @@ iframe{
   animation-play-state:paused;
   color:#ff4d4d;
   opacity:1;
-  transform:scale(1.6);
+  transform:scale(1.55);
   text-shadow:0 0 14px rgba(255,77,77,.6);
   z-index:10;
 }
 @keyframes rain{to{transform:translateY(120vh)}}
 
-/* RAIN CARD */
+/* RAIN CARD – DARK GLASS */
 .rain-card{
-  margin-top:16px;
-  background:rgba(0,0,0,.88);
-  backdrop-filter:blur(6px);
+  position:absolute;
+  margin-top:14px;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
   padding:16px 18px;
   border-radius:14px;
   max-width:320px;
   border:1px solid rgba(255,255,255,.2);
-  font-family:'Inter',sans-serif;
-  font-size:.9rem;
   animation:fadeUp .3s ease-out;
+}
+.rain-card .title{
+  color:var(--red);
+  font-weight:600;
+  margin-bottom:6px;
+}
+.rain-card .desc{
+  font-size:.9rem;
+  line-height:1.4;
+  color:#fff;
 }
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(10px)}
@@ -260,12 +280,13 @@ footer{
         🎧 Telugu Content
         <div class="tip">All videos explained in Telugu with cinematic depth</div>
       </div>
-
       <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">
         Subscribe our channel
       </a>
     </div>
   </div>
+
+  <div class="scroll-cue">Scroll to explore ↓</div>
 </div>
 
 <!-- WHAT'S IN IT -->
@@ -296,7 +317,7 @@ footer{
 <h2>OUR AUDIENCE</h2>
 <div class="tabs">
   <div class="tab active" onclick="showTab('cities')">Cities</div>
-  <div class="tab" onclick="showTab('geo')">Geography</div>
+  <div class="tab" onclick="showTab('geo')">Countries</div>
 </div>
 
 <div id="cities" class="tab-content active">
@@ -321,14 +342,12 @@ footer{
 </footer>
 
 <script>
-/* LOAD VIDEOS */
+/* VIDEO LOAD */
 fetch("long_videos.json").then(r=>r.json()).then(v=>{
-  document.getElementById("longVideos").innerHTML =
-    v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+  longVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
 fetch("shorts.json").then(r=>r.json()).then(v=>{
-  document.getElementById("shortVideos").innerHTML =
-    v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+  shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
 
 /* CSV PARSER */
@@ -343,22 +362,18 @@ fetch("cities.csv").then(r=>r.text()).then(t=>{
   const d=parseCSV(t).slice(1,12);
   new Chart(citiesChart,{
     type:"bar",
-    data:{
-      labels:d.map(r=>r[1].replace(/"/g,"")),
-      datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
-    },
+    data:{labels:d.map(r=>r[1].replace(/"/g,"")),
+    datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
     options:{indexAxis:"y",responsive:true,plugins:{legend:{display:false}}}
   });
 });
 fetch("geography.csv").then(r=>r.text()).then(t=>{
   const d=parseCSV(t).slice(1,6);
   new Chart(geoChart,{
-    type:"doughnut",
-    data:{
-      labels:d.map(r=>r[0]),
-      datasets:[{data:d.map(r=>+r[1]),backgroundColor:["#ff3b3b","#555","#777","#999","#bbb"]}]
-    },
-    options:{responsive:true}
+    type:"bar",
+    data:{labels:d.map(r=>r[0]),
+    datasets:[{data:d.map(r=>+r[1]),backgroundColor:"#777"}]},
+    options:{responsive:true,plugins:{legend:{display:false}}}
   });
 });
 
@@ -366,6 +381,14 @@ fetch("geography.csv").then(r=>r.text()).then(t=>{
 let activeRain=null;
 fetch("rain_texts.json").then(r=>r.json()).then(data=>{
   const rain=document.getElementById("rain");
+
+  // interaction hint glow
+  setTimeout(()=>{
+    rain.querySelectorAll("span").forEach((s,i)=>{
+      if(i<3) s.classList.add("active");
+      setTimeout(()=>s.classList.remove("active"),1200);
+    });
+  },800);
 
   data.forEach(item=>{
     const s=document.createElement("span");
@@ -377,7 +400,9 @@ fetch("rain_texts.json").then(r=>r.json()).then(data=>{
 
     const card=document.createElement("div");
     card.className="rain-card";
-    card.innerHTML="<strong>"+item.word+"</strong><br>"+item.description;
+    card.innerHTML=
+      `<div class="title">${item.word}</div>
+       <div class="desc">${item.description}</div>`;
     card.style.display="none";
     s.appendChild(card);
 
@@ -388,6 +413,11 @@ fetch("rain_texts.json").then(r=>r.json()).then(data=>{
       }
       s.classList.add("active");
       card.style.display="block";
+
+      const rect=s.getBoundingClientRect();
+      const rightSpace=window.innerWidth-rect.right;
+      card.style.left=rightSpace>340?"110%":"-340px";
+
       activeRain=s;
     }
     function deactivate(){
@@ -406,6 +436,7 @@ fetch("rain_texts.json").then(r=>r.json()).then(data=>{
     rain.appendChild(s);
   });
 });
+
 document.addEventListener("click",()=>{
   if(activeRain){
     activeRain.classList.remove("active");
