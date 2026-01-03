@@ -29,6 +29,11 @@ body{
   color:var(--text);
   overflow-x:hidden;
 }
+a{
+  color:var(--text);
+  text-decoration:none;
+}
+a:hover{color:var(--red)}
 
 /* HEADER */
 header{
@@ -80,7 +85,6 @@ header img{height:48px}
   flex-wrap:wrap;
 }
 .action-pill{
-  position:relative;
   padding:11px 26px;
   border-radius:30px;
   font-size:.9rem;
@@ -88,26 +92,10 @@ header img{height:48px}
   background:rgba(255,255,255,0.07);
   border:1px solid rgba(255,255,255,.28);
 }
-.action-pill .tip{
-  position:absolute;
-  bottom:-56px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#000;
-  padding:10px 16px;
-  border-radius:14px;
-  font-size:.8rem;
-  opacity:0;
-  transition:.3s;
-  white-space:nowrap;
-}
-.action-pill:hover .tip{opacity:1}
-
 .cta{
   padding:12px 38px;
   border-radius:30px;
   font-weight:600;
-  text-decoration:none;
   border:1.6px solid var(--red);
   color:var(--red);
   transition:.3s;
@@ -170,7 +158,7 @@ iframe{
   border-radius:16px;
 }
 
-/* RAIN */
+/* RAIN TEXT */
 .rain span{
   position:absolute;
   top:-10%;
@@ -178,49 +166,43 @@ iframe{
   opacity:.25;
   cursor:pointer;
   transform-origin:center;
-  will-change:transform;
   animation:rain linear infinite;
   transition:
     transform .45s cubic-bezier(.22,1,.36,1),
     color .25s,
-    opacity .25s,
-    text-shadow .25s;
+    opacity .25s;
 }
 .rain span.active{
   animation-play-state:paused;
   color:#ff4d4d;
   opacity:1;
-  transform:scale(1.55);
-  text-shadow:0 0 14px rgba(255,77,77,.6);
+  transform:scale(1.4);
   z-index:10;
 }
 @keyframes rain{to{transform:translateY(120vh)}}
 
-/* RAIN CARD – DARK GLASS */
-.rain-card{
+/* INLINE BLAST STRIP (MOBILE-FIRST) */
+.rain-strip{
   position:absolute;
-  margin-top:14px;
-  background:rgba(0,0,0,.85);
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(.9);
+  width:88%;
+  max-width:520px;
+  background:rgba(0,0,0,.88);
   backdrop-filter:blur(10px);
-  padding:16px 18px;
-  border-radius:14px;
-  max-width:320px;
   border:1px solid rgba(255,255,255,.2);
-  animation:fadeUp .3s ease-out;
+  border-radius:14px;
+  padding:12px 16px;
+  font-size:.78rem;
+  line-height:1.35;
+  opacity:0;
+  pointer-events:none;
+  transition:.35s cubic-bezier(.22,1,.36,1);
 }
-.rain-card .title{
-  color:var(--red);
-  font-weight:600;
-  margin-bottom:6px;
-}
-.rain-card .desc{
-  font-size:.9rem;
-  line-height:1.4;
-  color:#fff;
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
+.rain-strip.show{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
 }
 
 /* AUDIENCE */
@@ -276,10 +258,7 @@ footer{
     </div>
 
     <div class="actions">
-      <div class="action-pill">
-        🎧 Telugu Content
-        <div class="tip">All videos explained in Telugu with cinematic depth</div>
-      </div>
+      <div class="action-pill">🎧 Telugu Content</div>
       <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">
         Subscribe our channel
       </a>
@@ -342,7 +321,7 @@ footer{
 </footer>
 
 <script>
-/* VIDEO LOAD */
+/* LOAD VIDEOS */
 fetch("long_videos.json").then(r=>r.json()).then(v=>{
   longVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
@@ -362,33 +341,46 @@ fetch("cities.csv").then(r=>r.text()).then(t=>{
   const d=parseCSV(t).slice(1,12);
   new Chart(citiesChart,{
     type:"bar",
-    data:{labels:d.map(r=>r[1].replace(/"/g,"")),
-    datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
-    options:{indexAxis:"y",responsive:true,plugins:{legend:{display:false}}}
+    data:{
+      labels:d.map(r=>r[1].replace(/"/g,"")),
+      datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
+    },
+    options:{
+      indexAxis:"y",
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label:c=>`${c.raw.toLocaleString()} views`
+        }}
+      }
+    }
   });
 });
 fetch("geography.csv").then(r=>r.text()).then(t=>{
   const d=parseCSV(t).slice(1,6);
   new Chart(geoChart,{
     type:"bar",
-    data:{labels:d.map(r=>r[0]),
-    datasets:[{data:d.map(r=>+r[1]),backgroundColor:"#777"}]},
-    options:{responsive:true,plugins:{legend:{display:false}}}
+    data:{
+      labels:d.map(r=>r[0]),
+      datasets:[{data:d.map(r=>+r[1]),backgroundColor:"#777"}]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label:c=>`${c.raw.toLocaleString()} views`
+        }}
+      }
+    }
   });
 });
 
-/* RAIN SYSTEM */
-let activeRain=null;
+/* RAIN SYSTEM – BLAST INTERACTION */
+let activeStrip=null;
 fetch("rain_texts.json").then(r=>r.json()).then(data=>{
   const rain=document.getElementById("rain");
-
-  // interaction hint glow
-  setTimeout(()=>{
-    rain.querySelectorAll("span").forEach((s,i)=>{
-      if(i<3) s.classList.add("active");
-      setTimeout(()=>s.classList.remove("active"),1200);
-    });
-  },800);
 
   data.forEach(item=>{
     const s=document.createElement("span");
@@ -398,51 +390,35 @@ fetch("rain_texts.json").then(r=>r.json()).then(data=>{
     s.style.animationDuration=22+Math.random()*18+"s";
     s.style.animationDelay=Math.random()*10+"s";
 
-    const card=document.createElement("div");
-    card.className="rain-card";
-    card.innerHTML=
-      `<div class="title">${item.word}</div>
-       <div class="desc">${item.description}</div>`;
-    card.style.display="none";
-    s.appendChild(card);
+    const strip=document.createElement("div");
+    strip.className="rain-strip";
+    strip.textContent=item.description;
+    document.body.appendChild(strip);
 
     function activate(){
-      if(activeRain && activeRain!==s){
-        activeRain.classList.remove("active");
-        activeRain.querySelector(".rain-card").style.display="none";
-      }
+      if(activeStrip) activeStrip.classList.remove("show");
       s.classList.add("active");
-      card.style.display="block";
-
-      const rect=s.getBoundingClientRect();
-      const rightSpace=window.innerWidth-rect.right;
-      card.style.left=rightSpace>340?"110%":"-340px";
-
-      activeRain=s;
+      strip.classList.add("show");
+      activeStrip=strip;
     }
     function deactivate(){
       s.classList.remove("active");
-      card.style.display="none";
-      activeRain=null;
+      strip.classList.remove("show");
+      activeStrip=null;
     }
 
-    s.addEventListener("mouseenter",activate);
-    s.addEventListener("mouseleave",deactivate);
+    s.addEventListener("mouseenter",()=>{ if(window.innerWidth>768) activate(); });
+    s.addEventListener("mouseleave",()=>{ if(window.innerWidth>768) deactivate(); });
     s.addEventListener("click",e=>{
       e.stopPropagation();
-      s.classList.contains("active")?deactivate():activate();
+      strip.classList.contains("show")?deactivate():activate();
     });
 
     rain.appendChild(s);
   });
 });
-
 document.addEventListener("click",()=>{
-  if(activeRain){
-    activeRain.classList.remove("active");
-    activeRain.querySelector(".rain-card").style.display="none";
-    activeRain=null;
-  }
+  if(activeStrip) activeStrip.classList.remove("show");
 });
 
 function showTab(id){
