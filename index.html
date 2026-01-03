@@ -11,10 +11,11 @@
 
 <style>
 :root{
-  --red:#ff2c2c;
+  --red:#ff3b3b;
   --bg:#050505;
   --text:#f1f1f1;
 }
+
 *{box-sizing:border-box}
 body{
   margin:0;
@@ -26,8 +27,8 @@ body{
 /* HEADER */
 header{
   position:fixed;
-  top:16px;
-  left:20px;
+  top:18px;
+  left:22px;
   z-index:100;
 }
 header img{
@@ -55,53 +56,72 @@ header img{
   margin:0;
 }
 .hero .line1{
-  margin-top:12px;
-  font-size:clamp(1.05rem,3vw,1.35rem);
+  margin-top:18px;
+  font-size:clamp(1.1rem,3vw,1.35rem);
 }
 .hero .line2{
-  margin-top:6px;
+  margin-top:18px;
   font-size:.95rem;
-  opacity:.85;
+  opacity:.9;
+}
+.hero .line2 span{
+  color:var(--red);
+  font-weight:600;
 }
 
 /* ACTION ROW */
 .actions{
-  margin-top:22px;
+  margin-top:30px;
   display:flex;
-  gap:14px;
+  gap:16px;
   justify-content:center;
   flex-wrap:wrap;
 }
-.lang{
-  padding:7px 16px;
-  border:1px solid rgba(255,255,255,.3);
-  border-radius:20px;
-  font-size:.85rem;
+
+/* LANGUAGE + SUBSCRIBE STYLE */
+.action-pill{
   position:relative;
+  padding:11px 24px;
+  border-radius:30px;
+  font-size:.9rem;
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,.25);
+  cursor:pointer;
+  transition:.35s;
 }
-.lang:hover{border-color:var(--red)}
-.lang .tip{
+.action-pill:hover{
+  border-color:var(--red);
+}
+.action-pill .tip{
   position:absolute;
-  bottom:-44px;
+  bottom:-56px;
   left:50%;
   transform:translateX(-50%);
   background:#000;
-  padding:8px 14px;
-  border-radius:12px;
+  padding:10px 16px;
+  border-radius:14px;
+  font-size:.8rem;
   opacity:0;
   transition:.3s;
   white-space:nowrap;
 }
-.lang:hover .tip{opacity:1}
+.action-pill:hover .tip{opacity:1}
+
 .cta{
-  padding:13px 36px;
-  border:1.5px solid var(--red);
+  padding:12px 38px;
   border-radius:30px;
-  color:var(--red);
-  text-decoration:none;
   font-weight:600;
+  text-decoration:none;
+  background:transparent;
+  border:1.6px solid var(--red);
+  color:var(--red);
+  transition:.3s;
 }
-.cta:hover{background:var(--red);color:#000}
+.cta:hover{
+  background:var(--red);
+  color:#000;
+}
 
 /* SECTIONS */
 section{
@@ -112,7 +132,7 @@ section{
 h2{
   text-transform:uppercase;
   font-size:clamp(1.6rem,4vw,2.4rem);
-  margin-bottom:32px;
+  margin-bottom:34px;
 }
 
 /* CARDS */
@@ -141,38 +161,45 @@ iframe{
   border-radius:16px;
 }
 
-/* RAIN */
+/* RAIN TEXT */
 .rain span{
   position:absolute;
   top:-10%;
-  opacity:.25;
   font-weight:600;
+  opacity:.25;
   cursor:pointer;
   animation:rain linear infinite;
-  transition:.25s;
+  transition:
+    transform .5s cubic-bezier(.22,1,.36,1),
+    color .25s,
+    opacity .25s,
+    text-shadow .25s;
 }
 .rain span.active{
   animation-play-state:paused;
-  color:var(--red);
-  transform:scale(1.5);
+  color:#ff4d4d;
+  opacity:1;
+  transform:scale(1.6);
+  text-shadow:0 0 14px rgba(255,77,77,.6);
   z-index:10;
 }
 @keyframes rain{to{transform:translateY(120vh)}}
 
 /* RAIN CARD */
 .rain-card{
-  position:absolute;
-  margin-top:12px;
-  background:rgba(0,0,0,.85);
+  margin-top:16px;
+  background:rgba(0,0,0,.88);
   backdrop-filter:blur(6px);
   padding:16px 18px;
   border-radius:14px;
   max-width:320px;
   border:1px solid rgba(255,255,255,.2);
-  animation:fadeUp .25s ease-out;
+  font-family:'Inter',sans-serif;
+  font-size:.9rem;
+  animation:fadeUp .3s ease-out;
 }
 @keyframes fadeUp{
-  from{opacity:0;transform:translateY(8px)}
+  from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
 }
 
@@ -180,7 +207,7 @@ iframe{
 .tabs{
   display:flex;
   gap:16px;
-  margin-bottom:24px;
+  margin-bottom:26px;
 }
 .tab{
   padding:8px 20px;
@@ -217,18 +244,23 @@ footer{
   </a>
 </header>
 
+<!-- HERO -->
 <div class="hero">
   <div class="rain" id="rain"></div>
 
   <div>
     <h1>CineTechFlow</h1>
     <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
-    <div class="line2">Official website of the CineTechFlow YouTube channel</div>
+    <div class="line2">
+      Official website of the CineTechFlow <span>YouTube channel</span>
+    </div>
 
     <div class="actions">
-      <div class="lang">🎧 Language: Telugu
+      <div class="action-pill">
+        🎧 Telugu Content
         <div class="tip">All videos explained in Telugu with cinematic depth</div>
       </div>
+
       <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">
         Subscribe our channel
       </a>
@@ -236,6 +268,7 @@ footer{
   </div>
 </div>
 
+<!-- WHAT'S IN IT -->
 <section>
 <h2>WHAT’S IN IT</h2>
 <div class="cards">
@@ -246,26 +279,36 @@ footer{
 </div>
 </section>
 
+<!-- RECENT VIDEOS -->
 <section>
 <h2>OUR RECENT VIDEOS</h2>
 <div id="longVideos" class="grid"></div>
 </section>
 
+<!-- SHORTS -->
 <section>
 <h2>SHORTS</h2>
 <div id="shortVideos" class="grid"></div>
 </section>
 
+<!-- AUDIENCE -->
 <section>
 <h2>OUR AUDIENCE</h2>
 <div class="tabs">
   <div class="tab active" onclick="showTab('cities')">Cities</div>
   <div class="tab" onclick="showTab('geo')">Geography</div>
 </div>
-<div id="cities" class="tab-content active"><canvas id="citiesChart"></canvas></div>
-<div id="geo" class="tab-content"><canvas id="geoChart"></canvas></div>
+
+<div id="cities" class="tab-content active">
+  <canvas id="citiesChart"></canvas>
+</div>
+
+<div id="geo" class="tab-content">
+  <canvas id="geoChart"></canvas>
+</div>
 </section>
 
+<!-- FOLLOW -->
 <div class="follow">
   Follow CineTechFlow on
   <a href="https://www.youtube.com/@CineTechFlow">YouTube</a> |
@@ -274,16 +317,18 @@ footer{
 
 <footer>
 © 2026 CineTechFlow · Created by
-<a href="mailto:justctrllaugh@gmail.com" style="color:#ff2c2c">Heisenberg</a>
+<a href="mailto:justctrllaugh@gmail.com" style="color:var(--red)">Heisenberg</a>
 </footer>
 
 <script>
 /* LOAD VIDEOS */
 fetch("long_videos.json").then(r=>r.json()).then(v=>{
-  longVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+  document.getElementById("longVideos").innerHTML =
+    v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
 fetch("shorts.json").then(r=>r.json()).then(v=>{
-  shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+  document.getElementById("shortVideos").innerHTML =
+    v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
 
 /* CSV PARSER */
@@ -298,7 +343,10 @@ fetch("cities.csv").then(r=>r.text()).then(t=>{
   const d=parseCSV(t).slice(1,12);
   new Chart(citiesChart,{
     type:"bar",
-    data:{labels:d.map(r=>r[1]),datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff2c2c"}]},
+    data:{
+      labels:d.map(r=>r[1].replace(/"/g,"")),
+      datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
+    },
     options:{indexAxis:"y",responsive:true,plugins:{legend:{display:false}}}
   });
 });
@@ -306,7 +354,10 @@ fetch("geography.csv").then(r=>r.text()).then(t=>{
   const d=parseCSV(t).slice(1,6);
   new Chart(geoChart,{
     type:"doughnut",
-    data:{labels:d.map(r=>r[0]),datasets:[{data:d.map(r=>+r[1])}]},
+    data:{
+      labels:d.map(r=>r[0]),
+      datasets:[{data:d.map(r=>+r[1]),backgroundColor:["#ff3b3b","#555","#777","#999","#bbb"]}]
+    },
     options:{responsive:true}
   });
 });
@@ -315,6 +366,7 @@ fetch("geography.csv").then(r=>r.text()).then(t=>{
 let activeRain=null;
 fetch("rain_texts.json").then(r=>r.json()).then(data=>{
   const rain=document.getElementById("rain");
+
   data.forEach(item=>{
     const s=document.createElement("span");
     s.textContent=item.word;
@@ -354,7 +406,14 @@ fetch("rain_texts.json").then(r=>r.json()).then(data=>{
     rain.appendChild(s);
   });
 });
-document.addEventListener("click",()=>{if(activeRain){activeRain.classList.remove("active");activeRain.querySelector(".rain-card").style.display="none";activeRain=null;}});
+document.addEventListener("click",()=>{
+  if(activeRain){
+    activeRain.classList.remove("active");
+    activeRain.querySelector(".rain-card").style.display="none";
+    activeRain=null;
+  }
+});
+
 function showTab(id){
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
