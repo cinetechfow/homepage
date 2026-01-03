@@ -5,20 +5,19 @@
 <title>CineTechFlow</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FAVICON -->
 <link rel="icon" type="image/png" href="logo_black.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --red:#ff2c2c;
-  --bg:#050505;
-  --text:#eaeaea;
+  --bg:#040404;
+  --text:#f1f1f1;
   --muted:#9a9a9a;
 }
 
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:'Inter',sans-serif;
@@ -26,41 +25,47 @@ body{
   color:var(--text);
   overflow-x:hidden;
 }
+
 a{text-decoration:none;color:var(--red)}
 
-/* HEADER */
+/* LOGO */
 header{
   position:fixed;
   top:22px;
   left:28px;
-  z-index:100;
+  z-index:50;
 }
 header img{height:34px}
 
-/* ===== FLUID HERO ===== */
+/* ===== FULL FLUID HERO ===== */
 .hero{
   position:relative;
   min-height:100vh;
   overflow:hidden;
 }
-.bg{
+
+.slide{
   position:absolute;
   inset:0;
   background-size:cover;
   background-position:center;
   opacity:0;
-  animation:fade 28s infinite;
+  animation:slideFade 42s infinite;
 }
-.bg1{background-image:url("cinema_flow1.jpg");animation-delay:0s}
-.bg2{background-image:url("cinema_flow2.jpg");animation-delay:7s}
-.bg3{background-image:url("cinema_flow3.jpg");animation-delay:14s}
-.bg4{background-image:url("cinema_flow4.jpg");animation-delay:21s}
 
-@keyframes fade{
+.s1{background-image:url("cinema_flow1.jpg");animation-delay:0s}
+.s2{background-image:url("cinema_flow2.jpg");animation-delay:6s}
+.s3{background-image:url("cinema_flow3.jpg");animation-delay:12s}
+.s4{background-image:url("cinema_flow4.jpg");animation-delay:18s}
+.s5{background-image:url("tech_flow.jpg");animation-delay:24s}
+.s6{background-image:url("creator.jpg");animation-delay:30s}
+.s7{background-image:url("narrative.jpg");animation-delay:36s}
+
+@keyframes slideFade{
   0%{opacity:0}
-  10%{opacity:1}
-  25%{opacity:1}
-  35%{opacity:0}
+  8%{opacity:1}
+  18%{opacity:1}
+  26%{opacity:0}
   100%{opacity:0}
 }
 
@@ -71,53 +76,56 @@ header img{height:34px}
   display:flex;
   align-items:center;
   justify-content:center;
+  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.95));
   text-align:center;
-  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92));
 }
 
 .hero-content{
   max-width:900px;
 }
+
 .hero h1{
-  font-size:clamp(2.8rem,6vw,4.3rem);
+  font-size:clamp(2.8rem,6vw,4.4rem);
   font-weight:800;
   margin:0;
 }
+
 .hero p{
   margin-top:22px;
-  font-size:1.3rem;
-  color:#f1f1f1;
+  font-size:1.35rem;
+  opacity:.9;
 }
 
 /* CTA */
 .cta{
-  margin-top:42px;
+  margin-top:44px;
   display:inline-block;
-  padding:14px 46px;
+  padding:14px 48px;
   border:1.5px solid var(--red);
-  border-radius:30px;
+  border-radius:32px;
   font-weight:600;
   color:var(--red);
-  transition:.3s;
+  transition:.35s;
 }
 .cta:hover{
   background:var(--red);
   color:#000;
 }
 
-/* HERO WORD CLOUD (VISIBLE BUT SUBTLE) */
-.word-cloud span{
+/* HERO WORDS (VISIBLE + CINEMATIC) */
+.word-layer span{
   position:absolute;
-  color:#ffffff;
-  opacity:.12;
+  color:#fff;
+  opacity:.18;
   font-weight:600;
   letter-spacing:1px;
-  animation:float linear infinite;
+  animation:drift linear infinite;
   white-space:nowrap;
 }
-@keyframes float{
+
+@keyframes drift{
   from{transform:translateY(120vh)}
-  to{transform:translateY(-20vh)}
+  to{transform:translateY(-30vh)}
 }
 
 /* STATS */
@@ -129,56 +137,62 @@ header img{height:34px}
   flex-wrap:wrap;
 }
 .stat h2{
+  margin:0;
   color:var(--red);
   font-size:2.4rem;
-  margin:0;
 }
 .stat span{color:var(--muted)}
 
-/* ===== SECTIONS ===== */
+/* ===== FLOW EXPERIENCE ===== */
+.flow-experience{
+  padding:160px 20px;
+  max-width:900px;
+  margin:auto;
+}
+
+.flow-line{
+  font-size:1.6rem;
+  line-height:1.9;
+  margin-bottom:80px;
+  opacity:.95;
+}
+
+/* VIDEOS */
 .section{
   max-width:1200px;
   margin:auto;
   padding:120px 20px;
 }
+
 .section h2{
   font-size:2.6rem;
   margin-bottom:60px;
 }
 
-/* FLOW (FLUID TEXT) */
-.flow-line{
-  max-width:900px;
-  margin:0 auto 70px;
-  font-size:1.4rem;
-  line-height:1.8;
-  color:#ddd;
-}
-
-/* VIDEOS */
 .video-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
   gap:36px;
 }
+
 .video-grid iframe{
   width:100%;
   height:210px;
   border:none;
-  border-radius:16px;
+  border-radius:18px;
   background:#000;
-  transition:.3s;
+  transition:.35s;
 }
 .video-grid iframe:hover{transform:scale(1.03)}
 
 /* FOLLOW */
 .follow{
   text-align:center;
-  padding:90px 20px;
+  padding:100px 20px;
   background:#000;
 }
 .follow a{
-  margin:0 18px;
+  margin:0 20px;
   font-weight:600;
 }
 
@@ -203,10 +217,13 @@ footer{
 
 <!-- HERO -->
 <div class="hero">
-  <div class="bg bg1"></div>
-  <div class="bg bg2"></div>
-  <div class="bg bg3"></div>
-  <div class="bg bg4"></div>
+  <div class="slide s1"></div>
+  <div class="slide s2"></div>
+  <div class="slide s3"></div>
+  <div class="slide s4"></div>
+  <div class="slide s5"></div>
+  <div class="slide s6"></div>
+  <div class="slide s7"></div>
 
   <div class="hero-overlay">
     <div class="hero-content">
@@ -225,23 +242,22 @@ footer{
     </div>
   </div>
 
-  <!-- HERO WORDS -->
-  <div class="word-cloud">
-    <span style="left:8%;animation-duration:32s;font-size:22px">Rajamouli</span>
+  <!-- CINEMA WORDS -->
+  <div class="word-layer">
+    <span style="left:8%;animation-duration:34s;font-size:22px">Rajamouli</span>
     <span style="left:18%;animation-duration:28s;font-size:18px">Nolan</span>
-    <span style="left:28%;animation-duration:34s;font-size:20px">Prabhas</span>
+    <span style="left:28%;animation-duration:36s;font-size:20px">Prabhas</span>
     <span style="left:38%;animation-duration:30s;font-size:19px">Spielberg</span>
-    <span style="left:48%;animation-duration:36s;font-size:21px">IMAX</span>
-    <span style="left:58%;animation-duration:29s;font-size:18px">VFX</span>
-    <span style="left:68%;animation-duration:33s;font-size:20px">Cinematography</span>
-    <span style="left:78%;animation-duration:27s;font-size:19px">Screenplay</span>
+    <span style="left:48%;animation-duration:40s;font-size:22px">Rajinikanth</span>
+    <span style="left:58%;animation-duration:32s;font-size:18px">Kamal Haasan</span>
+    <span style="left:68%;animation-duration:38s;font-size:20px">IMAX</span>
+    <span style="left:78%;animation-duration:29s;font-size:19px">VFX</span>
+    <span style="left:88%;animation-duration:35s;font-size:21px">Screenplay</span>
   </div>
 </div>
 
-<!-- FLOW -->
-<div class="section">
-  <h2>What does CineTechFlow consist of?</h2>
-
+<!-- FLOW EXPERIENCE -->
+<div class="flow-experience">
   <div id="description"></div>
 </div>
 
