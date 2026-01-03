@@ -14,26 +14,21 @@
       --red:#ff3b3b;
       --bg:#050505;
       --text:#f1f1f1;
+      --dark:#111;
     }
 
-    /* GLOBAL */
     *{
       box-sizing:border-box;
       user-select:none;
-      -webkit-user-select:none;
     }
     body{
       margin:0;
-      font-family:'Inter',sans-serif;
+      font-family:Inter,sans-serif;
       background:var(--bg);
       color:var(--text);
       overflow-x:hidden;
     }
-    a{
-      color:var(--text);
-      text-decoration:none;
-    }
-    a:hover{color:var(--red)}
+    a{text-decoration:none;color:inherit}
 
     /* HEADER */
     header{
@@ -43,7 +38,6 @@
       z-index:100;
     }
     header img{height:48px}
-    @media(max-width:600px){header img{height:40px}}
 
     /* HERO */
     .hero{
@@ -58,103 +52,49 @@
       position:relative;
       overflow:hidden;
     }
-    .hero h1{
-      font-size:clamp(2.6rem,6vw,4rem);
-      margin:0;
-    }
-    .hero .line1{
-      margin-top:18px;
-      font-size:clamp(1.1rem,3vw,1.35rem);
-    }
-    .hero .line2{
-      margin-top:14px;
-      font-size:.95rem;
-      opacity:.9;
-    }
-    .hero .line2 span{
-      color:var(--red);
-      font-weight:600;
-    }
+    .hero h1{font-size:clamp(2.6rem,6vw,4rem)}
+    .line1{margin-top:16px}
+    .line2{margin-top:12px;font-size:.9rem;opacity:.9}
+    .line2 span{color:var(--red)}
 
-    /* ACTIONS */
     .actions{
-      margin-top:28px;
+      margin-top:26px;
       display:flex;
-      gap:18px;
+      gap:16px;
       justify-content:center;
       flex-wrap:wrap;
     }
     .action-pill{
-      padding:11px 26px;
+      padding:10px 24px;
       border-radius:30px;
-      font-size:.9rem;
-      backdrop-filter:blur(10px);
-      background:rgba(255,255,255,0.07);
-      border:1px solid rgba(255,255,255,.28);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.25);
     }
     .cta{
-      padding:12px 38px;
+      padding:12px 36px;
       border-radius:30px;
-      font-weight:600;
       border:1.6px solid var(--red);
       color:var(--red);
-      transition:.3s;
     }
-    .cta:hover{
-      background:var(--red);
-      color:#000;
-    }
+    .cta:hover{background:var(--red);color:#000}
 
-    /* STATS (INSIDE HERO) */
+    /* STATS */
     .stats{
-      margin-top:26px;
+      margin-top:28px;
       display:flex;
       gap:36px;
       justify-content:center;
       flex-wrap:wrap;
     }
-    .stat{
-      text-align:center;
-    }
-    .stat .num{
-      font-size:1.8rem;
-      font-weight:800;
-      color:var(--red);
-    }
-    .stat .label{
-      font-size:.8rem;
-      opacity:.8;
-    }
+    .stat .num{font-size:1.8rem;font-weight:800;color:var(--red)}
+    .stat .label{font-size:.8rem;opacity:.8}
 
-    /* SCROLL CUE */
     .scroll-cue{
       position:absolute;
       bottom:22px;
       left:50%;
       transform:translateX(-50%);
-      font-size:.8rem;
       opacity:.6;
-      animation:pulse 4s infinite;
-    }
-    @keyframes pulse{
-      0%,100%{opacity:.3}
-      50%{opacity:.8}
-    }
-
-    /* INTERACTION HINT */
-    .hint{
-      position:absolute;
-      top:22%;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:.8rem;
-      opacity:.8;
-      animation:fadeOut 4s forwards;
-    }
-    @keyframes fadeOut{
-      0%{opacity:.8}
-      70%{opacity:.8}
-      100%{opacity:0}
     }
 
     /* SECTIONS */
@@ -163,56 +103,76 @@
       max-width:1200px;
       margin:auto;
     }
-    h2{
-      text-transform:uppercase;
-      font-size:clamp(1.6rem,4vw,2.4rem);
-      margin-bottom:34px;
-    }
+    h2{text-transform:uppercase;margin-bottom:30px}
 
     /* CARDS */
     .cards{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:26px;
+      gap:24px;
     }
     .card{
-      background:#111;
-      padding:26px;
+      background:var(--dark);
+      padding:24px;
       border-radius:16px;
     }
     .card h3{color:var(--red)}
 
-    /* RAIN */
+    /* VIDEOS */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:24px;
+    }
+    iframe{
+      width:100%;
+      height:200px;
+      border:none;
+      border-radius:16px;
+    }
+
+    /* ===== RAIN SYSTEM ===== */
     .rain span{
       position:absolute;
-      top:-10%;
+      top:-12%;
       font-weight:600;
       opacity:.25;
       cursor:pointer;
       animation:rain linear infinite;
-      transition:transform .35s ease, color .25s, opacity .25s;
+      transition:transform .3s ease,color .25s,opacity .25s;
     }
     .rain span.active{
-      animation-play-state:paused;
-      color:#ff4d4d;
       opacity:1;
-      transform:scale(1.35);
-      z-index:10;
+      color:var(--red);
+      transform:scale(1.25);
+      animation-play-state:paused;
     }
-    @keyframes rain{to{transform:translateY(120vh)}}
+    .rain span small{
+      font-size:.65em;
+      opacity:.6;
+      margin-left:4px;
+    }
+
+    @keyframes rain{
+      to{transform:translateY(120vh)}
+    }
 
     /* DESKTOP GLASS CARD */
     .rain-card{
       position:absolute;
-      margin-top:14px;
+      top:100%;
+      left:0;
+      margin-top:10px;
       background:rgba(0,0,0,.85);
       backdrop-filter:blur(10px);
-      padding:12px 14px;
-      border-radius:14px;
-      max-width:280px;
       border:1px solid rgba(255,255,255,.2);
-      font-size:.75rem;
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:.74rem;
       color:#fff;
+      width:260px;
+      display:none;
+      z-index:10;
     }
     .rain-card .title{
       color:var(--red);
@@ -220,35 +180,29 @@
       margin-bottom:4px;
     }
 
-    /* MOBILE MORPH STRIP */
-    .morph{
-      position:absolute;
-      background:rgba(0,0,0,.9);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:14px;
-      padding:10px 14px;
-      font-size:.72rem;
-      line-height:1.35;
-      transform:scale(0);
-      opacity:0;
-      transition:.35s ease;
-      z-index:20;
-    }
-    .morph.show{
-      transform:scale(1);
-      opacity:1;
-    }
-
-    /* AUDIENCE */
-    canvas{max-width:100%}
-
-    /* FOOTER */
+    /* FOLLOW – WHITE SECTION */
     .follow{
+      background:#fff;
+      color:#000;
       text-align:center;
       padding:60px 20px;
-      border-top:1px solid #222;
     }
+    .follow-icons{
+      margin-top:16px;
+      display:flex;
+      justify-content:center;
+      gap:22px;
+    }
+    .follow-icons img{
+      width:36px;
+      height:36px;
+      transition:transform .25s ease;
+    }
+    .follow-icons img:hover{
+      transform:scale(1.15);
+    }
+
+    /* FOOTER */
     footer{
       text-align:center;
       padding:30px;
@@ -260,8 +214,8 @@
 <body>
 
 <header>
-  <a href="https://www.youtube.com/@CineTechFlow" target="_blank">
-    <img src="logo_black.png" alt="CineTechFlow">
+  <a href="https://www.youtube.com/@CineTechFlow">
+    <img src="logo_black.png">
   </a>
 </header>
 
@@ -271,9 +225,7 @@
   <div>
     <h1>CineTechFlow</h1>
     <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
-    <div class="line2">
-      Official website of the CineTechFlow <span>YouTube channel</span>
-    </div>
+    <div class="line2">Official website of the CineTechFlow <span>YouTube channel</span></div>
 
     <div class="actions">
       <div class="action-pill">🎧 Telugu Content</div>
@@ -282,35 +234,34 @@
       </a>
     </div>
 
-    <!-- STATS -->
-    <div class="stats" id="stats">
-      <div class="stat">
-        <div class="num" data-target="1140">0</div>
-        <div class="label">Subscribers</div>
-      </div>
-      <div class="stat">
-        <div class="num" data-target="301584">0</div>
-        <div class="label">Views</div>
-      </div>
-      <div class="stat">
-        <div class="num" data-target="33">0</div>
-        <div class="label">Videos</div>
-      </div>
+    <div class="stats">
+      <div class="stat"><div class="num" data-target="1140">0</div><div class="label">Subscribers</div></div>
+      <div class="stat"><div class="num" data-target="301584">0</div><div class="label">Views</div></div>
+      <div class="stat"><div class="num" data-target="33">0</div><div class="label">Videos</div></div>
     </div>
   </div>
 
-  <div class="hint">Tap / hover on falling words to explore</div>
-  <div class="scroll-cue">Scroll to explore ↓</div>
+  <div class="scroll-cue">Scroll ↓</div>
 </div>
 
 <section>
   <h2>WHAT’S IN IT</h2>
   <div class="cards">
-    <div class="card"><h3>🎬 CINEMA FLOW</h3><p>Fast-tracked movie updates, breakdowns and behind the scenes.</p></div>
-    <div class="card"><h3>💻 TECH FLOW</h3><p>Global news, digital trends, and curious tech experiments.</p></div>
-    <div class="card"><h3>💡 CREATOR FLOW</h3><p>Practical growth tips from real YouTube experience.</p></div>
-    <div class="card"><h3>🔥 NARRATIVE FLOW</h3><p>Digital stories engineered to hook from the first frame.</p></div>
+    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates and BTS.</p></div>
+    <div class="card"><h3>TECH FLOW</h3><p>Global news and digital trends.</p></div>
+    <div class="card"><h3>CREATOR FLOW</h3><p>Growth tips from real experience.</p></div>
+    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook.</p></div>
   </div>
+</section>
+
+<section>
+  <h2>OUR RECENT VIDEOS</h2>
+  <div id="longVideos" class="grid"></div>
+</section>
+
+<section>
+  <h2>SHORTS</h2>
+  <div id="shortVideos" class="grid"></div>
 </section>
 
 <section>
@@ -319,9 +270,13 @@
 </section>
 
 <div class="follow">
-  Follow CineTechFlow on
-  <a href="https://www.youtube.com/@CineTechFlow">YouTube</a> |
-  <a href="https://www.instagram.com/cinetechflow/">Instagram</a>
+  <div><strong>Follow us on</strong></div>
+  <div class="follow-icons">
+    <a href="https://www.youtube.com/@CineTechFlow"><img src="youtube.gif"></a>
+    <a href="https://www.instagram.com/cinetechflow/"><img src="insta.gif"></a>
+    <a href="https://x.com/cinetechflow"><img src="twitter.gif"></a>
+    <a href="https://www.threads.com/@cinetechflow"><img src="threads.gif"></a>
+  </div>
 </div>
 
 <footer>
@@ -330,25 +285,32 @@
 </footer>
 
 <script>
-  /* STATS COUNT */
+  /* COUNT UP */
   document.querySelectorAll('.num').forEach(el=>{
-    const target=+el.dataset.target;
-    let count=0;
-    const step=target/80;
+    const t=+el.dataset.target;
+    let c=0;
     const i=setInterval(()=>{
-      count+=step;
-      if(count>=target){
-        el.textContent=target.toLocaleString();
+      c+=t/80;
+      el.textContent=Math.floor(c).toLocaleString();
+      if(c>=t){
+        el.textContent=t.toLocaleString();
         clearInterval(i);
-      }else{
-        el.textContent=Math.floor(count).toLocaleString();
       }
     },20);
   });
 
-  /* AUDIENCE CHART */
+  /* VIDEOS */
+  fetch("long_videos.json").then(r=>r.json()).then(v=>{
+    longVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+  });
+  fetch("shorts.json").then(r=>r.json()).then(v=>{
+    shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+  });
+
+  /* AUDIENCE */
   fetch("cities.csv").then(r=>r.text()).then(t=>{
-    const rows=t.trim().split("\n").slice(2,10).map(r=>r.split(","));
+    const rows=t.split("\n").slice(2,12)
+      .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
     new Chart(citiesChart,{
       type:"bar",
       data:{
@@ -359,65 +321,54 @@
         indexAxis:"y",
         plugins:{
           legend:{display:false},
-          tooltip:{callbacks:{label:c=>`${c.raw.toLocaleString()} views`}}
+          tooltip:{callbacks:{label:c=>`${c.raw} views`}}
         }
       }
     });
   });
 
-  /* RAIN */
-  let activeMorph=null;
+  /* RAIN – FIXED DENSITY + HOVER */
   fetch("rain_texts.json").then(r=>r.json()).then(data=>{
     const rain=document.getElementById("rain");
+    const isMobile=window.innerWidth<=768;
+    const max=isMobile?12:24;
+    const cols=isMobile?3:6;
+    const colWidth=100/cols;
 
-    data.forEach(item=>{
+    data.slice(0,max).forEach((item,i)=>{
       const s=document.createElement("span");
       s.textContent=item.word;
-      s.style.left=Math.random()*100+"%";
-      s.style.fontSize=14+Math.random()*10+"px";
-      s.style.animationDuration=22+Math.random()*18+"s";
-      s.style.animationDelay=Math.random()*10+"s";
+
+      if(i<3 && isMobile){
+        const hint=document.createElement("small");
+        hint.textContent="(tap)";
+        s.appendChild(hint);
+      }
+
+      s.style.left=(i%cols)*colWidth+colWidth/2+"%";
+      s.style.fontSize=14+Math.random()*8+"px";
+      s.style.animationDuration=(isMobile?34:24)+Math.random()*8+"s";
 
       const card=document.createElement("div");
       card.className="rain-card";
       card.innerHTML=`<div class="title">${item.word}</div>${item.description}`;
-      card.style.display="none";
       s.appendChild(card);
 
-      const morph=document.createElement("div");
-      morph.className="morph";
-      morph.innerHTML=`<div style="color:var(--red);font-weight:600;margin-bottom:4px">${item.word}</div>${item.description}`;
-      document.body.appendChild(morph);
-
       s.addEventListener("mouseenter",()=>{
-        if(window.innerWidth>768){
+        if(!isMobile){
           s.classList.add("active");
           card.style.display="block";
         }
       });
       s.addEventListener("mouseleave",()=>{
-        if(window.innerWidth>768){
+        if(!isMobile){
           s.classList.remove("active");
           card.style.display="none";
-        }
-      });
-      s.addEventListener("click",e=>{
-        e.stopPropagation();
-        if(window.innerWidth<=768){
-          if(activeMorph) activeMorph.classList.remove("show");
-          const r=s.getBoundingClientRect();
-          morph.style.left=r.left+"px";
-          morph.style.top=r.top+"px";
-          morph.classList.add("show");
-          activeMorph=morph;
         }
       });
 
       rain.appendChild(s);
     });
-  });
-  document.addEventListener("click",()=>{
-    if(activeMorph) activeMorph.classList.remove("show");
   });
 </script>
 
