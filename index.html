@@ -1,399 +1,757 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <title>CineTechFlow</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="icon" href="logo_black.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+
   <style>
+
     :root{
+
       --red:#ff3b3b;
+
       --bg:#050505;
+
       --text:#f1f1f1;
-      --dark:#111;
+
+      --glass:rgba(0,0,0,.55);
+
     }
 
-    *{
-      box-sizing:border-box;
-      user-select:none;
-    }
+
+
+    *{box-sizing:border-box;user-select:none}
+
     body{
+
       margin:0;
+
       font-family:Inter,sans-serif;
+
       background:var(--bg);
+
       color:var(--text);
+
       overflow-x:hidden;
+
     }
+
     a{text-decoration:none;color:inherit}
 
+
+
     /* HEADER */
+
     header{
+
       position:fixed;
+
       top:18px;
+
       left:22px;
+
       z-index:100;
+
     }
-    header img{height:48px}
+
+    header img{height:52px}
+
+
 
     /* HERO */
+
     .hero{
+
       min-height:100vh;
+
       background:
+
         linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92)),
+
         url("cinema_flow4.jpg") center/cover no-repeat;
+
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
       text-align:center;
+
       position:relative;
+
       overflow:hidden;
+
     }
-    .hero h1{font-size:clamp(2.6rem,6vw,4rem)}
-    .line1{margin-top:16px}
-    .line2{margin-top:12px;font-size:.9rem;opacity:.9}
+
+    .hero h1{font-size:clamp(2.8rem,6vw,4.2rem)}
+
+    .line1{margin-top:14px}
+
+    .line2{margin-top:10px;font-size:.9rem;opacity:.85}
+
     .line2 span{color:var(--red)}
 
+
+
     .actions{
+
       margin-top:26px;
+
       display:flex;
-      gap:16px;
+
+      gap:14px;
+
       justify-content:center;
+
       flex-wrap:wrap;
+
     }
-    .action-pill{
-      padding:10px 24px;
-      border-radius:30px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.25);
-    }
+
     .cta{
-      padding:12px 36px;
+
+      padding:12px 38px;
+
       border-radius:30px;
+
       border:1.6px solid var(--red);
+
       color:var(--red);
+
     }
+
     .cta:hover{background:var(--red);color:#000}
 
-    /* STATS */
-    .stats{
-      margin-top:28px;
-      display:flex;
-      gap:36px;
-      justify-content:center;
-      flex-wrap:wrap;
+    .lang-pill{
+
+      padding:11px 22px;
+
+      border-radius:30px;
+
+      background:rgba(255,255,255,.08);
+
+      border:1px solid rgba(255,255,255,.25);
+
+      font-size:.85rem;
+
     }
-    .stat .num{font-size:1.8rem;font-weight:800;color:var(--red)}
-    .stat .label{font-size:.8rem;opacity:.8}
+
+
+
+    /* STATS */
+
+    .stats{
+
+      margin-top:34px;
+
+      display:flex;
+
+      gap:60px;
+
+      justify-content:center;
+
+      padding:16px 28px;
+
+      border-radius:22px;
+
+      background:var(--glass);
+
+      backdrop-filter:blur(14px);
+
+    }
+
+    .stat{text-align:center}
+
+    .stat .num{
+
+      font-size:2.3rem;
+
+      font-weight:800;
+
+      color:var(--red);
+
+    }
+
+    .stat .label{
+
+      font-size:.7rem;
+
+      letter-spacing:.15em;
+
+      opacity:.7;
+
+    }
+
+
+
+    /* SCROLL CUE */
 
     .scroll-cue{
+
       position:absolute;
+
       bottom:22px;
+
       left:50%;
+
       transform:translateX(-50%);
+
       opacity:.6;
+
+      transition:opacity .2s linear;
+
     }
+
+
+
+    /* RAIN */
+
+    .rain span{
+
+      position:absolute;
+
+      top:-12%;
+
+      font-weight:600;
+
+      opacity:.22;
+
+      cursor:pointer;
+
+      animation:rain linear;
+
+      transition:transform .35s,color .25s,opacity .25s;
+
+    }
+
+    .rain span.active{
+
+      opacity:1;
+
+      color:var(--red);
+
+      transform:scale(1.25);
+
+    }
+
+    .rain span small{
+
+      font-size:.65em;
+
+      opacity:.6;
+
+      margin-left:4px;
+
+    }
+
+    @keyframes rain{to{transform:translateY(120vh)}}
+
+
+
+    .rain-card{
+
+      margin-top:8px;
+
+      background:rgba(0,0,0,.85);
+
+      backdrop-filter:blur(12px);
+
+      border-radius:12px;
+
+      padding:8px 10px;
+
+      font-size:.7rem;
+
+      display:none;
+
+    }
+
+    .rain-card .title{
+
+      color:var(--red);
+
+      font-weight:600;
+
+      margin-bottom:4px;
+
+    }
+
+
 
     /* SECTIONS */
-    section{
-      padding:70px 20px;
-      max-width:1200px;
-      margin:auto;
-    }
-    h2{text-transform:uppercase;margin-bottom:30px}
 
-    /* CARDS */
+    section{
+
+      padding:80px 20px;
+
+      max-width:1200px;
+
+      margin:auto;
+
+    }
+
+    h2{text-transform:uppercase;margin-bottom:32px}
+
+
+
+    /* FLOW CARDS */
+
     .cards{
+
       display:grid;
+
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
       gap:24px;
+
     }
+
     .card{
-      background:var(--dark);
-      padding:24px;
-      border-radius:16px;
+
+      background:#111;
+
+      padding:26px;
+
+      border-radius:18px;
+
     }
+
     .card h3{color:var(--red)}
 
+
+
     /* VIDEOS */
+
     .grid{
+
       display:grid;
+
       grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
       gap:24px;
+
     }
+
     iframe{
+
       width:100%;
+
       height:200px;
+
       border:none;
+
       border-radius:16px;
+
     }
 
-    /* ===== CONTINUOUS RAIN ===== */
-    .rain span{
-      position:absolute;
-      top:-12%;
-      font-weight:600;
-      opacity:.25;
-      cursor:pointer;
-      animation:rain linear infinite;
-      transition:transform .3s ease,color .25s,opacity .25s;
-    }
-    .rain span.active{
-      opacity:1;
-      color:var(--red);
-      transform:scale(1.25);
-      animation-play-state:paused;
-    }
-    .rain span small{
-      font-size:.65em;
-      opacity:.6;
-      margin-left:4px;
-    }
-    @keyframes rain{
-      to{transform:translateY(120vh)}
-    }
 
-    /* DESKTOP GLASS CARD */
-    .rain-card{
-      position:absolute;
-      top:100%;
-      left:0;
-      margin-top:10px;
-      background:rgba(0,0,0,.85);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:12px;
-      padding:10px 12px;
-      font-size:.74rem;
-      color:#fff;
-      width:260px;
-      display:none;
-      z-index:10;
-    }
-    .rain-card .title{
-      color:var(--red);
-      font-weight:600;
-      margin-bottom:4px;
-    }
 
-    /* FOLLOW – WHITE */
+    /* FOLLOW */
+
     .follow{
+
       background:#fff;
+
       color:#000;
+
       text-align:center;
+
       padding:60px 20px;
-    }
-    .follow-icons{
-      margin-top:16px;
-      display:flex;
-      justify-content:center;
-      gap:22px;
-    }
-    .follow-icons img{
-      width:36px;
-      height:36px;
-      transition:transform .25s ease;
-    }
-    .follow-icons img:hover{
-      transform:scale(1.15);
+
     }
 
-    /* FOOTER */
-    footer{
-      text-align:center;
-      padding:30px;
-      opacity:.6;
+    .follow-icons{
+
+      margin-top:18px;
+
+      display:flex;
+
+      justify-content:center;
+
+      gap:22px;
+
     }
+
+    .follow-icons img{
+
+      width:36px;
+
+      transition:transform .25s;
+
+    }
+
+    .follow-icons img:hover{transform:scale(1.15)}
+
+
+
+    footer{
+
+      text-align:center;
+
+      padding:30px;
+
+      opacity:.6;
+
+    }
+
   </style>
+
 </head>
+
+
 
 <body>
 
+
+
 <header>
-  <a href="https://www.youtube.com/@CineTechFlow">
-    <img src="logo_black.png">
-  </a>
+
+  <img src="logo_black.png">
+
 </header>
 
+
+
+<!-- HERO -->
+
 <div class="hero">
+
   <div class="rain" id="rain"></div>
 
+
+
   <div>
+
     <h1>CineTechFlow</h1>
+
     <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
+
     <div class="line2">Official website of the CineTechFlow <span>YouTube channel</span></div>
 
+
+
     <div class="actions">
-      <div class="action-pill">🎧 Telugu Content</div>
+
       <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">
+
         Subscribe our channel
+
       </a>
+
+      <div class="lang-pill">🎧 తెలుగులో వీడియోలు</div>
+
     </div>
+
+
 
     <div class="stats">
-      <div class="stat"><div class="num" data-target="1140">0</div><div class="label">Subscribers</div></div>
-      <div class="stat"><div class="num" data-target="301584">0</div><div class="label">Views</div></div>
-      <div class="stat"><div class="num" data-target="33">0</div><div class="label">Videos</div></div>
+
+      <div class="stat"><div class="num" data-target="1140">0</div><div class="label">SUBSCRIBERS</div></div>
+
+      <div class="stat"><div class="num" data-target="301584">0</div><div class="label">VIEWS</div></div>
+
+      <div class="stat"><div class="num" data-target="33">0</div><div class="label">VIDEOS</div></div>
+
     </div>
+
   </div>
 
-  <div class="scroll-cue">Scroll ↓</div>
+
+
+  <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
+
 </div>
 
+
+
+<!-- WHAT'S IN IT -->
+
 <section>
+
   <h2>WHAT’S IN IT</h2>
+
   <div class="cards">
-    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates and BTS.</p></div>
-    <div class="card"><h3>TECH FLOW</h3><p>Global news and digital trends.</p></div>
-    <div class="card"><h3>CREATOR FLOW</h3><p>Growth tips from real experience.</p></div>
-    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook.</p></div>
+
+    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates, breakdowns and behind-the-scenes.</p></div>
+
+    <div class="card"><h3>TECH FLOW</h3><p>Global news, digital trends and curious tech experiments.</p></div>
+
+    <div class="card"><h3>CREATOR FLOW</h3><p>YouTube growth tips from real personal experience.</p></div>
+
+    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook from the very first frame.</p></div>
+
   </div>
+
 </section>
 
+
+
+<!-- VIDEOS -->
+
 <section>
+
   <h2>OUR RECENT VIDEOS</h2>
+
   <div id="longVideos" class="grid"></div>
+
 </section>
 
+
+
 <section>
+
   <h2>SHORTS</h2>
+
   <div id="shortVideos" class="grid"></div>
+
 </section>
 
+
+
+<!-- AUDIENCE -->
+
 <section>
+
   <h2>OUR AUDIENCE</h2>
+
   <canvas id="citiesChart"></canvas>
+
+  <br><br>
+
+  <canvas id="geoChart"></canvas>
+
 </section>
+
+
+
+<!-- FOLLOW -->
 
 <div class="follow">
-  <div><strong>Follow us on</strong></div>
+
+  <strong>Follow us on</strong>
+
   <div class="follow-icons">
+
     <a href="https://www.youtube.com/@CineTechFlow"><img src="youtube.gif"></a>
+
     <a href="https://www.instagram.com/cinetechflow/"><img src="insta.gif"></a>
+
     <a href="https://x.com/cinetechflow"><img src="twitter.gif"></a>
+
     <a href="https://www.threads.com/@cinetechflow"><img src="threads.gif"></a>
+
   </div>
+
 </div>
 
+
+
 <footer>
+
   © 2026 CineTechFlow · Created by
+
   <a href="mailto:justctrllaugh@gmail.com" style="color:var(--red)">Heisenberg</a>
+
 </footer>
 
+
+
 <script>
+
   /* STATS COUNT */
+
   document.querySelectorAll('.num').forEach(el=>{
-    const t=+el.dataset.target;
-    let c=0;
+
+    const t=+el.dataset.target;let c=0;
+
     const i=setInterval(()=>{
+
       c+=t/80;
+
       el.textContent=Math.floor(c).toLocaleString();
-      if(c>=t){
-        el.textContent=t.toLocaleString();
-        clearInterval(i);
-      }
+
+      if(c>=t){el.textContent=t.toLocaleString();clearInterval(i)}
+
     },20);
+
   });
+
+
+
+  /* SCROLL FADE */
+
+  const cue=document.getElementById("scrollCue");
+
+  window.addEventListener("scroll",()=>{
+
+    cue.style.opacity=Math.max(0,1-window.scrollY/120);
+
+  });
+
+
 
   /* VIDEOS */
+
   fetch("long_videos.json").then(r=>r.json()).then(v=>{
+
     longVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+
   });
+
   fetch("shorts.json").then(r=>r.json()).then(v=>{
+
     shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+
   });
+
+
 
   /* AUDIENCE */
+
   fetch("cities.csv").then(r=>r.text()).then(t=>{
-    const rows=t.split("\n").slice(2,12)
-      .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
+
+    const rows=t.split("\n").slice(2,10).map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
+
     new Chart(citiesChart,{
+
       type:"bar",
-      data:{
-        labels:rows.map(r=>r[1].replace(/"/g,"")),
-        datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
-      },
-      options:{
-        indexAxis:"y",
-        plugins:{
-          legend:{display:false},
-          tooltip:{callbacks:{label:c=>`${c.raw} views`}}
-        }
-      }
+
+      data:{labels:rows.map(r=>r[1].replace(/"/g,"")),datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
+
+      options:{indexAxis:"y",plugins:{legend:{display:false}}}
+
     });
+
   });
 
-  /* CONTINUOUS RAIN ENGINE */
-  fetch("rain_texts.json")
-  .then(r=>r.json())
-  .then(words=>{
+  fetch("geography.csv").then(r=>r.text()).then(t=>{
+
+    const rows=t.split("\n").slice(1,7).map(r=>r.split(","));
+
+    new Chart(geoChart,{
+
+      type:"bar",
+
+      data:{labels:rows.map(r=>r[0]),datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]},
+
+      options:{indexAxis:"y",plugins:{legend:{display:false}}}
+
+    });
+
+  });
+
+
+
+  /* CONTINUOUS RAIN */
+
+  fetch("rain_texts.json").then(r=>r.json()).then(words=>{
+
     const rain=document.getElementById("rain");
+
     const isMobile=window.innerWidth<=768;
+
     const COLS=isMobile?4:9;
-    const FALL_MIN=isMobile?28:18;
-    const FALL_MAX=isMobile?36:26;
+
+    const SPEED=isMobile?32000:22000;
 
     let hintCount=0;
-    const columns=[...Array(COLS)].map((_,i)=>({
-      x:(i+0.5)*(100/COLS),
-      busy:false
-    }));
 
-    function spawn(col){
-      if(col.busy) return;
-      col.busy=true;
 
-      const data=words[Math.floor(Math.random()*words.length)];
-      const el=document.createElement("span");
-      el.textContent=data.word;
 
-      if(hintCount<3){
-        const h=document.createElement("small");
-        h.textContent="(Tap)";
-        el.appendChild(h);
-        hintCount++;
-      }
+    [...Array(COLS)].forEach((_,i)=>{
 
-      el.style.left=col.x+"%";
-      el.style.fontSize=(14+Math.random()*8)+"px";
-      el.style.animationDuration=
-        (FALL_MIN+Math.random()*(FALL_MAX-FALL_MIN))+"s";
+      setInterval(()=>{
 
-      const card=document.createElement("div");
-      card.className="rain-card";
-      card.innerHTML=`<div class="title">${data.word}</div>${data.description}`;
-      el.appendChild(card);
+        const data=words[Math.floor(Math.random()*words.length)];
 
-      el.addEventListener("mouseenter",()=>{
-        if(!isMobile){
-          el.classList.add("active");
-          card.style.display="block";
+        const el=document.createElement("span");
+
+        el.textContent=data.word;
+
+
+
+        if(hintCount<3){
+
+          const h=document.createElement("small");
+
+          h.textContent="(Tap)";
+
+          el.appendChild(h);
+
+          hintCount++;
+
         }
-      });
-      el.addEventListener("mouseleave",()=>{
-        if(!isMobile){
-          el.classList.remove("active");
-          card.style.display="none";
-        }
-      });
 
-      el.addEventListener("animationend",()=>{
-        el.remove();
-        col.busy=false;
-        setTimeout(()=>spawn(col),800+Math.random()*1200);
-      });
 
-      rain.appendChild(el);
-    }
 
-    columns.forEach((c,i)=>{
-      setTimeout(()=>spawn(c),i*700);
+        el.style.left=((i+.5)*(100/COLS))+"%";
+
+        el.style.animationDuration=SPEED+"ms";
+
+
+
+        const card=document.createElement("div");
+
+        card.className="rain-card";
+
+        card.innerHTML=`<div class="title">${data.word}</div>${data.description}`;
+
+        el.appendChild(card);
+
+
+
+        el.onclick=()=>{
+
+          card.style.display=card.style.display==="block"?"none":"block";
+
+          el.classList.toggle("active");
+
+        };
+
+
+
+        el.onmouseenter=()=>{
+
+          if(!isMobile){el.classList.add("active");card.style.display="block";}
+
+        };
+
+        el.onmouseleave=()=>{
+
+          if(!isMobile){el.classList.remove("active");card.style.display="none";}
+
+        };
+
+
+
+        el.addEventListener("animationend",()=>el.remove());
+
+        rain.appendChild(el);
+
+      }, SPEED/1.8);
+
     });
+
   });
+
 </script>
 
+
+
 </body>
+
 </html>
