@@ -5,13 +5,13 @@
   <title>CineTechFlow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: #0b0b0b;
+      background: #060606;
       color: #ffffff;
     }
 
@@ -19,86 +19,116 @@
 
     /* HERO */
     .hero {
+      position: relative;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       text-align: center;
       padding: 40px 20px;
       background:
-        linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9)),
+        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.95)),
         url("hero.jpg");
       background-size: cover;
       background-position: center;
     }
 
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255,44,44,0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 900px;
+      z-index: 2;
+    }
+
     .hero h1 {
-      font-size: 3.4rem;
+      font-size: 4rem;
+      font-weight: 800;
       margin: 0;
-      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      color: #ff2c2c;
     }
 
     .hero p {
-      max-width: 720px;
-      margin-top: 20px;
-      font-size: 1.1rem;
+      margin-top: 22px;
+      font-size: 1.25rem;
       opacity: 0.9;
+      line-height: 1.6;
     }
 
-    .btn {
-      margin-top: 35px;
+    .cta {
+      margin-top: 40px;
+      display: inline-block;
       background: #ff2c2c;
       color: #fff;
-      padding: 14px 34px;
-      border-radius: 8px;
+      padding: 16px 40px;
+      border-radius: 10px;
       font-weight: 600;
-      display: inline-block;
+      font-size: 1rem;
     }
 
     /* STATS */
     .stats {
+      margin-top: 60px;
       display: flex;
-      gap: 50px;
-      margin-top: 55px;
-      flex-wrap: wrap;
       justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
     }
 
     .stat h2 {
       margin: 0;
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       color: #ff2c2c;
     }
 
     .stat span {
-      font-size: 0.85rem;
-      opacity: 0.75;
+      font-size: 0.9rem;
+      opacity: 0.7;
     }
 
-    /* SECTION */
+    /* SECTIONS */
     .section {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: auto;
-      padding: 90px 20px;
+      padding: 110px 20px;
     }
 
-    .section h3 {
-      font-size: 2.2rem;
-      margin-bottom: 25px;
+    .section h2 {
+      font-size: 2.6rem;
+      margin-bottom: 40px;
+      letter-spacing: -0.5px;
     }
 
-    /* VIDEO GRID */
+    /* DESCRIPTION */
+    #description p {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      opacity: 0.9;
+      max-width: 900px;
+    }
+
+    /* VIDEOS */
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      margin-top: 40px;
     }
 
     .video-grid iframe {
       width: 100%;
       height: 200px;
-      border-radius: 16px;
+      border-radius: 18px;
       border: none;
       background: #000;
     }
@@ -106,19 +136,20 @@
     /* CONTACT */
     .contact {
       text-align: center;
-      padding: 70px 20px;
-      background: linear-gradient(to top, #111, #000);
+      padding: 90px 20px;
+      background: linear-gradient(180deg, #0a0a0a, #000);
     }
 
     footer {
       text-align: center;
-      padding: 35px;
+      padding: 40px;
       font-size: 0.85rem;
-      opacity: 0.65;
+      opacity: 0.6;
     }
 
     @media(max-width: 768px) {
-      .hero h1 { font-size: 2.3rem; }
+      .hero h1 { font-size: 2.6rem; }
+      .hero p { font-size: 1.05rem; }
       .video-grid iframe { height: 180px; }
     }
   </style>
@@ -128,52 +159,57 @@
 
   <!-- HERO -->
   <div class="hero">
-    <h1>CineTechFlow</h1>
-    <p id="heroText">Loading...</p>
+    <div class="hero-content">
+      <h1><span>Cine</span>TechFlow</h1>
+      <p>
+        Not movie news. Not tech noise.<br>
+        This is cinema and technology <strong>decoded</strong> — logically, visually, honestly.
+      </p>
 
-    <a class="btn"
-       href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1"
-       target="_blank">
-      Subscribe on YouTube
-    </a>
+      <a class="cta"
+         href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1"
+         target="_blank">
+        Subscribe on YouTube
+      </a>
 
-    <div class="stats">
-      <div class="stat">
-        <h2 id="subs">—</h2>
-        <span>Subscribers</span>
-      </div>
-      <div class="stat">
-        <h2 id="views">—</h2>
-        <span>Total Views</span>
-      </div>
-      <div class="stat">
-        <h2 id="videos">—</h2>
-        <span>Videos</span>
+      <div class="stats">
+        <div class="stat">
+          <h2 id="subs">—</h2>
+          <span>Subscribers</span>
+        </div>
+        <div class="stat">
+          <h2 id="views">—</h2>
+          <span>Total Views</span>
+        </div>
+        <div class="stat">
+          <h2 id="videos">—</h2>
+          <span>Videos</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- DESCRIPTION -->
+  <!-- ABOUT -->
   <div class="section">
-    <h3>About CineTechFlow</h3>
+    <h2>What is CineTechFlow?</h2>
     <div id="description"></div>
   </div>
 
   <!-- LONG VIDEOS -->
   <div class="section">
-    <h3>Featured Long-Form Videos</h3>
+    <h2>Featured Deep-Dive Videos</h2>
     <div id="longVideos" class="video-grid"></div>
   </div>
 
   <!-- SHORTS -->
   <div class="section">
-    <h3>Popular Shorts</h3>
+    <h2>Short Explainers</h2>
     <div id="shortVideos" class="video-grid"></div>
   </div>
 
   <!-- CONTACT -->
   <div class="contact">
-    <p>For collaborations & business inquiries</p>
+    <p>Collaborations • Media • Business</p>
     <p><strong><a href="mailto:justctrllaugh@gmail.com">justctrllaugh@gmail.com</a></strong></p>
   </div>
 
@@ -185,30 +221,24 @@
   <!-- DATA LOADER -->
   <script>
     fetch("description.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("description").innerHTML = html;
-        document.getElementById("heroText").innerText =
-          "Every second you spend here is high-value. No fluff. No filler.";
-      });
+      .then(r => r.text())
+      .then(html => document.getElementById("description").innerHTML = html);
 
     fetch("stats.json")
-      .then(res => res.json())
-      .then(stats => {
-        document.getElementById("subs").innerText = stats.subscribers;
-        document.getElementById("views").innerText = stats.views;
-        document.getElementById("videos").innerText = stats.videos;
+      .then(r => r.json())
+      .then(s => {
+        subs.innerText = s.subscribers;
+        views.innerText = s.views;
+        videos.innerText = s.videos;
       });
 
     function loadVideos(file, target) {
       fetch(file)
-        .then(res => res.json())
+        .then(r => r.json())
         .then(list => {
           const box = document.getElementById(target);
           list.forEach(id => {
-            box.innerHTML += `
-              <iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>
-            `;
+            box.innerHTML += `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
           });
         });
     }
@@ -219,4 +249,3 @@
 
 </body>
 </html>
-
