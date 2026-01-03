@@ -1,293 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CineTechFlow</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>CineTechFlow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --ctf-red: #ff2c2c;
-      --ctf-dark: #060606;
-      --ctf-panel: #0e0e0e;
-    }
+<style>
+:root{
+  --red:#ff2c2c;
+  --dark:#050505;
+}
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--ctf-dark);
-      color: #ffffff;
-    }
+*{box-sizing:border-box}
 
-    a { color: var(--ctf-red); text-decoration: none; }
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--dark);
+  color:#fff;
+  overflow-x:hidden;
+}
 
-    /* HERO */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 20px;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
-        url("logo_black.png");
-      background-size: 420px;
-      background-repeat: repeat;
-      background-position: center;
-    }
+a{color:var(--red);text-decoration:none}
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at center, rgba(255,44,44,0.22), transparent 65%);
-      pointer-events: none;
-    }
+/* HEADER */
+header{
+  position:fixed;
+  top:22px;
+  left:28px;
+  z-index:100;
+}
+header img{
+  height:34px;
+  opacity:.9;
+}
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-    }
+/* HERO */
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:
+    radial-gradient(circle at center,rgba(255,44,44,.12),transparent 60%),
+    linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.95)),
+    url("cinema_flow1.jpg");
+  background-size:cover;
+  background-position:center;
+}
 
-    .hero img {
-      width: 140px;
-      margin-bottom: 30px;
-      filter: drop-shadow(0 0 25px rgba(255,44,44,0.3));
-    }
+.hero-content{
+  max-width:900px;
+  animation:fadeUp 1.4s ease forwards;
+}
 
-    .hero h1 {
-      font-size: 3.8rem;
-      font-weight: 800;
-      margin: 0;
-      letter-spacing: -1px;
-    }
+.hero h1{
+  font-size:4.3rem;
+  font-weight:800;
+  margin:0;
+}
 
-    .hero p {
-      margin-top: 22px;
-      font-size: 1.2rem;
-      line-height: 1.6;
-      opacity: 0.9;
-    }
+.hero p{
+  margin-top:26px;
+  font-size:1.35rem;
+  opacity:.9;
+}
 
-    .cta {
-      margin-top: 40px;
-      display: inline-block;
-      background: var(--ctf-red);
-      color: #fff;
-      padding: 16px 44px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 1rem;
-    }
+.cta{
+  margin-top:46px;
+  display:inline-block;
+  padding:16px 48px;
+  background:var(--red);
+  border-radius:12px;
+  font-weight:600;
+}
 
-    /* STATS */
-    .stats {
-      margin-top: 60px;
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      flex-wrap: wrap;
-    }
+/* FLOATING WORD CLOUD (CREDITS STYLE) */
+.word-cloud span{
+  position:absolute;
+  color:#fff;
+  opacity:.04;
+  font-size:clamp(14px,2vw,30px);
+  white-space:nowrap;
+  animation:float linear infinite;
+}
 
-    .stat h2 {
-      margin: 0;
-      font-size: 2.4rem;
-      color: var(--ctf-red);
-    }
+@keyframes float{
+  from{transform:translateY(120vh)}
+  to{transform:translateY(-20vh)}
+}
 
-    .stat span {
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
+/* STATS */
+.stats{
+  margin-top:70px;
+  display:flex;
+  justify-content:center;
+  gap:70px;
+  flex-wrap:wrap;
+}
 
-    /* SECTIONS */
-    .section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 110px 20px;
-    }
+.stat h2{
+  color:var(--red);
+  font-size:2.6rem;
+  margin:0;
+}
 
-    .section h2 {
-      font-size: 2.6rem;
-      margin-bottom: 40px;
-      letter-spacing: -0.5px;
-    }
+/* SECTION */
+.section{
+  max-width:1200px;
+  margin:auto;
+  padding:120px 20px;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s ease;
+}
 
-    /* DESCRIPTION CARDS */
-    #description {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-    }
+.section.show{
+  opacity:1;
+  transform:translateY(0);
+}
 
-    .desc-card {
-      background: linear-gradient(180deg, #121212, #0b0b0b);
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.65);
-      position: relative;
-      overflow: hidden;
-    }
+.section h2{
+  font-size:2.9rem;
+  margin-bottom:60px;
+}
 
-    .desc-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(135deg, transparent 40%, rgba(255,44,44,0.12));
-      pointer-events: none;
-    }
+/* FLOW CARDS */
+.flow-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:40px;
+}
 
-    .desc-card h3 {
-      margin: 0 0 14px;
-      font-size: 1.4rem;
-      color: var(--ctf-red);
-    }
+.flow-card{
+  background-size:cover;
+  background-position:center;
+  border-radius:24px;
+  padding:38px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 50px 100px rgba(0,0,0,.75);
+  transition:.6s ease;
+}
 
-    .desc-card p {
-      font-size: 1.05rem;
-      line-height: 1.85;
-      opacity: 0.9;
-    }
+.flow-card:hover{
+  transform:translateY(-10px) scale(1.01);
+}
 
-    /* VIDEOS */
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 34px;
-      margin-top: 40px;
-    }
+.flow-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.9));
+}
 
-    .video-grid iframe {
-      width: 100%;
-      height: 200px;
-      border-radius: 18px;
-      border: none;
-      background: #000;
-    }
+.flow-card h3,
+.flow-card p{
+  position:relative;
+  z-index:2;
+}
 
-    /* CONTACT */
-    .contact {
-      text-align: center;
-      padding: 90px 20px;
-      background: linear-gradient(180deg, #0a0a0a, #000);
-    }
+.flow-card h3{
+  color:var(--red);
+  margin-bottom:18px;
+}
 
-    footer {
-      text-align: center;
-      padding: 40px;
-      font-size: 0.85rem;
-      opacity: 0.6;
-    }
+/* VIDEOS */
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:40px;
+}
 
-    @media(max-width: 768px) {
-      .hero h1 { font-size: 2.5rem; }
-      .hero img { width: 110px; }
-      .video-grid iframe { height: 180px; }
-    }
-  </style>
+.video-grid iframe{
+  width:100%;
+  height:210px;
+  border-radius:20px;
+  transition:.4s;
+}
+
+.video-grid iframe:hover{
+  transform:scale(1.04);
+}
+
+/* CONTACT */
+.contact{
+  text-align:center;
+  padding:110px 20px;
+  background:#000;
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  opacity:.6;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:768px){
+  .hero h1{font-size:2.8rem}
+  .video-grid iframe{height:180px}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-content">
-      <img src="logo_black.png" alt="CineTechFlow Logo">
+<header>
+  <img src="logo_black.png" alt="CTF">
+</header>
 
-      <h1>CineTechFlow</h1>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <h1>CineTechFlow</h1>
+    <p>Cinema decoded. Technology explained. Stories engineered.</p>
+    <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1" target="_blank">Subscribe</a>
 
-      <p>
-        Cinema and technology decoded.<br>
-        No hype. No filler. Only clarity.
-      </p>
-
-      <a class="cta"
-         href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1"
-         target="_blank">
-        Subscribe on YouTube
-      </a>
-
-      <div class="stats">
-        <div class="stat">
-          <h2 id="subs">—</h2>
-          <span>Subscribers</span>
-        </div>
-        <div class="stat">
-          <h2 id="views">—</h2>
-          <span>Total Views</span>
-        </div>
-        <div class="stat">
-          <h2 id="videos">—</h2>
-          <span>Videos</span>
-        </div>
-      </div>
+    <div class="stats">
+      <div class="stat"><h2 id="subs">—</h2><span>Subscribers</span></div>
+      <div class="stat"><h2 id="views">—</h2><span>Views</span></div>
+      <div class="stat"><h2 id="videos">—</h2><span>Videos</span></div>
     </div>
   </div>
 
-  <!-- DESCRIPTION -->
-  <div class="section">
-    <h2>The Flow</h2>
-    <div id="description"></div>
+  <!-- MASSIVE CINEMATIC WORD CLOUD -->
+  <div class="word-cloud">
+    <!-- CINEMA / GLOBAL -->
+    <span style="left:5%;animation-duration:26s">Rajamouli</span>
+    <span style="left:15%;animation-duration:30s">Nolan</span>
+    <span style="left:25%;animation-duration:22s">Spielberg</span>
+    <span style="left:35%;animation-duration:34s">Scorsese</span>
+    <span style="left:45%;animation-duration:28s">Prabhas</span>
+    <span style="left:55%;animation-duration:32s">Rajinikanth</span>
+    <span style="left:65%;animation-duration:24s">Kamal Haasan</span>
+    <span style="left:75%;animation-duration:36s">SRK</span>
+    <span style="left:85%;animation-duration:27s">De Niro</span>
+
+    <!-- CRAFT -->
+    <span style="left:10%;animation-duration:29s">Cinematography</span>
+    <span style="left:20%;animation-duration:35s">IMAX</span>
+    <span style="left:30%;animation-duration:23s">VFX</span>
+    <span style="left:40%;animation-duration:31s">Editing</span>
+    <span style="left:50%;animation-duration:26s">Screenplay</span>
+    <span style="left:60%;animation-duration:34s">Sound Design</span>
+    <span style="left:70%;animation-duration:28s">Color Grading</span>
+    <span style="left:80%;animation-duration:33s">Production Design</span>
+
+    <!-- MOVIES -->
+    <span style="left:12%;animation-duration:37s">Baahubali</span>
+    <span style="left:22%;animation-duration:29s">RRR</span>
+    <span style="left:32%;animation-duration:35s">Oppenheimer</span>
+    <span style="left:42%;animation-duration:24s">Avatar</span>
+    <span style="left:52%;animation-duration:31s">Inception</span>
+    <span style="left:62%;animation-duration:28s">Interstellar</span>
+    <span style="left:72%;animation-duration:36s">Kantara</span>
+    <span style="left:82%;animation-duration:26s">Dark Knight</span>
+
+    <!-- TECH / CREATOR / NARRATIVE -->
+    <span style="left:18%;animation-duration:33s">Algorithms</span>
+    <span style="left:38%;animation-duration:27s">Breaking News</span>
+    <span style="left:58%;animation-duration:34s">Digital Experiments</span>
+    <span style="left:78%;animation-duration:29s">Attention Economy</span>
   </div>
+</div>
 
-  <!-- RECENT -->
-  <div class="section">
-    <h2>Recent Flow</h2>
-    <div id="longVideos" class="video-grid"></div>
+<!-- FLOW -->
+<div class="section">
+  <h2>The Flow</h2>
+  <div class="flow-grid">
+    <div class="flow-card" style="background-image:url('cinema_flow2.jpg')">
+      <h3>🎬 Cinema Flow</h3>
+      <p>Fast-tracked movie updates, breakdowns and Behind the scenes.</p>
+    </div>
+
+    <div class="flow-card" style="background-image:url('tech_flow.jpg')">
+      <h3>💻 Tech Flow</h3>
+      <p>Global news, digital trends, curious tech experiments, and complex ideas explained with speed and clarity.</p>
+    </div>
+
+    <div class="flow-card" style="background-image:url('creator.jpg')">
+      <h3>💡 Creator Flow</h3>
+      <p>Tips to help new youtube creators instantly grow their channel based on MY PERSONAL EXPERIENCES.</p>
+    </div>
+
+    <div class="flow-card" style="background-image:url('narrative.jpg')">
+      <h3>🔥 Narrative Flow</h3>
+      <p>Unique digital stories and entertaining narratives that hook you from the very first frame.</p>
+    </div>
   </div>
+</div>
 
-  <!-- SHORTS -->
-  <div class="section">
-    <h2>Shorts</h2>
-    <div id="shortVideos" class="video-grid"></div>
-  </div>
+<!-- RECENT -->
+<div class="section">
+  <h2>Recent Flow</h2>
+  <div id="longVideos" class="video-grid"></div>
+</div>
 
-  <!-- CONTACT -->
-  <div class="contact">
-    <p>Collaborations • Media • Business</p>
-    <p><strong><a href="mailto:justctrllaugh@gmail.com">justctrllaugh@gmail.com</a></strong></p>
-  </div>
+<!-- SHORTS -->
+<div class="section">
+  <h2>Shorts</h2>
+  <div id="shortVideos" class="video-grid"></div>
+</div>
 
-  <footer>
-    © 2026 CineTechFlow<br>
-    Created by <a href="mailto:justctrllaugh@gmail.com"><strong>Heisenberg</strong></a>
-  </footer>
+<div class="contact">
+  <p>Collaborations • Media • Business</p>
+  <p><a href="mailto:justctrllaugh@gmail.com">justctrllaugh@gmail.com</a></p>
+</div>
 
-  <!-- DATA LOADER -->
-  <script>
-    fetch("description.html")
-      .then(r => r.text())
-      .then(html => description.innerHTML = html);
+<footer>
+  © 2026 CineTechFlow · Created by <a href="mailto:justctrllaugh@gmail.com">Heisenberg</a>
+</footer>
 
-    fetch("stats.json")
-      .then(r => r.json())
-      .then(s => {
-        subs.innerText = s.subscribers;
-        views.innerText = s.views;
-        videos.innerText = s.videos;
-      });
+<script>
+// stats
+fetch("stats.json").then(r=>r.json()).then(s=>{
+  subs.innerText=s.subscribers;
+  views.innerText=s.views;
+  videos.innerText=s.videos;
+});
 
-    function loadVideos(file, target) {
-      fetch(file)
-        .then(r => r.json())
-        .then(list => {
-          const box = document.getElementById(target);
-          list.forEach(id => {
-            box.innerHTML += `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
-          });
-        });
+// videos
+function loadVideos(file,id){
+  fetch(file).then(r=>r.json()).then(list=>{
+    const box=document.getElementById(id);
+    list.forEach(v=>{
+      box.innerHTML+=`<iframe src="https://www.youtube.com/embed/${v}" allowfullscreen></iframe>`;
+    });
+  });
+}
+loadVideos("long_videos.json","longVideos");
+loadVideos("shorts.json","shortVideos");
+
+// scroll reveal
+const sections=document.querySelectorAll('.section');
+window.addEventListener('scroll',()=>{
+  sections.forEach(s=>{
+    if(s.getBoundingClientRect().top<window.innerHeight-120){
+      s.classList.add('show');
     }
-
-    loadVideos("long_videos.json", "longVideos");
-    loadVideos("shorts.json", "shortVideos");
-  </script>
+  });
+});
+</script>
 
 </body>
 </html>
