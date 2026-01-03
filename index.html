@@ -5,9 +5,7 @@
 <title>CineTechFlow</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FAVICON -->
 <link rel="icon" type="image/png" href="logo_black.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -33,42 +31,22 @@ a{text-decoration:none;color:var(--red)}
 /* LOGO */
 header{
   position:fixed;
-  top:22px;
-  left:28px;
+  top:20px;
+  left:26px;
   z-index:50;
 }
 header img{height:34px}
 
-/* ===== FLUID HERO WITH CAROUSEL ===== */
+/* ===== HERO ===== */
 .hero{
   position:relative;
   min-height:100vh;
-  overflow:hidden;
-}
-
-.slide{
-  position:absolute;
-  inset:0;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92)),
+    url("cinema_flow4.jpg");
   background-size:cover;
   background-position:center;
-  opacity:0;
-  animation:slideFade 42s infinite;
-}
-
-.s1{background-image:url("cinema_flow1.jpg");animation-delay:0s}
-.s2{background-image:url("cinema_flow2.jpg");animation-delay:6s}
-.s3{background-image:url("cinema_flow3.jpg");animation-delay:12s}
-.s4{background-image:url("cinema_flow4.jpg");animation-delay:18s}
-.s5{background-image:url("tech_flow.jpg");animation-delay:24s}
-.s6{background-image:url("creator.jpg");animation-delay:30s}
-.s7{background-image:url("narrative.jpg");animation-delay:36s}
-
-@keyframes slideFade{
-  0%{opacity:0}
-  8%{opacity:1}
-  18%{opacity:1}
-  26%{opacity:0}
-  100%{opacity:0}
+  overflow:hidden;
 }
 
 .hero-overlay{
@@ -79,7 +57,6 @@ header img{height:34px}
   align-items:center;
   justify-content:center;
   text-align:center;
-  background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92));
 }
 
 .hero-content{
@@ -100,7 +77,7 @@ header img{height:34px}
 
 /* CTA */
 .cta{
-  margin-top:44px;
+  margin-top:42px;
   display:inline-block;
   padding:14px 48px;
   border:1.5px solid var(--red);
@@ -114,40 +91,48 @@ header img{height:34px}
   color:#000;
 }
 
-/* HERO WORDS (VISIBLE, CINEMATIC) */
-.word-layer span{
+/* ===== TEXT RAIN ===== */
+.text-rain span{
   position:absolute;
-  color:#fff;
-  opacity:.18;
+  top:-10%;
+  color:#ffffff;
+  opacity:.25;
   font-weight:600;
   letter-spacing:1px;
-  animation:drift linear infinite;
   white-space:nowrap;
+  animation:rain linear infinite;
 }
 
-@keyframes drift{
-  from{transform:translateY(120vh)}
-  to{transform:translateY(-30vh)}
+@keyframes rain{
+  from{transform:translateY(-10vh)}
+  to{transform:translateY(120vh)}
 }
 
 /* STATS */
 .stats{
-  margin-top:60px;
+  margin-top:56px;
   display:flex;
   justify-content:center;
-  gap:70px;
+  gap:60px;
   flex-wrap:wrap;
 }
 .stat h2{
   margin:0;
   color:var(--red);
-  font-size:2.4rem;
+  font-size:2.3rem;
 }
 .stat span{color:var(--muted)}
 
-/* ===== DESCRIPTION CARDS ===== */
+/* ===== DESCRIPTION ===== */
 .flow-experience{
-  padding:160px 20px;
+  padding:100px 20px 80px; /* reduced gap */
+}
+
+.flow-title{
+  max-width:1100px;
+  margin:0 auto 40px;
+  font-size:2.4rem;
+  font-weight:700;
 }
 
 .desc-grid{
@@ -155,26 +140,25 @@ header img{height:34px}
   margin:0 auto;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:32px;
+  gap:28px;
 }
 
 .desc-card{
   background:rgba(255,255,255,0.04);
-  backdrop-filter:blur(6px);
   border-radius:18px;
-  padding:34px;
+  padding:30px;
   border:1px solid rgba(255,255,255,0.08);
 }
 
 .desc-card h3{
-  margin:0 0 14px;
-  font-size:1.35rem;
+  margin:0 0 12px;
+  font-size:1.3rem;
   color:var(--red);
 }
 
 .desc-card p{
   font-size:1.05rem;
-  line-height:1.75;
+  line-height:1.7;
   color:#ddd;
 }
 
@@ -182,18 +166,18 @@ header img{height:34px}
 .section{
   max-width:1200px;
   margin:auto;
-  padding:120px 20px;
+  padding:90px 20px; /* reduced gap */
 }
 
 .section h2{
-  font-size:2.6rem;
-  margin-bottom:60px;
+  font-size:2.4rem;
+  margin-bottom:40px;
 }
 
 .video-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-  gap:36px;
+  gap:32px;
 }
 
 .video-grid iframe{
@@ -202,25 +186,25 @@ header img{height:34px}
   border:none;
   border-radius:18px;
   background:#000;
-  transition:.35s;
+  transition:.3s;
 }
 .video-grid iframe:hover{transform:scale(1.03)}
 
 /* FOLLOW */
 .follow{
   text-align:center;
-  padding:100px 20px;
+  padding:70px 20px;
   background:#000;
 }
 .follow a{
-  margin:0 20px;
+  margin:0 18px;
   font-weight:600;
 }
 
 /* FOOTER */
 footer{
   text-align:center;
-  padding:40px;
+  padding:32px;
   opacity:.6;
 }
 
@@ -238,13 +222,11 @@ footer{
 
 <!-- HERO -->
 <div class="hero">
-  <div class="slide s1"></div>
-  <div class="slide s2"></div>
-  <div class="slide s3"></div>
-  <div class="slide s4"></div>
-  <div class="slide s5"></div>
-  <div class="slide s6"></div>
-  <div class="slide s7"></div>
+
+  <!-- TEXT RAIN -->
+  <div class="text-rain">
+    <!-- CINEMA / HEROES / DIRECTORS / CRAFT (sample – extended via JS) -->
+  </div>
 
   <div class="hero-overlay">
     <div class="hero-content">
@@ -262,23 +244,11 @@ footer{
       </div>
     </div>
   </div>
-
-  <!-- HERO NAMES -->
-  <div class="word-layer">
-    <span style="left:6%;animation-duration:34s;font-size:22px">Rajamouli</span>
-    <span style="left:16%;animation-duration:28s;font-size:18px">Nolan</span>
-    <span style="left:26%;animation-duration:36s;font-size:20px">Prabhas</span>
-    <span style="left:36%;animation-duration:30s;font-size:19px">Spielberg</span>
-    <span style="left:46%;animation-duration:40s;font-size:22px">Rajinikanth</span>
-    <span style="left:56%;animation-duration:32s;font-size:18px">Kamal Haasan</span>
-    <span style="left:66%;animation-duration:38s;font-size:20px">IMAX</span>
-    <span style="left:76%;animation-duration:29s;font-size:19px">VFX</span>
-    <span style="left:86%;animation-duration:35s;font-size:21px">Screenplay</span>
-  </div>
 </div>
 
 <!-- DESCRIPTION -->
 <div class="flow-experience">
+  <div class="flow-title">What’s in it?</div>
   <div id="description" class="desc-grid"></div>
 </div>
 
@@ -307,6 +277,29 @@ footer{
 </footer>
 
 <script>
+// ===== TEXT RAIN DATA =====
+const names = [
+  "Rajamouli","Nolan","Spielberg","Scorsese","Prabhas","Rajinikanth","Kamal Haasan","SRK",
+  "Aamir Khan","Allu Arjun","Ram Charan","Jr NTR","Leonardo DiCaprio","De Niro","Al Pacino",
+  "Avatar","RRR","Baahubali","Inception","Interstellar","Oppenheimer","IMAX","VFX",
+  "Cinematography","Editing","Screenplay","Sound Design","Color Grading","Motion Capture",
+  "Breaking News","Algorithms","AI","Tech Experiments","Mind Experiments","Digital Media",
+  "YouTube Growth","Storytelling","Narratives","Mythology","Sci-Fi","Cinema Craft"
+];
+
+// generate rain
+const rainBox = document.querySelector(".text-rain");
+names.forEach((name,i)=>{
+  const span=document.createElement("span");
+  span.innerText=name;
+  span.style.left=Math.random()*100+"%";
+  span.style.animationDuration=18+Math.random()*20+"s";
+  span.style.fontSize=14+Math.random()*12+"px";
+  span.style.animationDelay=Math.random()*10+"s";
+  rainBox.appendChild(span);
+});
+
+// data loads
 fetch("description.html").then(r=>r.text()).then(t=>description.innerHTML=t);
 fetch("stats.json").then(r=>r.json()).then(s=>{
   subs.innerText=s.subscribers;
