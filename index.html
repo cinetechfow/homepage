@@ -5,7 +5,9 @@
 <title>CineTechFlow</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- FAVICON -->
 <link rel="icon" href="logo_black.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -16,17 +18,29 @@
   --text:#f1f1f1;
   --muted:#9a9a9a;
 }
+
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
 }
-section{padding:80px 20px;max-width:1200px;margin:auto}
-h2{font-size:2.4rem;margin-bottom:36px}
 
-/* HERO */
+/* ================= HEADER / LOGO ================= */
+header{
+  position:fixed;
+  top:18px;
+  left:22px;
+  z-index:50;
+}
+header img{
+  height:34px;
+  cursor:pointer;
+}
+
+/* ================= HERO ================= */
 .hero{
   min-height:100vh;
   background:
@@ -39,48 +53,114 @@ h2{font-size:2.4rem;margin-bottom:36px}
   position:relative;
   overflow:hidden;
 }
-.hero h1{font-size:4rem;margin:0}
-.hero p{font-size:1.3rem;opacity:.9}
+
+.hero-content{
+  max-width:900px;
+  position:relative;
+  z-index:2;
+}
+
+.hero h1{
+  font-size:4rem;
+  margin:0;
+}
+
+.hero .yt-line{
+  margin-top:10px;
+  font-size:1rem;
+  opacity:.85;
+}
+
+/* LANGUAGE + SUBSCRIBE ROW */
+.hero-actions{
+  margin-top:18px;
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+}
 
 /* LANGUAGE BADGE */
-.lang{
-  display:inline-block;
-  margin-top:12px;
-  padding:6px 14px;
+.lang-badge{
+  position:relative;
+  padding:7px 16px;
   border:1px solid rgba(255,255,255,.3);
   border-radius:20px;
   font-size:.9rem;
+  cursor:pointer;
+}
+.lang-badge:hover{
+  border-color:var(--red);
+}
+.lang-tooltip{
+  position:absolute;
+  bottom:-48px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:12px;
+  font-size:.8rem;
+  opacity:0;
+  white-space:nowrap;
+  pointer-events:none;
+  transition:.3s;
+  border:1px solid rgba(255,255,255,.2);
+}
+.lang-badge:hover .lang-tooltip{
+  opacity:1;
 }
 
-/* CTA */
+/* SUBSCRIBE */
 .cta{
-  display:inline-block;
-  margin-top:28px;
-  padding:14px 44px;
+  padding:14px 40px;
   border:1.5px solid var(--red);
   border-radius:30px;
   color:var(--red);
   font-weight:600;
   text-decoration:none;
 }
-.cta:hover{background:var(--red);color:#000}
+.cta:hover{
+  background:var(--red);
+  color:#000;
+}
 
-/* TEXT RAIN */
+/* ================= TEXT RAIN ================= */
 .text-rain span{
   position:absolute;
   top:-10%;
   color:#fff;
   opacity:.25;
   font-weight:600;
-  animation:rain linear infinite;
   white-space:nowrap;
+  animation:rain linear infinite;
+  transition:.25s;
+}
+.text-rain span:hover{
+  animation-play-state:paused;
+  color:var(--red);
+  transform:scale(1.15);
 }
 @keyframes rain{
   from{transform:translateY(-10vh)}
   to{transform:translateY(120vh)}
 }
 
-/* CARDS */
+/* ================= SECTIONS ================= */
+section{
+  padding:80px 20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+h2{
+  font-size:2.4rem;
+  margin-bottom:36px;
+}
+
+/* ================= CARDS ================= */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -93,7 +173,7 @@ h2{font-size:2.4rem;margin-bottom:36px}
 }
 .card h3{color:var(--red)}
 
-/* VIDEOS */
+/* ================= VIDEOS ================= */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
@@ -107,7 +187,7 @@ iframe{
   background:#000;
 }
 
-/* TABS */
+/* ================= AUDIENCE TABS ================= */
 .tabs{
   display:flex;
   gap:20px;
@@ -126,9 +206,21 @@ iframe{
 .tab-content{display:none}
 .tab-content.active{display:block}
 
+/* ================= FOLLOW ================= */
+.follow{
+  text-align:center;
+  padding:70px 20px;
+  border-top:1px solid #222;
+}
+.follow a{
+  margin:0 18px;
+  font-weight:600;
+}
+
+/* ================= FOOTER ================= */
 footer{
   text-align:center;
-  padding:40px;
+  padding:36px;
   opacity:.6;
 }
 </style>
@@ -136,14 +228,34 @@ footer{
 
 <body>
 
+<!-- LOGO -->
+<header>
+  <a href="https://www.youtube.com/@CineTechFlow" target="_blank">
+    <img src="logo_black.png" alt="CineTechFlow">
+  </a>
+</header>
+
 <!-- HERO -->
 <div class="hero">
+
   <div class="text-rain" id="rain"></div>
-  <div>
+
+  <div class="hero-content">
     <h1>CineTechFlow</h1>
-    <p>Cinema decoded. Technology explained. Stories engineered.</p>
-    <div class="lang">🎧 Language: Telugu</div><br>
-    <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">Subscribe</a>
+    <div class="yt-line">Official website of the CineTechFlow YouTube channel</div>
+
+    <div class="hero-actions">
+      <div class="lang-badge">
+        🎧 Language: Telugu
+        <div class="lang-tooltip">
+          All videos are explained in Telugu with cinematic depth
+        </div>
+      </div>
+
+      <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1" target="_blank">
+        Subscribe our channel
+      </a>
+    </div>
   </div>
 </div>
 
@@ -151,10 +263,32 @@ footer{
 <section>
 <h2>What’s in it?</h2>
 <div class="cards">
-  <div class="card"><h3>🎬 Cinema Flow</h3><p>Movie updates, breakdowns & BTS.</p></div>
-  <div class="card"><h3>💻 Tech Flow</h3><p>Global tech & digital trends explained.</p></div>
-  <div class="card"><h3>💡 Creator Flow</h3><p>YouTube growth from real experience.</p></div>
-  <div class="card"><h3>🔥 Narrative Flow</h3><p>Stories that hook instantly.</p></div>
+
+<div class="card">
+<h3>🎬 CINEMA FLOW</h3>
+<p>Fast-tracked movie updates, breakdowns and Behind the scenes.</p>
+</div>
+
+<div class="card">
+<h3>💻 TECH FLOW</h3>
+<p>Global news, digital trends, curious tech experiments, and complex ideas explained with speed and clarity.</p>
+</div>
+
+<div class="card">
+<h3>💡 CREATOR FLOW</h3>
+<p>Tips to help new youtube creators instantly grow their channel based on MY PERSONAL EXPERIENCES.</p>
+</div>
+
+<div class="card">
+<h3>🔥 NARRATIVE FLOW</h3>
+<p>Unique digital stories and entertaining narratives that hook you from the very first frame.</p>
+</div>
+
+<div class="card">
+<h3>💥 JOIN THE FLOW</h3>
+<p>Hit Subscribe to upgrade your feed with efficiency and insight. Every byte is worth your while!</p>
+</div>
+
 </div>
 </section>
 
@@ -170,22 +304,11 @@ footer{
 <div id="shortVideos" class="grid"></div>
 </section>
 
-<!-- AUDIENCE -->
-<section>
-<h2>Our Audience</h2>
-
-<div class="tabs">
-  <div class="tab active" onclick="showTab('cities')">Cities</div>
-  <div class="tab" onclick="showTab('geo')">Geography</div>
-</div>
-
-<div id="cities" class="tab-content active">
-  <canvas id="citiesChart"></canvas>
-</div>
-
-<div id="geo" class="tab-content">
-  <canvas id="geoChart"></canvas>
-</div>
+<!-- FOLLOW -->
+<section class="follow">
+<p>Follow CineTechFlow for consistent cinema & tech insights in Telugu</p>
+<a href="https://www.youtube.com/@CineTechFlow" target="_blank">YouTube</a>
+<a href="https://www.instagram.com/cinetechflow/" target="_blank">Instagram</a>
 </section>
 
 <footer>
@@ -195,7 +318,11 @@ footer{
 
 <script>
 // TEXT RAIN (MEDIUM SPEED)
-const words=["Rajamouli","Nolan","Spielberg","Prabhas","SRK","IMAX","VFX","Editing","Screenplay","Avatar","RRR","Oppenheimer"];
+const words=[
+"Rajamouli","Nolan","Spielberg","Prabhas","SRK","IMAX","VFX","Editing",
+"Screenplay","Avatar","RRR","Baahubali","Inception","Interstellar",
+"Oppenheimer","Cinematography","Sound Design","Color Grading","AI","Algorithms"
+];
 const rain=document.getElementById("rain");
 for(let i=0;i<100;i++){
   const s=document.createElement("span");
@@ -214,36 +341,6 @@ fetch("long_videos.json").then(r=>r.json()).then(v=>{
 fetch("shorts.json").then(r=>r.json()).then(v=>{
   shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
 });
-
-// CSV PARSER
-const parseCSV=t=>t.trim().split("\n").slice(1).map(r=>r.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/));
-
-// CITIES BAR
-fetch("cities.csv").then(r=>r.text()).then(t=>{
-  const d=parseCSV(t).slice(1,11);
-  new Chart(citiesChart,{
-    type:"bar",
-    data:{labels:d.map(r=>r[1]),datasets:[{data:d.map(r=>+r[2]),backgroundColor:"#ff2c2c"}]},
-    options:{indexAxis:'y',plugins:{legend:{display:false}}}
-  });
-});
-
-// GEO PIE
-fetch("geography.csv").then(r=>r.text()).then(t=>{
-  const d=parseCSV(t).slice(1,6);
-  new Chart(geoChart,{
-    type:"doughnut",
-    data:{labels:d.map(r=>r[0]),datasets:[{data:d.map(r=>+r[1])}]}
-  });
-});
-
-// TABS
-function showTab(id){
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
-  document.querySelector(`.tab[onclick*='${id}']`).classList.add("active");
-  document.getElementById(id).classList.add("active");
-}
 </script>
 
 </body>
