@@ -145,6 +145,7 @@
     }
     @keyframes rain{to{transform:translateY(130vh)}}
 
+    /* DESKTOP RAIN CARD */
     .rain-card{
       position:absolute;
       top:100%;
@@ -166,6 +167,38 @@
       margin-bottom:4px;
     }
 
+    /* MOBILE BOTTOM CARD */
+    .mobile-card{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:-100%;
+      background:rgba(0,0,0,.92);
+      backdrop-filter:blur(14px);
+      border-radius:18px 18px 0 0;
+      padding:18px 20px 24px;
+      transition:bottom .35s ease;
+      z-index:999;
+    }
+    .mobile-card.active{bottom:0}
+    .mobile-card .title{
+      color:var(--red);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .mobile-card .desc{
+      font-size:.85rem;
+      opacity:.9;
+    }
+    .mobile-card .close{
+      position:absolute;
+      right:16px;
+      top:14px;
+      font-size:1.2rem;
+      opacity:.7;
+      cursor:pointer;
+    }
+
     /* SECTIONS */
     section{
       padding:70px 20px;
@@ -174,7 +207,7 @@
     }
     h2{text-transform:uppercase;margin-bottom:30px}
 
-    /* CARDS */
+    /* FLOW CARDS */
     .cards{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -250,6 +283,7 @@
   <img src="logo_black.png">
 </header>
 
+<!-- HERO -->
 <div class="hero" id="hero">
   <div class="rain" id="rain"></div>
 
@@ -278,26 +312,37 @@
   <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
 </div>
 
+<!-- MOBILE CARD -->
+<div class="mobile-card" id="mobileCard">
+  <div class="close" id="closeMobile">✕</div>
+  <div class="title" id="mobileTitle"></div>
+  <div class="desc" id="mobileDesc"></div>
+</div>
+
+<!-- WHAT'S IN IT -->
 <section>
   <h2>WHAT’S IN IT</h2>
   <div class="cards">
-    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates and BTS.</p></div>
-    <div class="card"><h3>TECH FLOW</h3><p>Global news and digital trends.</p></div>
-    <div class="card"><h3>CREATOR FLOW</h3><p>Growth tips from real experience.</p></div>
-    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook.</p></div>
+    <div class="card"><h3>CINEMA FLOW</h3><p>Fast-tracked movie updates, breakdowns and behind-the-scenes.</p></div>
+    <div class="card"><h3>TECH FLOW</h3><p>Global news, digital trends, and curious tech experiments.</p></div>
+    <div class="card"><h3>CREATOR FLOW</h3><p>Tips to help new YouTubers grow based on real experience.</p></div>
+    <div class="card"><h3>NARRATIVE FLOW</h3><p>Stories engineered to hook from the very first frame.</p></div>
   </div>
 </section>
 
+<!-- RECENT VIDEOS -->
 <section>
   <h2>OUR RECENT VIDEOS</h2>
   <div id="longVideos" class="grid"></div>
 </section>
 
+<!-- SHORTS -->
 <section>
   <h2>SHORTS</h2>
   <div id="shortVideos" class="grid"></div>
 </section>
 
+<!-- AUDIENCE -->
 <section>
   <h2>OUR AUDIENCE</h2>
   <div class="tabs">
@@ -308,6 +353,7 @@
   <canvas id="geoCanvas" style="display:none"></canvas>
 </section>
 
+<!-- FOLLOW -->
 <div class="follow">
   <strong>Follow us on</strong>
   <div class="follow-icons">
@@ -325,8 +371,9 @@
 
 <script>
   /* TELUGU TOOLTIP */
-  const telBtn=document.getElementById("teluguBtn");
-  telBtn.onclick=()=>telBtn.classList.toggle("active");
+  document.getElementById("teluguBtn").onclick=e=>{
+    e.currentTarget.classList.toggle("active");
+  };
 
   /* SCROLL CUE */
   const cue=document.getElementById("scrollCue");
@@ -357,28 +404,40 @@
     shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
   });
 
-  /* AUDIENCE */
+  /* AUDIENCE CHARTS */
   const citiesCanvas=document.getElementById("citiesCanvas");
   const geoCanvas=document.getElementById("geoCanvas");
 
   fetch("cities.csv").then(r=>r.text()).then(t=>{
-    const rows=t.split("\n").slice(2,12).map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
+    const rows=t.split("\n").slice(2,12)
+      .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
     new Chart(citiesCanvas,{
       type:"bar",
-      data:{labels:rows.map(r=>r[1].replace(/"/g,"")),
-        datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
-      options:{indexAxis:"y",plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
+      data:{
+        labels:rows.map(r=>r[1].replace(/"/g,"")),
+        datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
+      },
+      options:{
+        indexAxis:"y",
+        plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}
+      }
     });
   });
+
   fetch("geography.csv").then(r=>r.text()).then(t=>{
     const rows=t.split("\n").slice(1,7).map(r=>r.split(","));
     new Chart(geoCanvas,{
       type:"bar",
-      data:{labels:rows.map(r=>r[0]),
-        datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]},
-      options:{indexAxis:"y",plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
+      data:{
+        labels:rows.map(r=>r[0]),
+        datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]
+      },
+      options:{
+        indexAxis:"y",
+        plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}
+      }
     });
   });
 
@@ -391,25 +450,23 @@
     };
   });
 
-  /* RAIN WITH FOCUS CONTROL */
-  let rainActive=true;
-  const observer=new IntersectionObserver(entries=>{
-    rainActive=entries[0].isIntersecting;
-  },{threshold:.2});
-  observer.observe(document.getElementById("hero"));
+  /* RAIN */
+  const mobileCard=document.getElementById("mobileCard");
+  const mTitle=document.getElementById("mobileTitle");
+  const mDesc=document.getElementById("mobileDesc");
+  document.getElementById("closeMobile").onclick=()=>{
+    mobileCard.classList.remove("active");
+  };
 
   fetch("rain_texts.json").then(r=>r.json()).then(words=>{
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
     const COLS=isMobile?4:9;
     let hintCount=0;
-    let openCard=null;
 
     const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
     function spawn(lane){
-      if(!rainActive) return;
-
       const d=words[Math.floor(Math.random()*words.length)];
       const el=document.createElement("span");
       el.textContent=d.word;
@@ -423,35 +480,32 @@
         hintCount++;
       }
 
-      const card=document.createElement("div");
-      card.className="rain-card";
-      card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
-      el.appendChild(card);
+      if(isMobile){
+        el.onclick=()=>{
+          mTitle.textContent=d.word;
+          mDesc.textContent=d.description;
+          mobileCard.classList.add("active");
+        };
+      }else{
+        const card=document.createElement("div");
+        card.className="rain-card";
+        card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
+        el.appendChild(card);
 
-      const open=()=>{
-        if(openCard && openCard!==card){
-          openCard.style.display="none";
-          openCard.parentElement.classList.remove("active");
-        }
-        openCard=card;
-        el.classList.add("active");
-        card.style.display="block";
-      };
-      const close=()=>{
-        el.classList.remove("active");
-        card.style.display="none";
-      };
-
-      el.onmouseenter=()=>!isMobile&&open();
-      el.onmouseleave=()=>!isMobile&&close();
-      el.onclick=()=>isMobile&&open();
+        el.onmouseenter=()=>{
+          el.classList.add("active");
+          card.style.display="block";
+        };
+        el.onmouseleave=()=>{
+          el.classList.remove("active");
+          card.style.display="none";
+        };
+      }
 
       el.onanimationend=()=>el.remove();
       rain.appendChild(el);
-
       setTimeout(()=>spawn(lane),(isMobile?3500:2500)+Math.random()*3000);
     }
-
     lanes.forEach(l=>spawn(l));
   });
 </script>
