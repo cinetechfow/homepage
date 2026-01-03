@@ -15,7 +15,6 @@
       --text:#f1f1f1;
       --glass:rgba(0,0,0,.55);
     }
-
     *{box-sizing:border-box;user-select:none}
     body{
       margin:0;
@@ -94,18 +93,17 @@
     }
     .stat .label{
       font-size:.72rem;
-      letter-spacing:.05em;
       opacity:.75;
     }
 
-    /* SCROLL */
+    /* SCROLL CUE */
     .scroll-cue{
       position:absolute;
       bottom:22px;
       left:50%;
       transform:translateX(-50%);
-      opacity:.6;
-      transition:opacity .2s linear;
+      opacity:1;
+      transition:opacity .3s ease;
     }
 
     /* RAIN */
@@ -122,6 +120,7 @@
       opacity:1;
       color:var(--red);
       transform:scale(1.25);
+      animation-play-state:paused;
     }
     .rain span small{
       display:block;
@@ -136,7 +135,7 @@
       top:100%;
       left:0;
       margin-top:10px;
-      background:rgba(0,0,0,.85);
+      background:rgba(0,0,0,.88);
       backdrop-filter:blur(12px);
       border-radius:14px;
       padding:10px 12px;
@@ -186,7 +185,7 @@
       border-radius:16px;
     }
 
-    /* AUDIENCE TABS */
+    /* AUDIENCE */
     .tabs{
       display:flex;
       gap:14px;
@@ -218,8 +217,7 @@
     }
     .follow-icons img{
       width:36px;
-      height:36px;
-      transition:transform .25s ease;
+      transition:transform .25s;
     }
     .follow-icons img:hover{transform:scale(1.15)}
 
@@ -237,7 +235,6 @@
   <img src="logo_black.png">
 </header>
 
-<!-- HERO -->
 <div class="hero">
   <div class="rain" id="rain"></div>
 
@@ -263,7 +260,6 @@
   <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
 </div>
 
-<!-- WHAT'S IN IT -->
 <section>
   <h2>WHAT’S IN IT</h2>
   <div class="cards">
@@ -274,7 +270,6 @@
   </div>
 </section>
 
-<!-- VIDEOS -->
 <section>
   <h2>OUR RECENT VIDEOS</h2>
   <div id="longVideos" class="grid"></div>
@@ -285,7 +280,6 @@
   <div id="shortVideos" class="grid"></div>
 </section>
 
-<!-- AUDIENCE -->
 <section>
   <h2>OUR AUDIENCE</h2>
   <div class="tabs">
@@ -296,7 +290,6 @@
   <canvas id="geoCanvas" style="display:none"></canvas>
 </section>
 
-<!-- FOLLOW -->
 <div class="follow">
   <strong>Follow us on</strong>
   <div class="follow-icons">
@@ -313,6 +306,12 @@
 </footer>
 
 <script>
+  /* SCROLL CUE FADE */
+  const cue=document.getElementById("scrollCue");
+  window.addEventListener("scroll",()=>{
+    cue.style.opacity=window.scrollY<80?1:0;
+  });
+
   /* STATS */
   fetch("stats.json").then(r=>r.json()).then(s=>{
     animate("subCount",s.subscribers);
@@ -336,37 +335,35 @@
     shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
   });
 
-  /* AUDIENCE CHARTS */
+  /* AUDIENCE */
   const citiesCanvas=document.getElementById("citiesCanvas");
   const geoCanvas=document.getElementById("geoCanvas");
-  let geoChartInstance;
 
   fetch("cities.csv").then(r=>r.text()).then(t=>{
     const rows=t.split("\n").slice(2,12)
       .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
     new Chart(citiesCanvas,{
       type:"bar",
-      data:{
-        labels:rows.map(r=>r[1].replace(/"/g,"")),
-        datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]
-      },
-      options:{indexAxis:"y",plugins:{legend:{display:false}}}
+      data:{labels:rows.map(r=>r[1].replace(/"/g,"")),
+        datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
+      options:{indexAxis:"y",
+        plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
     });
   });
 
   fetch("geography.csv").then(r=>r.text()).then(t=>{
     const rows=t.split("\n").slice(1,7).map(r=>r.split(","));
-    geoChartInstance=new Chart(geoCanvas,{
+    new Chart(geoCanvas,{
       type:"bar",
-      data:{
-        labels:rows.map(r=>r[0]),
-        datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]
-      },
-      options:{indexAxis:"y",plugins:{legend:{display:false}}}
+      data:{labels:rows.map(r=>r[0]),
+        datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]},
+      options:{indexAxis:"y",
+        plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
     });
   });
 
-  /* AUDIENCE TABS */
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.onclick=()=>{
       document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
@@ -404,20 +401,23 @@
       card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
       el.appendChild(card);
 
-      const toggle=()=>{
-        el.classList.toggle("active");
-        card.style.display=card.style.display==="block"?"none":"block";
+      const show=()=>{
+        el.classList.add("active");
+        card.style.display="block";
+      };
+      const hide=()=>{
+        el.classList.remove("active");
+        card.style.display="none";
       };
 
-      el.addEventListener("mouseenter",()=>!isMobile&&toggle());
-      el.addEventListener("mouseleave",()=>!isMobile&&toggle());
-      el.addEventListener("click",()=>isMobile&&toggle());
-      el.addEventListener("touchstart",e=>{e.preventDefault();toggle();});
+      el.addEventListener("mouseenter",()=>!isMobile&&show());
+      el.addEventListener("mouseleave",()=>!isMobile&&hide());
+      el.addEventListener("click",()=>isMobile&&show());
 
       el.addEventListener("animationend",()=>el.remove());
       rain.appendChild(el);
 
-      setTimeout(()=>spawn(lane), (isMobile?4000:3000)+Math.random()*3000);
+      setTimeout(()=>spawn(lane),(isMobile?4000:3000)+Math.random()*3000);
     }
 
     lanes.forEach(l=>spawn(l));
