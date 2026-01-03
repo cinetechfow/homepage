@@ -120,6 +120,27 @@ header img{height:48px}
   50%{opacity:.8}
 }
 
+/* STATS */
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  padding:60px 20px 20px;
+  flex-wrap:wrap;
+}
+.stat{
+  text-align:center;
+}
+.stat .num{
+  font-size:2rem;
+  font-weight:800;
+  color:var(--red);
+}
+.stat .label{
+  font-size:.85rem;
+  opacity:.8;
+}
+
 /* SECTIONS */
 section{
   padding:70px 20px;
@@ -158,19 +179,15 @@ iframe{
   border-radius:16px;
 }
 
-/* RAIN TEXT */
+/* RAIN */
 .rain span{
   position:absolute;
   top:-10%;
   font-weight:600;
   opacity:.25;
   cursor:pointer;
-  transform-origin:center;
   animation:rain linear infinite;
-  transition:
-    transform .45s cubic-bezier(.22,1,.36,1),
-    color .25s,
-    opacity .25s;
+  transition:transform .4s ease, color .25s, opacity .25s;
 }
 .rain span.active{
   animation-play-state:paused;
@@ -181,28 +198,42 @@ iframe{
 }
 @keyframes rain{to{transform:translateY(120vh)}}
 
-/* INLINE BLAST STRIP (MOBILE-FIRST) */
-.rain-strip{
+/* DESKTOP GLASS CARD */
+.rain-card{
   position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) scale(.9);
-  width:88%;
-  max-width:520px;
-  background:rgba(0,0,0,.88);
+  margin-top:14px;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  padding:14px 16px;
+  border-radius:14px;
+  max-width:300px;
+  border:1px solid rgba(255,255,255,.2);
+  font-size:.8rem;
+}
+.rain-card .title{
+  color:var(--red);
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+/* MOBILE MORPH STRIP */
+.morph{
+  position:absolute;
+  background:rgba(0,0,0,.9);
   backdrop-filter:blur(10px);
   border:1px solid rgba(255,255,255,.2);
   border-radius:14px;
-  padding:12px 16px;
-  font-size:.78rem;
+  padding:10px 14px;
+  font-size:.75rem;
   line-height:1.35;
+  transform:scale(0);
   opacity:0;
-  pointer-events:none;
   transition:.35s cubic-bezier(.22,1,.36,1);
+  z-index:20;
 }
-.rain-strip.show{
+.morph.show{
+  transform:scale(1);
   opacity:1;
-  transform:translate(-50%,-50%) scale(1);
 }
 
 /* AUDIENCE */
@@ -268,6 +299,22 @@ footer{
   <div class="scroll-cue">Scroll to explore ↓</div>
 </div>
 
+<!-- STATS -->
+<div class="stats" id="stats">
+  <div class="stat">
+    <div class="num" data-target="1140">0</div>
+    <div class="label">Subscribers</div>
+  </div>
+  <div class="stat">
+    <div class="num" data-target="301584">0</div>
+    <div class="label">Views</div>
+  </div>
+  <div class="stat">
+    <div class="num" data-target="33">0</div>
+    <div class="label">Videos</div>
+  </div>
+</div>
+
 <!-- WHAT'S IN IT -->
 <section>
 <h2>WHAT’S IN IT</h2>
@@ -279,33 +326,10 @@ footer{
 </div>
 </section>
 
-<!-- RECENT VIDEOS -->
-<section>
-<h2>OUR RECENT VIDEOS</h2>
-<div id="longVideos" class="grid"></div>
-</section>
-
-<!-- SHORTS -->
-<section>
-<h2>SHORTS</h2>
-<div id="shortVideos" class="grid"></div>
-</section>
-
 <!-- AUDIENCE -->
 <section>
 <h2>OUR AUDIENCE</h2>
-<div class="tabs">
-  <div class="tab active" onclick="showTab('cities')">Cities</div>
-  <div class="tab" onclick="showTab('geo')">Countries</div>
-</div>
-
-<div id="cities" class="tab-content active">
-  <canvas id="citiesChart"></canvas>
-</div>
-
-<div id="geo" class="tab-content">
-  <canvas id="geoChart"></canvas>
-</div>
+<canvas id="citiesChart"></canvas>
 </section>
 
 <!-- FOLLOW -->
@@ -321,12 +345,28 @@ footer{
 </footer>
 
 <script>
-/* LOAD VIDEOS */
-fetch("long_videos.json").then(r=>r.json()).then(v=>{
-  longVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
-});
-fetch("shorts.json").then(r=>r.json()).then(v=>{
-  shortVideos.innerHTML=v.map(id=>`<iframe src="https://www.youtube.com/embed/${id}"></iframe>`).join("");
+/* STATS COUNT */
+const stats=document.querySelectorAll('.num');
+let statsPlayed=false;
+window.addEventListener('scroll',()=>{
+  const rect=document.getElementById('stats').getBoundingClientRect();
+  if(!statsPlayed && rect.top<window.innerHeight){
+    statsPlayed=true;
+    stats.forEach(el=>{
+      const target=+el.dataset.target;
+      let count=0;
+      const step=target/80;
+      const i=setInterval(()=>{
+        count+=step;
+        if(count>=target){
+          el.textContent=target.toLocaleString();
+          clearInterval(i);
+        }else{
+          el.textContent=Math.floor(count).toLocaleString();
+        }
+      },20);
+    });
+  }
 });
 
 /* CSV PARSER */
@@ -336,9 +376,9 @@ function parseCSV(text){
   );
 }
 
-/* AUDIENCE CHARTS */
+/* AUDIENCE CHART */
 fetch("cities.csv").then(r=>r.text()).then(t=>{
-  const d=parseCSV(t).slice(1,12);
+  const d=parseCSV(t).slice(1,10);
   new Chart(citiesChart,{
     type:"bar",
     data:{
@@ -347,38 +387,16 @@ fetch("cities.csv").then(r=>r.text()).then(t=>{
     },
     options:{
       indexAxis:"y",
-      responsive:true,
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{
-          label:c=>`${c.raw.toLocaleString()} views`
-        }}
-      }
-    }
-  });
-});
-fetch("geography.csv").then(r=>r.text()).then(t=>{
-  const d=parseCSV(t).slice(1,6);
-  new Chart(geoChart,{
-    type:"bar",
-    data:{
-      labels:d.map(r=>r[0]),
-      datasets:[{data:d.map(r=>+r[1]),backgroundColor:"#777"}]
-    },
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{
-          label:c=>`${c.raw.toLocaleString()} views`
-        }}
+        tooltip:{callbacks:{label:c=>`${c.raw.toLocaleString()} views`}}
       }
     }
   });
 });
 
-/* RAIN SYSTEM – BLAST INTERACTION */
-let activeStrip=null;
+/* RAIN */
+let activeMorph=null;
 fetch("rain_texts.json").then(r=>r.json()).then(data=>{
   const rain=document.getElementById("rain");
 
@@ -390,43 +408,50 @@ fetch("rain_texts.json").then(r=>r.json()).then(data=>{
     s.style.animationDuration=22+Math.random()*18+"s";
     s.style.animationDelay=Math.random()*10+"s";
 
-    const strip=document.createElement("div");
-    strip.className="rain-strip";
-    strip.textContent=item.description;
-    document.body.appendChild(strip);
+    const card=document.createElement("div");
+    card.className="rain-card";
+    card.innerHTML=`<div class="title">${item.word}</div>${item.description}`;
+    card.style.display="none";
+    s.appendChild(card);
 
-    function activate(){
-      if(activeStrip) activeStrip.classList.remove("show");
+    const morph=document.createElement("div");
+    morph.className="morph";
+    morph.textContent=item.description;
+    document.body.appendChild(morph);
+
+    function showDesktop(){
       s.classList.add("active");
-      strip.classList.add("show");
-      activeStrip=strip;
+      card.style.display="block";
     }
-    function deactivate(){
+    function hideDesktop(){
       s.classList.remove("active");
-      strip.classList.remove("show");
-      activeStrip=null;
+      card.style.display="none";
     }
 
-    s.addEventListener("mouseenter",()=>{ if(window.innerWidth>768) activate(); });
-    s.addEventListener("mouseleave",()=>{ if(window.innerWidth>768) deactivate(); });
+    function showMobile(){
+      if(activeMorph) activeMorph.classList.remove("show");
+      const r=s.getBoundingClientRect();
+      morph.style.left=r.left+"px";
+      morph.style.top=r.top+"px";
+      morph.classList.add("show");
+      activeMorph=morph;
+    }
+
+    s.addEventListener("mouseenter",()=>{ if(window.innerWidth>768) showDesktop(); });
+    s.addEventListener("mouseleave",()=>{ if(window.innerWidth>768) hideDesktop(); });
     s.addEventListener("click",e=>{
       e.stopPropagation();
-      strip.classList.contains("show")?deactivate():activate();
+      if(window.innerWidth<=768){
+        showMobile();
+      }
     });
 
     rain.appendChild(s);
   });
 });
 document.addEventListener("click",()=>{
-  if(activeStrip) activeStrip.classList.remove("show");
+  if(activeMorph) activeMorph.classList.remove("show");
 });
-
-function showTab(id){
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
-  document.querySelector(`[onclick*='${id}']`).classList.add("active");
-  document.getElementById(id).classList.add("active");
-}
 </script>
 
 </body>
