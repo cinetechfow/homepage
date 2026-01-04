@@ -438,6 +438,17 @@
   const mDesc=document.getElementById("mobileDesc");
   document.getElementById("closeMobile").onclick=()=>mobileCard.classList.remove("active");
 
+  function pauseAllRain(){
+    document.querySelectorAll(".rain span").forEach(el=>{
+        el.style.animationPlayState = "paused";
+      });
+  }
+
+  function resumeAllRain(){
+    document.querySelectorAll(".rain span").forEach(el=>{
+      el.style.animationPlayState = "running";
+    });
+  }
   fetch("rain_texts.json").then(r=>r.json()).then(words=>{
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
@@ -450,7 +461,7 @@
       const d=words[Math.floor(Math.random()*words.length)];
       const el=document.createElement("span");
       el.textContent=d.word;
-      const jitter = isMobile ? 3 : 5; // % range
+      const jitter = isMobile ? 3 : 10; // % range
       const randomX = lane.x + (Math.random() * jitter * 2 - jitter);
       el.style.left = randomX + "%";
       el.style.top=seed?(10+Math.random()*70)+"%":"-15%";
@@ -463,6 +474,14 @@
       }
 
       if(isMobile){
+        setTimeout(() => {
+          if (!hintShown) {
+            mTitle.textContent = "Quick Tip";
+            mDesc.textContent = "Tap on any rain fall text";
+            mobileCard.classList.add("active");
+            hintShown = true;
+          }
+        }, 1200); // small delay feels intentional
         el.onclick=()=>{
           tapCount++;
           if(tapCount>=2){
@@ -478,8 +497,17 @@
         card.className="rain-card";
         card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
         el.appendChild(card);
-        el.onmouseenter=()=>{el.classList.add("active");card.style.display="block";};
-        el.onmouseleave=()=>{el.classList.remove("active");card.style.display="none";};
+        el.onmouseenter = () => {
+          pauseAllRain();                 // 🔴 pauses ALL rain
+          el.classList.add("active");
+          card.style.display = "block";
+        };
+
+        el.onmouseleave = () => {
+          resumeAllRain();                // 🟢 resumes ALL rain
+          el.classList.remove("active");
+          card.style.display = "none";
+        };
       }
 
       const sizes = isMobile ? [0.75, 0.9, 1.05, 1.2] : [0.8, 0.95, 1.1, 1.3, 1.5, 1.7];
