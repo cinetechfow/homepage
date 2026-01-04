@@ -453,7 +453,7 @@
     const rain=document.getElementById("rain");
     const isMobile=window.innerWidth<=768;
     const COLS=isMobile?2:3;
-    let tapCount=0,showTap=true;
+    let tapCount=0,showTap=false;
 
     const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
@@ -473,7 +473,9 @@
         el.appendChild(s);
       }
 
-      if(isMobile){
+      let hintShown = false;
+
+      if (isMobile) {
         setTimeout(() => {
           if (!hintShown) {
             mTitle.textContent = "Quick Tip";
@@ -482,12 +484,16 @@
             hintShown = true;
           }
         }, 1200); // small delay feels intentional
+      }
+
+      if(isMobile){
         el.onclick=()=>{
           tapCount++;
           if(tapCount>=2){
             showTap=false;
             document.querySelectorAll(".rain span small").forEach(s=>s.remove());
           }
+          mobileCard.classList.remove("active"); // hide hint if visible
           mTitle.textContent=d.word;
           mDesc.textContent=d.description;
           mobileCard.classList.add("active");
