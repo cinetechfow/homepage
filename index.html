@@ -109,30 +109,34 @@
     }
     .action-pill.active .telugu-tip{display:block}
 
-    .cta{
-      padding: 14px 34px;
-      border-radius: 16px;
+   .cta{
+    padding:14px 34px;
+    border-radius:16px;
 
-      background: transparent;
-      color: #ff3b3b;
-      font-weight: 600;
-      letter-spacing: .04em;
+    background:#ffffff;
+    color:#000000;
 
-      border: 2px solid #ff3b3b;
-      box-shadow: inset 0 0 0 0 #ff3b3b;
+    font-size:0.95rem;
+    font-weight:500;          /* 🔥 lighter */
+    letter-spacing:0;         /* 🔥 remove spacing */
+    line-height:1;
 
-      transition:
-        box-shadow .25s ease,
-        color .25s ease,
-        transform .2s ease;
+    border:none;
+    cursor:pointer;
+
+    box-shadow:0 10px 30px rgba(255,255,255,.15);
+
+    transition:
+      transform .25s ease,
+      box-shadow .25s ease,
+      background .25s ease;
     }
 
     .cta:hover{
-      box-shadow: inset 0 -60px 0 #ff3b3b;
-      color: #000;
-      transform: translateY(-2px);
+      transform:translateY(-2px);
+      background:#f2f2f2;
+      box-shadow:0 14px 40px rgba(255,255,255,.25);
     }
-
 
     /* STATS */
     .stats{
@@ -290,14 +294,30 @@
       margin-bottom:22px;
     }
     .tab{
-      padding:8px 18px;
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,.3);
+      padding:8px 20px;
+
+      font-size:0.85rem;
+      font-weight:500;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.35);
+
+      color:rgba(255,255,255,.85);
+      background:transparent;
+
       cursor:pointer;
+
+      transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease;
     }
     .tab.active{
-      background:var(--red);
-      color:#000;
+      background:#ffffff;
+      color:#000000;
+      border-color:#ffffff;
     }
 
     /* FOLLOW */
