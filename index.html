@@ -85,12 +85,29 @@
     .action-pill.active .telugu-tip{display:block}
 
     .cta{
-      padding:12px 38px;
-      border-radius:30px;
-      border:1.6px solid var(--red);
-      color:var(--red);
+      padding: 14px 34px;
+      border-radius: 16px;
+
+      background: transparent;
+      color: #ff3b3b;
+      font-weight: 600;
+      letter-spacing: .04em;
+
+      border: 2px solid #ff3b3b;
+      box-shadow: inset 0 0 0 0 #ff3b3b;
+
+      transition:
+        box-shadow .25s ease,
+        color .25s ease,
+        transform .2s ease;
     }
-    .cta:hover{background:var(--red);color:#000}
+
+    .cta:hover{
+      box-shadow: inset 0 -60px 0 #ff3b3b;
+      color: #000;
+      transform: translateY(-2px);
+    }
+
 
     /* STATS */
     .stats{
@@ -303,7 +320,7 @@
         <div class="telugu-tip">Every story. Every breakdown. Explained in Telugu.</div>
       </div>
       <a class="cta" href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1">
-        Subscribe our channel
+        Subscribe Our Channel
       </a>
       <a class="cta idea-btn"
          href="https://forms.gle/ftajqesi3KiQMkN59"
@@ -466,6 +483,19 @@
 
     const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
+    let hintShown = false;
+
+    if (isMobile) {
+      setTimeout(() => {
+        if (!hintShown) {
+          mTitle.textContent = "Quick Tip";
+          mDesc.textContent = "Tap on any rain fall text";
+          mobileCard.classList.add("active");
+          hintShown = true;
+        }
+      }, 1200); // small delay feels intentional
+    }
+
     function spawn(lane,fast=false,seed=false){
       const d=words[Math.floor(Math.random()*words.length)];
       const el=document.createElement("span");
@@ -480,19 +510,6 @@
         const s=document.createElement("small");
         s.textContent="(Tap)";
         el.appendChild(s);
-      }
-
-      let hintShown = false;
-
-      if (isMobile) {
-        setTimeout(() => {
-          if (!hintShown) {
-            mTitle.textContent = "Quick Tip";
-            mDesc.textContent = "Tap on any rain fall text";
-            mobileCard.classList.add("active");
-            hintShown = true;
-          }
-        }, 1200); // small delay feels intentional
       }
 
       if(isMobile){
