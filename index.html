@@ -38,19 +38,22 @@
     .hero{
       min-height:100vh;
       background:
-        linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.92)),
-        url("cinema_flow4.jpg") center/cover no-repeat;
+        linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.96)),
+        url("bg1.jpg") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
       position:relative;
       overflow:hidden;
+      z-index:1;
     }
     .hero h1{font-size:clamp(2.8rem,6vw,4.2rem)}
     .line1{margin-top:16px}
     .line2{margin-top:12px;font-size:.9rem;opacity:.9}
     .line2 span{color:var(--red)}
+
+
 
     .actions{
       margin-top:26px;
@@ -111,6 +114,7 @@
 
     /* STATS */
     .stats{
+      position: relative;
       margin-top:36px;
       display:flex;
       gap:54px;
@@ -120,6 +124,7 @@
       border-radius:28px;
       background:var(--glass);
       backdrop-filter:blur(18px);
+      z-index:20;
     }
     .stat{text-align:center}
     .stat .num{
@@ -182,7 +187,7 @@
       color:#fff;
       width:260px;
       display:none;
-      z-index:10;
+      z-index:100;
     }
     .rain-card .title{
       color:var(--red);
@@ -297,6 +302,15 @@
       padding:30px;
       opacity:.6;
     }
+
+    /* MOBILE BACKGROUND FIX */
+    @media (max-width: 768px){
+      .hero::before{
+        background-size: contain;
+        background-position: center top;
+        background-repeat: no-repeat;
+      }
+    }
   </style>
 </head>
 
@@ -325,7 +339,7 @@
       <a class="cta idea-btn"
          href="https://forms.gle/ftajqesi3KiQMkN59"
          target="_blank">
-         Submit Your Idea For Next Video
+        Submit Your Idea For Next Video
       </a>
     </div>
 
