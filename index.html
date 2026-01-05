@@ -771,6 +771,11 @@
             mTitle.textContent=d.word;
             mDesc.textContent=d.description;
             mobileCard.classList.add("active");
+
+            // ✅ GA TRACKING (ADD THIS)
+            gtag('event', 'rain_tap', {
+              event_category: 'interaction'
+            });
           };
         }else{
           const card=document.createElement("div");
@@ -781,6 +786,11 @@
             pauseAllRain();                 // 🔴 pauses ALL rain
             el.classList.add("active");
             card.style.display = "block";
+
+            // ✅ GA TRACKING (ADD THIS)
+            gtag('event', 'rain_hover', {
+              event_category: 'interaction'
+            });
           };
 
           el.onmouseleave = () => {
