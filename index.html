@@ -460,25 +460,33 @@
 
     /* Button — NOT a button, more like a link */
     .tool-link{
-      display:inline-block;
-      padding:8px 18px;
-      font-size:0.75rem;
-      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
 
-      background:transparent;
+      padding:6px 14px;
+      font-size:0.78rem;
+      font-weight:500;
+
+      border-radius:999px;
+      background:rgba(255,255,255,0.08);
       color:#ffffff;
 
-      border:1px solid rgba(255,255,255,0.25);
+      border:1px solid rgba(255,255,255,0.18);
       text-decoration:none;
 
-      transition:all 0.25s ease;
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
     }
 
     .tool-link:hover{
-      background:#ffffff;
-      color:#000000;
-      border-color:#ffffff;
+      background:rgba(255,255,255,0.15);
+      border-color:rgba(255,255,255,0.35);
+      transform:translateY(-1px);
     }
+
 
     .tools-section{
       text-align:left;
@@ -714,7 +722,7 @@
         Perfect for YouTube creators who want speed without complexity.
       </p>
       <a href="https://amzn.to/4qgD6V1" target="_blank" rel="nofollow sponsored" class="tool-link">
-        Check on Amazon
+        Buy on Amazon →
       </a>
     </div>
 
@@ -725,7 +733,7 @@
         Ideal for long-form videos and cinematic breakdowns.
       </p>
       <a href="https://amzn.to/4be9lzu" target="_blank" rel="nofollow sponsored" class="tool-link">
-        Check on Amazon
+        Buy on Amazon →
       </a>
     </div>
 
@@ -736,7 +744,7 @@
         Smooth workflow for creators upgrading their setup.
       </p>
       <a href="https://amzn.to/4pop1DS" target="_blank" rel="nofollow sponsored" class="tool-link">
-        Check on Amazon
+        Buy on Amazon →
       </a>
     </div>
 
@@ -748,7 +756,7 @@
         with strategy, not guesswork.
       </p>
       <a href="https://amzn.to/3YX5EXy" target="_blank" rel="nofollow sponsored" class="tool-link">
-        Check on Amazon
+        Buy on Amazon →
       </a>
     </div>
 
@@ -759,7 +767,7 @@
         beyond views and algorithms.
       </p>
       <a href="https://amzn.to/3YUzv2K" target="_blank" rel="nofollow sponsored" class="tool-link">
-        Check on Amazon
+        Buy on Amazon →
       </a>
     </div>
 
@@ -771,7 +779,7 @@
         and voice-over recording.
       </p>
       <a href="https://amzn.to/4qxr2hS" target="_blank" rel="nofollow sponsored" class="tool-link">
-        Check on Amazon
+        Buy on Amazon →
       </a>
     </div>
 
