@@ -810,16 +810,31 @@
 <div class="follow">
   <strong>Follow us on</strong>
   <div class="follow-icons">
-    <a href="https://www.youtube.com/@CineTechFlow"><img src="youtube.gif"></a>
-    <a href="https://www.instagram.com/cinetechflow/"><img src="insta.gif"></a>
-    <a href="https://x.com/cinetechflow"><img src="twitter.gif"></a>
-    <a href="https://www.threads.com/@cinetechflow"><img src="threads.gif"></a>
+    <a href="https://www.youtube.com/@CineTechFlow" class="follow-link"
+       data-platform="Youtube"
+       target="_blank"
+       rel="noopener" ><img src="youtube.gif"></a>
+    <a href="https://www.instagram.com/cinetechflow/" class="follow-link"
+       data-platform="Instagram"
+       target="_blank"
+       rel="noopener" ><img src="insta.gif"></a>
+    <a href="https://x.com/cinetechflow" class="follow-link"
+       data-platform="Twitter(X)"
+       target="_blank"
+       rel="noopener" ><img src="twitter.gif"></a>
+    <a href="https://www.threads.com/@cinetechflow" class="follow-link"
+       data-platform="Threads"
+       target="_blank"
+       rel="noopener" ><img src="threads.gif"></a>
   </div>
 </div>
 
 <footer>
   © 2026 CineTechFlow · Created by
-  <a href="mailto:justctrllaugh@gmail.com" style="color:var(--red)">Heisenberg</a>
+  <a href="mailto:justctrllaugh@gmail.com" style="color:var(--red)" class="follow-link"
+     data-platform="E-mail"
+     target="_blank"
+     rel="noopener" >Heisenberg</a>
 </footer>
 
 <script>
@@ -1137,6 +1152,19 @@
       event_category: "amazon affiliate",
       event_label: productName,
       product_name: productName,
+      link_url: link.href
+    });
+  });
+   /* Track follow links */
+  document.addEventListener("click", function (e) {
+    const link = e.target.closest(".follow-link");
+    if (!link) return;
+
+    const platform = link.getAttribute("data-platform") || "Unknown";
+
+    gtag("event", "follow_click", {
+      event_category: "follow-engagement",
+      platform: platform,
       link_url: link.href
     });
   });
