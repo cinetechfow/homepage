@@ -391,6 +391,11 @@
       font-weight: 700;
     }
 
+    .data-table tr:first-child {
+      font-weight:700;
+      background:rgba(255,255,255,.04);
+    }
+
     .data-table tr.total td {
       padding-top: 16px;
       padding-bottom: 16px;
@@ -688,6 +693,14 @@
     { type: "region" }
   );
 
+  function safeCountryName(code){
+    try{
+      return countryNames.of(code.toUpperCase()) || code;
+    }catch(e){
+      return code; // fallback safely
+    }
+  }
+
   function getCountryName(code){
     if(!code) return "";
 
@@ -709,18 +722,28 @@
 
   /* WORLD */
   fetch("geography.csv").then(r=>r.text()).then(t=>{
-    const rows = t.split("\n").slice(1,7)
-    .map(r=>r.split(","))
-    .map(r=>[
-      getCountryName(r[0]),   // 👈 HERE
-      r[1]
-    ]);
+    let rows = t
+      .split("\n")
+      .slice(1)
+      .map(r=>r.split(","))
+      .filter(r => r[0] && r[1])          // safety
+      .map(r => [
+        safeCountryName(r[0]),
+        Number(r[1])
+      ]);
+
+    const totalViews = rows.reduce((sum, r) => sum + r[1], 0);
+
+    // 👑 TOTAL row on top
+    rows.unshift(["TOTAL", totalViews]);
+
     renderTable(
       document.getElementById("geoTable"),
       ["COUNTRY", "VIEWS"],
       rows
     );
   });
+
 
 
   document.querySelectorAll(".tab").forEach(tab=>{
