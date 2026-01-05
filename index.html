@@ -433,6 +433,80 @@
       text-align:right;
     }
 
+
+    /* TOOL CARDS — CLEAN VERSION */
+    .tool-card{
+      background:#0e0e0e;
+      padding:22px;
+      border-radius:16px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.45);
+    }
+
+    /* Title — smaller, calmer */
+    .tool-card h3{
+      font-size:1.05rem;
+      font-weight:600;
+      margin-bottom:8px;
+      color:#ff3b3b;
+    }
+
+    /* Description — subtle, editorial */
+    .tool-card p{
+      font-size:0.82rem;
+      line-height:1.45;
+      opacity:0.7;
+      margin-bottom:16px;
+    }
+
+    /* Button — NOT a button, more like a link */
+    .tool-link{
+      display:inline-block;
+      padding:8px 18px;
+      font-size:0.75rem;
+      border-radius:999px;
+
+      background:transparent;
+      color:#ffffff;
+
+      border:1px solid rgba(255,255,255,0.25);
+      text-decoration:none;
+
+      transition:all 0.25s ease;
+    }
+
+    .tool-link:hover{
+      background:#ffffff;
+      color:#000000;
+      border-color:#ffffff;
+    }
+
+    .tools-section{
+      text-align:left;
+    }
+
+    .tools-intro{
+      max-width:720px;
+      margin:0 0 36px 0;   /* 👈 left aligned, not centered */
+      opacity:0.7;
+      font-size:0.9rem;
+    }
+
+    .tool-card h3{
+      font-size:1.05rem;
+      font-weight:500;
+      margin-bottom:6px;
+      color:#f1f1f1;      /* neutral white */
+      letter-spacing:0.01em;
+    }
+
+    .tool-card p{
+      font-size:0.78rem;
+      line-height:1.4;
+      opacity:0.6;
+      margin-bottom:14px;
+    }
+
+
     @media (max-width:768px){
       .data-table{
         font-size:0.85rem;
@@ -622,6 +696,88 @@
   <div id="shortVideos" class="grid"></div>
 </section>
 
+<section class="tools-section">
+  <h2>TOOLS I USE & RECOMMEND</h2>
+
+  <p class="tools-intro">
+    These are tools and resources I personally use or confidently recommend
+    for content creation, cinema breakdowns, and creator growth.
+  </p>
+
+  <div class="cards">
+
+    <!-- Filmora Editing Software -->
+    <div class="card tool-card">
+      <h3>💻 Wondershare Filmora (Video Editing Software)</h3>
+      <p >
+        Clean, beginner-friendly video editor.
+        Perfect for YouTube creators who want speed without complexity.
+      </p>
+      <a href="https://amzn.to/4qgD6V1" target="_blank" rel="nofollow sponsored" class="tool-link">
+        Check on Amazon
+      </a>
+    </div>
+
+    <div class="card tool-card">
+      <h3>💻 Filmora Official Version (PC License)</h3>
+      <p>
+        Official Filmora editor license for desktop editing.
+        Ideal for long-form videos and cinematic breakdowns.
+      </p>
+      <a href="https://amzn.to/4be9lzu" target="_blank" rel="nofollow sponsored" class="tool-link">
+        Check on Amazon
+      </a>
+    </div>
+
+    <div class="card tool-card">
+      <h3>💻 Filmora Latest Version (Single Device)</h3>
+      <p>
+        Latest Filmora release optimized for modern systems.
+        Smooth workflow for creators upgrading their setup.
+      </p>
+      <a href="https://amzn.to/4pop1DS" target="_blank" rel="nofollow sponsored" class="tool-link">
+        Check on Amazon
+      </a>
+    </div>
+
+    <!-- Creator Books -->
+    <div class="card tool-card">
+      <h3>📘 YouTube Secrets – Sean Cannell</h3>
+      <p>
+        One of the most practical books for growing a YouTube channel
+        with strategy, not guesswork.
+      </p>
+      <a href="https://amzn.to/3YX5EXy" target="_blank" rel="nofollow sponsored" class="tool-link">
+        Check on Amazon
+      </a>
+    </div>
+
+    <div class="card tool-card">
+      <h3>📗 Think and Grow Rich – Napoleon Hill</h3>
+      <p>
+        Classic mindset book that helps creators think long-term,
+        beyond views and algorithms.
+      </p>
+      <a href="https://amzn.to/3YUzv2K" target="_blank" rel="nofollow sponsored" class="tool-link">
+        Check on Amazon
+      </a>
+    </div>
+
+    <!-- Microphone -->
+    <div class="card tool-card">
+      <h3>🎤 FLYSPACE USB Microphone</h3>
+      <p>
+        Budget-friendly USB microphone for YouTube, podcasts,
+        and voice-over recording.
+      </p>
+      <a href="https://amzn.to/4qxr2hS" target="_blank" rel="nofollow sponsored" class="tool-link">
+        Check on Amazon
+      </a>
+    </div>
+
+  </div>
+</section>
+
 <section>
   <h2>OUR AUDIENCE</h2>
   <div class="tabs">
@@ -633,6 +789,7 @@
     <table id="geoTable" class="data-table" style="display:none"></table>
   </div>
 </section>
+
 
 
 
