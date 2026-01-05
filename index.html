@@ -774,7 +774,8 @@
 
             // ✅ GA TRACKING (ADD THIS)
             gtag('event', 'rain_tap', {
-              event_category: 'interaction'
+              event_category: 'interaction',
+              rain_word: d.word
             });
           };
         }else{
@@ -789,7 +790,8 @@
 
             // ✅ GA TRACKING (ADD THIS)
             gtag('event', 'rain_hover', {
-              event_category: 'interaction'
+              event_category: 'interaction',
+              rain_word: d.word
             });
           };
 
