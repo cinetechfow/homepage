@@ -379,6 +379,12 @@
     }
 
     @media (max-width:768px){
+      .stats-desktop{
+        display: none;
+      }
+      .stats-mobile{
+        display: flex;
+      }
      .hero h1{
         margin-bottom: 4px;
       }
@@ -430,6 +436,12 @@
     }
 
     @media (min-width: 769px){
+      stats-desktop{
+        display: flex;
+      }
+      .stats-mobile{
+        display: none;
+      }
       .hero h1{
         margin-bottom: 6px;
       }
@@ -476,19 +488,19 @@
     </div>
 
     <div class="why-line" id="whyLine"></div>
-    <div class="stats-wrapper">
-      <div class="stats">
-        <div class="stat"><div class="num" id="subCount">0</div><div class="label">SUBSCRIBERS</div></div>
-        <div class="stat"><div class="num" id="viewCount">0</div><div class="label">VIEWS</div></div>
-        <div class="stat"><div class="num" id="videoCount">0</div><div class="label">VIDEOS</div></div>
-      </div>
+
+    <div class="stats stats-desktop">
+      <div class="stat"><div class="num" id="subCount">0</div><div class="label">SUBSCRIBERS</div></div>
+      <div class="stat"><div class="num" id="viewCount">0</div><div class="label">VIEWS</div></div>
+      <div class="stat"><div class="num" id="videoCount">0</div><div class="label">VIDEOS</div></div>
     </div>
+
   </div>
 
   <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
 </div>
 
-<div class="stats mobile-stats">
+<div class="stats mobile-stats stats-mobile">
   <div class="stat">
     <div class="num" id="mSubCount">1.1K</div>
     <div class="label">SUBSCRIBERS</div>
