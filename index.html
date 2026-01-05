@@ -376,14 +376,59 @@
       opacity:.6;
     }
 
-    /* MOBILE BACKGROUND FIX */
-    @media (max-width: 768px){
-      .hero::before{
-        background-size: contain;
-        background-position: center top;
-        background-repeat: no-repeat;
+    .table-wrapper{
+      overflow-x:auto;
+    }
+
+    .data-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.9rem;
+    }
+
+    .data-table tr.total {
+      background: rgba(255,255,255,0.04);
+      font-weight: 700;
+    }
+
+    .data-table tr.total td {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .data-table th,
+    .data-table td{
+      padding:12px 14px;
+      text-align:left;
+    }
+
+    .data-table th{
+      font-size:0.75rem;
+      letter-spacing:0.12em;
+      opacity:0.7;
+      border-bottom:1px solid rgba(255,255,255,.2);
+    }
+
+    .data-table td{
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .data-table tr:last-child td{
+      border-bottom:none;
+    }
+
+    .data-table .num{
+      color:var(--red);
+      font-weight:600;
+      text-align:right;
+    }
+
+    @media (max-width:768px){
+      .data-table{
+        font-size:0.85rem;
       }
     }
+
 
     @media (max-width:768px){
       .stats-desktop{
@@ -554,8 +599,10 @@
     <div class="tab active" data-tab="cities">CITIES</div>
     <div class="tab" data-tab="world">WORLD WIDE</div>
   </div>
-  <canvas id="citiesCanvas"></canvas>
-  <canvas id="geoCanvas" style="display:none"></canvas>
+  <div class="table-wrapper">
+    <table id="citiesTable" class="data-table"></table>
+    <table id="geoTable" class="data-table" style="display:none"></table>
+  </div>
 </section>
 
 
@@ -606,35 +653,87 @@
   });
 
   /* AUDIENCE */
+
+  function renderTable(table, headers, rows){
+    table.innerHTML = `
+      <thead>
+        <tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr>
+      </thead>
+      <tbody>
+        ${rows.map(r=>`
+          <tr>
+            <td>${r[0]}</td>
+            <td class="num">${formatNumber(+r[1])}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    `;
+  }
+
+  /* CITIES */
   fetch("cities.csv").then(r=>r.text()).then(t=>{
-    const rows=t.split("\n").slice(2,12)
-      .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g));
-    new Chart(citiesCanvas,{
-      type:"bar",
-      data:{labels:rows.map(r=>r[1].replace(/"/g,"")),
-      datasets:[{data:rows.map(r=>+r[2]),backgroundColor:"#ff3b3b"}]},
-      options:{indexAxis:"y",plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
-    });
+    const rows = t.split("\n").slice(2,12)
+      .map(r=>r.match(/(".*?"|[^",]+)(?=,|$)/g))
+      .map(r=>[r[1].replace(/"/g,""), r[2]]);
+
+    renderTable(
+      document.getElementById("citiesTable"),
+      ["CITY", "VIEWS"],
+      rows
+    );
   });
+
+  const countryNames = new Intl.DisplayNames(
+    ["en"],
+    { type: "region" }
+  );
+
+  function getCountryName(code){
+    if(!code) return "";
+
+    const clean = code
+      .replace(/"/g, "")
+      .replace(/\uFEFF/g, "") // 🔥 remove BOM
+      .trim()
+      .toUpperCase();
+
+    // ISO country codes must be 2 letters
+    if(clean.length !== 2) return clean;
+
+    try{
+      return countryNames.of(clean) || clean;
+    }catch(e){
+      return clean; // fallback, never crash
+    }
+  }
+
+  /* WORLD */
   fetch("geography.csv").then(r=>r.text()).then(t=>{
-    const rows=t.split("\n").slice(1,7).map(r=>r.split(","));
-    new Chart(geoCanvas,{
-      type:"bar",
-      data:{labels:rows.map(r=>r[0]),
-      datasets:[{data:rows.map(r=>+r[1]),backgroundColor:"#ff3b3b"}]},
-      options:{indexAxis:"y",plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>`${c.raw} Views`}}}}
-    });
+    const rows = t.split("\n").slice(1,7)
+    .map(r=>r.split(","))
+    .map(r=>[
+      getCountryName(r[0]),   // 👈 HERE
+      r[1]
+    ]);
+    renderTable(
+      document.getElementById("geoTable"),
+      ["COUNTRY", "VIEWS"],
+      rows
+    );
   });
+
+
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.onclick=()=>{
       document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
       tab.classList.add("active");
-      citiesCanvas.style.display=tab.dataset.tab==="cities"?"block":"none";
-      geoCanvas.style.display=tab.dataset.tab==="world"?"block":"none";
+
+      citiesTable.style.display = tab.dataset.tab==="cities" ? "table" : "none";
+      geoTable.style.display    = tab.dataset.tab==="world"  ? "table" : "none";
     };
   });
+
+
 
   /* CONTINUOUS RAIN WITH PRESEED */
   const mobileCard=document.getElementById("mobileCard");
