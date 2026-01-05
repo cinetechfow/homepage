@@ -28,11 +28,34 @@
     /* HEADER */
     header{
       position:fixed;
-      top:18px;
+      top:54px;
       left:22px;
       z-index:100;
     }
     header img{height:52px}
+
+    .top-bar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:36px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:0.65rem;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+
+      background:rgba(0,0,0,.92);   /* 🔥 solid separation */
+      backdrop-filter:blur(6px);
+
+      color:rgba(255,255,255,.75);
+      z-index:1000;
+    }
+
 
     /* HERO */
     .hero{
@@ -41,6 +64,7 @@
         linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.96)),
         url("bg1.jpg") center/cover no-repeat;
       display:flex;
+      padding-top:36px;
       align-items:center;
       justify-content:center;
       text-align:center;
@@ -353,14 +377,64 @@
         background-repeat: no-repeat;
       }
     }
+
+    @media (max-width:768px){
+
+     .top-bar{
+        font-size: 0.6rem;        /* smaller text */
+        letter-spacing: 0.1em;   /* tighter spacing */
+        padding: 10px 14px;      /* more breathing space */
+        white-space: normal;     /* allow wrap */
+        line-height: 1.25;       /* clean 2-line if needed */
+        text-align: center;
+      }
+
+      /* Remove stats from hero visually */
+      .hero .stats-wrapper{
+        display:none;
+      }
+
+     .line1{
+        font-size: 0.7rem;     /* 🔽 reduced */
+        line-height: 1.35;
+        opacity: 0.85;
+        margin-top: 12px;
+      }
+
+      /* Re-show stats AFTER hero */
+      body::after{
+        content:"";
+        display:block;
+      }
+
+      .mobile-stats{
+        display:flex;
+        gap:32px;
+        justify-content:center;
+        padding:28px 16px;
+        background:rgba(0,0,0,.85);
+        backdrop-filter:blur(10px);
+      }
+
+      .mobile-stats .num{
+        font-size:2rem;
+      }
+
+    }
+
+
   </style>
 </head>
 
 <body>
+<div class="top-bar">
+  OFFICIAL WEBSITE OF THE CINETECHFLOW YOUTUBE CHANNEL
+</div>
 
 <header>
   <img src="logo_black.png">
 </header>
+
 
 <div class="hero" id="hero">
   <div class="rain" id="rain"></div>
@@ -368,7 +442,6 @@
   <div>
     <h1>CineTechFlow</h1>
     <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
-    <div class="line2">Official website of the CineTechFlow <span>YouTube channel</span></div>
 
     <div class="actions">
       <div class="action-pill" id="teluguBtn">
@@ -386,15 +459,31 @@
     </div>
 
     <div class="why-line" id="whyLine"></div>
-
-    <div class="stats">
-      <div class="stat"><div class="num" id="subCount">0</div><div class="label">SUBSCRIBERS</div></div>
-      <div class="stat"><div class="num" id="viewCount">0</div><div class="label">VIEWS</div></div>
-      <div class="stat"><div class="num" id="videoCount">0</div><div class="label">VIDEOS</div></div>
+    <div class="stats-wrapper">
+      <div class="stats">
+        <div class="stat"><div class="num" id="subCount">0</div><div class="label">SUBSCRIBERS</div></div>
+        <div class="stat"><div class="num" id="viewCount">0</div><div class="label">VIEWS</div></div>
+        <div class="stat"><div class="num" id="videoCount">0</div><div class="label">VIDEOS</div></div>
+      </div>
     </div>
   </div>
 
   <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
+</div>
+
+<div class="stats mobile-stats">
+  <div class="stat">
+    <div class="num" id="mSubCount">1.1K</div>
+    <div class="label">SUBSCRIBERS</div>
+  </div>
+  <div class="stat">
+    <div class="num" id="mViewCount">301.6K</div>
+    <div class="label">VIEWS</div>
+  </div>
+  <div class="stat">
+    <div class="num" id="mVideoCount">33</div>
+    <div class="label">VIDEOS</div>
+  </div>
 </div>
 
 <div class="mobile-card" id="mobileCard">
@@ -467,6 +556,9 @@
     document.getElementById("subCount").textContent = formatNumber(s.subscribers);
     document.getElementById("viewCount").textContent = formatNumber(s.views);
     document.getElementById("videoCount").textContent = formatNumber(s.videos);
+    document.getElementById("mSubCount").textContent = formatNumber(s.subscribers);
+    document.getElementById("mViewCount").textContent = formatNumber(s.views);
+    document.getElementById("mVideoCount").textContent = formatNumber(s.videos);
   });
 
   /* VIDEOS */
