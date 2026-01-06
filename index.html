@@ -972,394 +972,408 @@
 
 <script>
 
-  window.addEventListener("load", () => {
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(initHeavyStuff);
-    } else {
-      setTimeout(initHeavyStuff, 200);
-    }
-  });
+  const heroSection = document.getElementById("hero");
 
-  function initHeavyStuff() {
-    initRain();
-    initVideosOnScroll();
-    initAudienceOnScroll();
-    initWhyLine();
-    const hero = document.getElementById("hero");
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) pauseAllRain();
-        else resumeAllRain();
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(hero);
+window.addEventListener("load", () => {
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(initHeavyStuff);
+  } else {
+    setTimeout(initHeavyStuff, 200);
   }
+});
 
-  function initVideosOnScroll(){
-    let videosLoaded = false;
-    const videosObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !videosLoaded) {
-          initVideos();
-          videosLoaded = true;
-          videosObserver.disconnect();
-        }
-      },
-      {
-        rootMargin: "200px" // preload slightly before visible
+function initHeavyStuff() {
+  initRain();
+  initVideosOnScroll();
+  initAudienceOnScroll();
+  initWhyLine();
+  const hero = document.getElementById("hero");
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) pauseAllRain();
+      else resumeAllRain();
+    },
+    { threshold: 0.1 }
+  );
+
+  observer.observe(hero);
+}
+
+function initVideosOnScroll(){
+  let videosLoaded = false;
+  const videosObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !videosLoaded) {
+        initVideos();
+        videosLoaded = true;
+        videosObserver.disconnect();
       }
-    );
-    videosObserver.observe(document.getElementById("longVideos"));
-  }
+    },
+    {
+      rootMargin: "200px" // preload slightly before visible
+    }
+  );
+  videosObserver.observe(document.getElementById("longVideos"));
+}
 
-  function initAudienceOnScroll(){
-    let audienceLoaded = false;
-    const audienceObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !audienceLoaded) {
-          initAudience();
-          audienceLoaded = true;
-          audienceObserver.disconnect();
-        }
-      },
-      { rootMargin: "200px" }
-    );
+function initAudienceOnScroll(){
+  let audienceLoaded = false;
+  const audienceObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !audienceLoaded) {
+        initAudience();
+        audienceLoaded = true;
+        audienceObserver.disconnect();
+      }
+    },
+    { rootMargin: "200px" }
+  );
 
-    audienceObserver.observe(
-      document.getElementById("audienceSection")
-    );
-  }
+  audienceObserver.observe(
+    document.getElementById("audienceSection")
+  );
+}
 
-  function initVideos() {
-    fetch("long_videos.json")
-      .then(r => r.json())
-      .then(v => {
-        longVideos.innerHTML = v.map(
-          id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
-        ).join("");
-      });
+function initVideos() {
+  fetch("long_videos.json")
+    .then(r => r.json())
+    .then(v => {
+      longVideos.innerHTML = v.map(
+        id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
+      ).join("");
+    });
 
-    fetch("shorts.json")
-      .then(r => r.json())
-      .then(v => {
-        shortVideos.innerHTML = v.map(
-          id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
-        ).join("");
-      });
-  }
+  fetch("shorts.json")
+    .then(r => r.json())
+    .then(v => {
+      shortVideos.innerHTML = v.map(
+        id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
+      ).join("");
+    });
+}
 
-  function initAudience() {
-    fetch("cities.csv")
+function initAudience() {
+  fetch("cities.csv")
+    .then(r => r.text())
+    .then(t => {
+      const rows = t.split("\n").slice(2,12)
+        .map(r => r.match(/(".*?"|[^",]+)(?=,|$)/g))
+        .map(r => [r[1].replace(/"/g,""), r[2]]);
+
+      renderTable(
+        document.getElementById("citiesTable"),
+        ["CITY", "VIEWS"],
+        rows
+      );
+    });
+
+  fetch("geography.csv")
       .then(r => r.text())
       .then(t => {
-        const rows = t.split("\n").slice(2,12)
-          .map(r => r.match(/(".*?"|[^",]+)(?=,|$)/g))
-          .map(r => [r[1].replace(/"/g,""), r[2]]);
+        let rows = t.split("\n")
+          .slice(1)
+          .map(r => r.split(","))
+          .filter(r => r[0] && r[1])
+          .map(r => [safeCountryName(r[0]), Number(r[1])]);
+
+        const total = rows.reduce((s,r)=>s+r[1],0);
+        rows.unshift(["TOTAL", total]);
 
         renderTable(
-          document.getElementById("citiesTable"),
-          ["CITY", "VIEWS"],
+          document.getElementById("geoTable"),
+          ["COUNTRY", "VIEWS"],
           rows
         );
       });
+}
 
-    fetch("geography.csv")
-        .then(r => r.text())
-        .then(t => {
-          let rows = t.split("\n")
-            .slice(1)
-            .map(r => r.split(","))
-            .filter(r => r[0] && r[1])
-            .map(r => [safeCountryName(r[0]), Number(r[1])]);
+function initWhyLine() {
+  whyEl.textContent = whyLines[0];
+  whyEl.classList.add("show");
+  whyIndex = 1;
+  rotateWhyLine();
+  setInterval(rotateWhyLine, 4500);
+}
 
-          const total = rows.reduce((s,r)=>s+r[1],0);
-          rows.unshift(["TOTAL", total]);
+function initRain() {
+    fetch("rain_texts.json").then(r=>r.json()).then(words=>{
+    const rain=document.getElementById("rain");
+    const isMobile=window.innerWidth<=768;
+    const COLS=isMobile?2:3;
+    let tapCount=0,showTap=false;
 
-          renderTable(
-            document.getElementById("geoTable"),
-            ["COUNTRY", "VIEWS"],
-            rows
-          );
-        });
-  }
+    const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
 
-  function initWhyLine() {
-    whyEl.textContent = whyLines[0];
-    whyEl.classList.add("show");
-    whyIndex = 1;
-    rotateWhyLine();
-    setInterval(rotateWhyLine, 4500);
-  }
+    let hintShown = false;
 
-  function initRain() {
-      fetch("rain_texts.json").then(r=>r.json()).then(words=>{
-      const rain=document.getElementById("rain");
-      const isMobile=window.innerWidth<=768;
-      const COLS=isMobile?2:3;
-      let tapCount=0,showTap=false;
+    if (isMobile) {
+      setTimeout(() => {
+        if (!hintShown) {
+          mTitle.textContent = "Quick Tip";
+          mDesc.textContent = "Tap on any rain fall text";
+          mobileCard.classList.add("active");
+          hintShown = true;
+        }
+      }, 1200); // small delay feels intentional
+    }
 
-      const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
+    function spawn(lane,fast=false,seed=false){
+      const d=words[Math.floor(Math.random()*words.length)];
+      const el=document.createElement("span");
+      el.textContent=d.word;
+      const jitter = isMobile ? 3 : 10; // % range
+      const randomX = lane.x + (Math.random() * jitter * 2 - jitter);
+      el.style.left = randomX + "%";
+      el.style.top=seed?(10+Math.random()*70)+"%":"-15%";
+      el.style.animationDuration=(fast?9:(isMobile?26:18))+Math.random()*6+"s";
 
-      let hintShown = false;
+      if(isMobile && showTap){
+        const s=document.createElement("small");
+        s.textContent="(Tap)";
+        el.appendChild(s);
+      }
 
-      if (isMobile) {
-        setTimeout(() => {
-          if (!hintShown) {
-            mTitle.textContent = "Quick Tip";
-            mDesc.textContent = "Tap on any rain fall text";
-            mobileCard.classList.add("active");
-            hintShown = true;
+      if(isMobile){
+        el.onclick=()=>{
+          tapCount++;
+          if(tapCount>=2){
+            showTap=false;
+            document.querySelectorAll(".rain span small").forEach(s=>s.remove());
           }
-        }, 1200); // small delay feels intentional
+          mobileCard.classList.remove("active"); // hide hint if visible
+          mTitle.textContent=d.word;
+          mDesc.textContent=d.description;
+          mobileCard.classList.add("active");
+
+          // ✅ GA TRACKING (ADD THIS)
+          gtag('event', 'rain_tap', {
+            event_category: 'interaction',
+            rain_word: d.word
+          });
+        };
+      }else{
+        const card=document.createElement("div");
+        card.className="rain-card";
+        card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
+        el.appendChild(card);
+        el.onmouseenter = () => {
+          pauseAllRain();                 // 🔴 pauses ALL rain
+          el.classList.add("active");
+          card.style.display = "block";
+
+          // ✅ GA TRACKING (ADD THIS)
+          gtag('event', 'rain_hover', {
+            event_category: 'interaction',
+            rain_word: d.word
+          });
+        };
+
+        el.onmouseleave = () => {
+          resumeAllRain();                // 🟢 resumes ALL rain
+          el.classList.remove("active");
+          card.style.display = "none";
+        };
       }
 
-      function spawn(lane,fast=false,seed=false){
-        const d=words[Math.floor(Math.random()*words.length)];
-        const el=document.createElement("span");
-        el.textContent=d.word;
-        const jitter = isMobile ? 3 : 10; // % range
-        const randomX = lane.x + (Math.random() * jitter * 2 - jitter);
-        el.style.left = randomX + "%";
-        el.style.top=seed?(10+Math.random()*70)+"%":"-15%";
-        el.style.animationDuration=(fast?9:(isMobile?26:18))+Math.random()*6+"s";
+      const sizes = isMobile ? [0.75, 0.9, 1.05, 1.2] : [0.8, 0.95, 1.1, 1.3, 1.5, 1.7];
 
-        if(isMobile && showTap){
-          const s=document.createElement("small");
-          s.textContent="(Tap)";
-          el.appendChild(s);
-        }
+      el.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + "rem";
 
-        if(isMobile){
-          el.onclick=()=>{
-            tapCount++;
-            if(tapCount>=2){
-              showTap=false;
-              document.querySelectorAll(".rain span small").forEach(s=>s.remove());
-            }
-            mobileCard.classList.remove("active"); // hide hint if visible
-            mTitle.textContent=d.word;
-            mDesc.textContent=d.description;
-            mobileCard.classList.add("active");
+      el.onanimationend=()=>el.remove();
+      rain.appendChild(el);
 
-            // ✅ GA TRACKING (ADD THIS)
-            gtag('event', 'rain_tap', {
-              event_category: 'interaction',
-              rain_word: d.word
-            });
-          };
-        }else{
-          const card=document.createElement("div");
-          card.className="rain-card";
-          card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
-          el.appendChild(card);
-          el.onmouseenter = () => {
-            pauseAllRain();                 // 🔴 pauses ALL rain
-            el.classList.add("active");
-            card.style.display = "block";
+      setTimeout(()=>spawn(lane,false,false),(isMobile?2000:1500)+Math.random()*2000);
+    }
 
-            // ✅ GA TRACKING (ADD THIS)
-            gtag('event', 'rain_hover', {
-              event_category: 'interaction',
-              rain_word: d.word
-            });
-          };
+    lanes.forEach((lane,i)=>{
+      spawn(lane,true,true);
+      setTimeout(()=>spawn(lane,true,true),600);
+    });
+  });
+}
 
-          el.onmouseleave = () => {
-            resumeAllRain();                // 🟢 resumes ALL rain
-            el.classList.remove("active");
-            card.style.display = "none";
-          };
-        }
 
-        const sizes = isMobile ? [0.75, 0.9, 1.05, 1.2] : [0.8, 0.95, 1.1, 1.3, 1.5, 1.7];
+/* SCROLL */
+const cue=document.getElementById("scrollCue");
+window.addEventListener("scroll",()=>{
+  cue.style.opacity=window.scrollY<80?1:0;
+});
 
-        el.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + "rem";
 
-        el.onanimationend=()=>el.remove();
-        rain.appendChild(el);
+/* STATS */
+fetch("stats.json").then(r=>r.json()).then(s=>{
+  document.getElementById("subCount").textContent = formatNumber(s.subscribers);
+  document.getElementById("viewCount").textContent = formatNumber(s.views);
+  document.getElementById("videoCount").textContent = formatNumber(s.videos);
+  document.getElementById("mSubCount").textContent = formatNumber(s.subscribers);
+  document.getElementById("mViewCount").textContent = formatNumber(s.views);
+  document.getElementById("mVideoCount").textContent = formatNumber(s.videos);
+});
 
-        setTimeout(()=>spawn(lane,false,false),(isMobile?2000:1500)+Math.random()*2000);
+/* AUDIENCE */
+function renderTable(table, headers, rows){
+  table.innerHTML = `
+    <thead>
+      <tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr>
+    </thead>
+    <tbody>
+      ${rows.map(r=>`
+        <tr>
+          <td>${r[0]}</td>
+          <td class="num">${formatNumber(+r[1])}</td>
+        </tr>
+      `).join("")}
+    </tbody>
+  `;
+}
+
+const countryNames = new Intl.DisplayNames(
+  ["en"],
+  { type: "region" }
+);
+
+function safeCountryName(code){
+  try{
+    return countryNames.of(code.toUpperCase()) || code;
+  }catch(e){
+    return code; // fallback safely
+  }
+}
+
+function getCountryName(code){
+  if(!code) return "";
+
+  const clean = code
+    .replace(/"/g, "")
+    .replace(/\uFEFF/g, "") // 🔥 remove BOM
+    .trim()
+    .toUpperCase();
+
+  // ISO country codes must be 2 letters
+  if(clean.length !== 2) return clean;
+
+  try{
+    return countryNames.of(clean) || clean;
+  }catch(e){
+    return clean; // fallback, never crash
+  }
+}
+
+
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+
+    citiesTable.style.display = tab.dataset.tab==="cities" ? "table" : "none";
+    geoTable.style.display    = tab.dataset.tab==="world"  ? "table" : "none";
+  };
+});
+
+
+
+/* CONTINUOUS RAIN WITH PRESEED */
+const mobileCard=document.getElementById("mobileCard");
+const mTitle=document.getElementById("mobileTitle");
+const mDesc=document.getElementById("mobileDesc");
+let tipManuallyClosed = false;
+document.getElementById("closeMobile").onclick = () => {
+  tipManuallyClosed = true;
+  mobileCard.classList.remove("active");
+};
+const heroObserver = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      // User came BACK to home
+      if (!tipManuallyClosed) {
+        mobileCard.classList.add("active");
       }
+    } else {
+      // User LEFT home
+      if (mobileCard.classList.contains("active")) {
+        mobileCard.classList.remove("active");
+      }
+    }
+  },
+  {
+    threshold: 0.15
+  }
+);
 
-      lanes.forEach((lane,i)=>{
-        spawn(lane,true,true);
-        setTimeout(()=>spawn(lane,true,true),600);
-      });
+heroObserver.observe(heroSection);
+
+
+function pauseAllRain(){
+  document.querySelectorAll(".rain span").forEach(el=>{
+      el.style.animationPlayState = "paused";
     });
-  }
+}
 
-  /* SCROLL */
-  const cue=document.getElementById("scrollCue");
-  window.addEventListener("scroll",()=>{
-    cue.style.opacity=window.scrollY<80?1:0;
+function resumeAllRain(){
+  document.querySelectorAll(".rain span").forEach(el=>{
+    el.style.animationPlayState = "running";
   });
+}
 
-  /* STATS */
-  fetch("stats.json").then(r=>r.json()).then(s=>{
-    document.getElementById("subCount").textContent = formatNumber(s.subscribers);
-    document.getElementById("viewCount").textContent = formatNumber(s.views);
-    document.getElementById("videoCount").textContent = formatNumber(s.videos);
-    document.getElementById("mSubCount").textContent = formatNumber(s.subscribers);
-    document.getElementById("mViewCount").textContent = formatNumber(s.views);
-    document.getElementById("mVideoCount").textContent = formatNumber(s.videos);
+const whyLines = [
+  "Subscribe if you care about how cinema actually works — not just reviews.",
+"Hype kosam kaadu. Clarity kosam subscribe cheyyi.",
+"If you like cinema breakdowns with logic, not noise — subscribe.",
+"Movies ni choodadam kaadu, understand cheyyali anukunte — subscribe.",
+"Subscribe for ideas that stay with you even after the video ends."
+];
+
+const whyEl = document.getElementById("whyLine");
+let whyIndex = 0;
+
+function rotateWhyLine(){
+  whyEl.classList.remove("show");
+
+  setTimeout(() => {
+    whyEl.textContent = whyLines[whyIndex];
+    whyEl.classList.add("show");
+    whyIndex = (whyIndex + 1) % whyLines.length;
+  }, 500);
+}
+
+function formatNumber(num) {
+  if (num >= 1_000_000) {
+    return (num / 1_000_000).toFixed(2).replace(/\.00$/, "") + "M";
+  }
+  if (num >= 1_000) {
+    return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  }
+  return num.toString();
+}
+
+ /* Track amazon product links */
+document.addEventListener("click", function (e) {
+  const link = e.target.closest(".tool-link");
+  if (!link) return;
+
+  const productName = link.getAttribute("data-product") || "Unknown Tool";
+
+  gtag("event", "buy_click", {
+    event_category: "amazon affiliate",
+    event_label: productName,
+    product_name: productName,
+    link_url: link.href
   });
+});
+ /* Track follow links */
+document.addEventListener("click", function (e) {
+  const link = e.target.closest(".follow-link");
+  if (!link) return;
 
-  /* AUDIENCE */
-  function renderTable(table, headers, rows){
-    table.innerHTML = `
-      <thead>
-        <tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr>
-      </thead>
-      <tbody>
-        ${rows.map(r=>`
-          <tr>
-            <td>${r[0]}</td>
-            <td class="num">${formatNumber(+r[1])}</td>
-          </tr>
-        `).join("")}
-      </tbody>
-    `;
-  }
+  const platform = link.getAttribute("data-platform") || "Unknown";
 
-  const countryNames = new Intl.DisplayNames(
-    ["en"],
-    { type: "region" }
-  );
-
-  function safeCountryName(code){
-    try{
-      return countryNames.of(code.toUpperCase()) || code;
-    }catch(e){
-      return code; // fallback safely
-    }
-  }
-
-  function getCountryName(code){
-    if(!code) return "";
-
-    const clean = code
-      .replace(/"/g, "")
-      .replace(/\uFEFF/g, "") // 🔥 remove BOM
-      .trim()
-      .toUpperCase();
-
-    // ISO country codes must be 2 letters
-    if(clean.length !== 2) return clean;
-
-    try{
-      return countryNames.of(clean) || clean;
-    }catch(e){
-      return clean; // fallback, never crash
-    }
-  }
-
-
-
-  document.querySelectorAll(".tab").forEach(tab=>{
-    tab.onclick=()=>{
-      document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-      tab.classList.add("active");
-
-      citiesTable.style.display = tab.dataset.tab==="cities" ? "table" : "none";
-      geoTable.style.display    = tab.dataset.tab==="world"  ? "table" : "none";
-    };
+  gtag("event", "follow_click", {
+    event_category: "follow-engagement",
+    platform: platform,
+    link_url: link.href
   });
-
-
-
-  /* CONTINUOUS RAIN WITH PRESEED */
-  const mobileCard=document.getElementById("mobileCard");
-  const mTitle=document.getElementById("mobileTitle");
-  const mDesc=document.getElementById("mobileDesc");
-  document.getElementById("closeMobile").onclick=()=>mobileCard.classList.remove("active");
-
-  function pauseAllRain(){
-    document.querySelectorAll(".rain span").forEach(el=>{
-        el.style.animationPlayState = "paused";
-      });
-  }
-
-  function resumeAllRain(){
-    document.querySelectorAll(".rain span").forEach(el=>{
-      el.style.animationPlayState = "running";
-    });
-  }
-
-  const whyLines = [
-    "Subscribe if you care about how cinema actually works — not just reviews.",
-  "Hype kosam kaadu. Clarity kosam subscribe cheyyi.",
-  "If you like cinema breakdowns with logic, not noise — subscribe.",
-  "Movies ni choodadam kaadu, understand cheyyali anukunte — subscribe.",
-  "Subscribe for ideas that stay with you even after the video ends."
-  ];
-
-  const whyEl = document.getElementById("whyLine");
-  let whyIndex = 0;
-
-  function rotateWhyLine(){
-    whyEl.classList.remove("show");
-
-    setTimeout(() => {
-      whyEl.textContent = whyLines[whyIndex];
-      whyEl.classList.add("show");
-      whyIndex = (whyIndex + 1) % whyLines.length;
-    }, 500);
-  }
-
-  function formatNumber(num) {
-    if (num >= 1_000_000) {
-      return (num / 1_000_000).toFixed(2).replace(/\.00$/, "") + "M";
-    }
-    if (num >= 1_000) {
-      return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
-    }
-    return num.toString();
-  }
-
-   /* Track amazon product links */
-  document.addEventListener("click", function (e) {
-    const link = e.target.closest(".tool-link");
-    if (!link) return;
-
-    const productName = link.getAttribute("data-product") || "Unknown Tool";
-
-    gtag("event", "buy_click", {
-      event_category: "amazon affiliate",
-      event_label: productName,
-      product_name: productName,
-      link_url: link.href
-    });
-  });
-   /* Track follow links */
-  document.addEventListener("click", function (e) {
-    const link = e.target.closest(".follow-link");
-    if (!link) return;
-
-    const platform = link.getAttribute("data-platform") || "Unknown";
-
-    gtag("event", "follow_click", {
-      event_category: "follow-engagement",
-      platform: platform,
-      link_url: link.href
-    });
-  });
-
-  window.addEventListener("scroll", () => {
-    const card = document.getElementById("mobileCard");
-
-    if (!card.classList.contains("active")) return;
-
-    const scrollBottom =
-      window.innerHeight + window.scrollY >=
-      document.documentElement.scrollHeight - 40;
-
-    if (scrollBottom) {
-      card.classList.remove("active");
-    }
-  });
-
+});
 
 
 
