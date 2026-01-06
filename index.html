@@ -896,7 +896,11 @@
 <script>
 
   window.addEventListener("load", () => {
-    setTimeout(initHeavyStuff, 0);
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(initHeavyStuff);
+    } else {
+      setTimeout(initHeavyStuff, 200);
+    }
   });
 
   function initHeavyStuff() {
