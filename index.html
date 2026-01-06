@@ -27,6 +27,12 @@
     }
     a{text-decoration:none;color:inherit}
 
+    @keyframes slideGlow {
+      0% { opacity: .65 }
+      50% { opacity: 1 }
+      100% { opacity: .65 }
+    }
+
     /* HEADER */
     header{
       position:fixed;
@@ -63,6 +69,34 @@
       text-shadow:0 0 8px rgba(255,59,59,.35);
       padding:0 4px;        /* 👈 spacing left & right */
       letter-spacing:0.04em; /* 👈 subtle clarity */
+    }
+
+    .top-bar{
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar::after{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-40%;
+      width:40%;
+      height:100%;
+      background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+      );
+      animation: scan 6s ease-in-out infinite;
+    }
+
+    @keyframes scan{
+      0%   { left:-40%; opacity:0 }
+      15%  { opacity:1 }
+      50%  { left:100%; opacity:0 }
+      100% { left:100%; opacity:0 }
     }
 
 
@@ -796,7 +830,7 @@
     If you purchase through them, CineTechFlow may earn a small commission
     at no extra cost to you.
   </p>
-</section> 
+</section>
 
 <section>
   <h2>OUR AUDIENCE</h2>
