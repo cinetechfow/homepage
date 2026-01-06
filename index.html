@@ -335,6 +335,7 @@
       padding:18px 20px 24px;
       transition:bottom .35s ease;
       z-index:999;
+      will-change: transform;
     }
     .mobile-card.active{bottom:0}
     .mobile-card .title{
@@ -942,11 +943,17 @@
 
 
 <footer>
+  <div class="footer-brand">
+    Cinema × Technology × Storytelling
+  </div>
+
   © 2026 CineTechFlow · Created by
-  <a href="mailto:justctrllaugh@gmail.com" style="color:var(--red)" class="follow-link"
-     data-platform="E-mail"
-     target="_blank"
-     rel="noopener" >Heisenberg</a>
+  <a href="mailto:justctrllaugh@gmail.com"
+     style="color:var(--red)"
+     class="follow-link"
+     data-platform="E-mail">
+    Heisenberg
+  </a>
 </footer>
 
 <script type="application/ld+json">
@@ -1338,6 +1345,21 @@
       link_url: link.href
     });
   });
+
+  window.addEventListener("scroll", () => {
+    const card = document.getElementById("mobileCard");
+
+    if (!card.classList.contains("active")) return;
+
+    const scrollBottom =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 40;
+
+    if (scrollBottom) {
+      card.classList.remove("active");
+    }
+  });
+
 
 
 
