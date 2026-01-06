@@ -12,6 +12,9 @@
 
   <style>
     :root{
+      --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    :root{
       --red:#ff3b3b;
       --bg:#050505;
       --text:#f1f1f1;
@@ -20,11 +23,14 @@
     *{box-sizing:border-box;user-select:none}
     body{
       margin:0;
-      font-family:Inter,sans-serif;
+      font-family: var(--font-primary);
+      font-weight:400;
+      line-height:1.6;
       background:var(--bg);
       color:var(--text);
       overflow-x:hidden;
     }
+
     a{text-decoration:none;color:inherit}
 
     @keyframes slideGlow {
@@ -123,8 +129,9 @@
       min-height: 2.5em; /* prevents layout jump */
 
       font-size:clamp(1.15rem, 2.2vw, 1.45rem);
-      font-weight:500;
-      line-height:1.45;
+      font-weight:400;
+      letter-spacing:0.01em;
+      line-height:1.55;
 
       color:#f2f2f2;
       opacity:0;
@@ -167,8 +174,9 @@
     background:#ffffff;
     color:#000000;
 
-    font-size:0.95rem;
-    font-weight:500;          /* 🔥 lighter */
+    font-size:0.9rem;
+    font-weight:500;
+    letter-spacing:0.01em;
     letter-spacing:0;         /* 🔥 remove spacing */
     line-height:1;
 
@@ -310,8 +318,14 @@
       max-width:1200px;
       margin:auto;
     }
-    h2{text-transform:uppercase;margin-bottom:34px}
-
+    h2{
+      text-transform:uppercase;
+      font-size:1.05rem;
+      letter-spacing:0.16em;
+      font-weight:600;
+      opacity:0.85;
+      margin-bottom:34px;
+    }
     /* FLOW CARDS */
     .cards{
       display:grid;
@@ -324,6 +338,12 @@
       border-radius:18px;
     }
     .card h3{color:var(--red)}
+
+    .card p{
+      font-size:0.85rem;
+      line-height:1.6;
+      opacity:0.8;
+    }
 
     /* VIDEOS */
     .grid{
@@ -431,14 +451,16 @@
     }
 
     .data-table th{
-      font-size:0.75rem;
-      letter-spacing:0.12em;
+      font-size:0.7rem;
+      letter-spacing:0.2em;
+      font-weight:600;
       opacity:0.7;
       border-bottom:1px solid rgba(255,255,255,.2);
     }
 
     .data-table td{
-      border-bottom:1px solid rgba(255,255,255,.08);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      font-size:0.85rem;
     }
 
     .data-table tr:last-child td{
@@ -544,6 +566,18 @@
       .data-table th,
       .data-table td{
         padding:10px 8px;
+      }
+
+      body{
+        line-height:1.7;
+      }
+
+      .card p{
+        font-size:0.88rem;
+      }
+
+      .why-line{
+        font-size:1.05rem;
       }
     }
 
