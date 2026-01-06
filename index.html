@@ -173,34 +173,71 @@
       flex-wrap:wrap;
     }
 
-   .cta{
-    padding:14px 34px;
-    border-radius:16px;
+    .cta{
+      display: inline-flex;
+      align-items: center;
 
-    background:#ffffff;
-    color:#000000;
+      padding: 10px 22px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.88);
+      color: #000;
 
-    font-size:0.9rem;
-    font-weight:500;
-    letter-spacing:0.01em;
-    letter-spacing:0;         /* 🔥 remove spacing */
-    line-height:1;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
 
-    border:none;
-    cursor:pointer;
+      border: 1px solid rgba(0,0,0,0.08);
+      cursor: pointer;
 
-    box-shadow:0 10px 30px rgba(255,255,255,.15);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 
-    transition:
-      transform .25s ease,
-      box-shadow .25s ease,
-      background .25s ease;
+      transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
     }
 
+
     .cta:hover{
-      transform:translateY(-2px);
-      background:#f2f2f2;
-      box-shadow:0 14px 40px rgba(255,255,255,.25);
+      transform: translateY(-1px);
+      background: #fff;
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .cta.secondary{
+      background: transparent;
+      box-shadow: none;
+      position: relative;
+      color: rgba(255,255,255,0.95);
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .cta.secondary::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-6px;
+      width:28px;
+      height:2px;
+      background: var(--red);
+      opacity:0.75;
+      transform:translateX(-50%);
+      border-radius:2px;
+      opacity:0.6;
+      animation: softPulse 3.2s ease-in-out infinite;
+    }
+
+    /* gentle hover feedback */
+    .cta.secondary:hover{
+      background: rgba(255,255,255,0.08);
+      box-shadow: none;
+      transform: none;
+    }
+
+    @keyframes softPulse{
+      0%,100%{opacity:.7}
+      50%{opacity:1}
     }
 
     /* STATS */
@@ -592,6 +629,12 @@
       .why-line{
         font-size:1.05rem;
       }
+
+      .cta{
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+      }
     }
 
 
@@ -703,7 +746,7 @@
          onclick="gtag('event','subscribe_click',{event_category:'engagement'})">
         Subscribe Our Channel
       </a>
-      <a class="cta idea-btn"
+      <a class="cta idea-btn secondary"
          href="https://forms.gle/ftajqesi3KiQMkN59"
          target="_blank"
          onclick="gtag('event','idea_submit_click',{event_category:'engagement'})">
