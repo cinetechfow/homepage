@@ -812,7 +812,7 @@
   </p>
 </section>
 
-<section>
+<section id="audienceSection">
   <h2>OUR AUDIENCE</h2>
   <div class="tabs">
     <div class="tab active" data-tab="cities">CITIES</div>
@@ -885,8 +885,8 @@
 
   function initHeavyStuff() {
     initRain();
-    initVideos();
-    initAudience();
+    initVideosOnScroll();
+    initAudienceOnScroll();
     initWhyLine();
     const hero = document.getElementById("hero");
     const observer = new IntersectionObserver(
@@ -898,6 +898,41 @@
     );
 
     observer.observe(hero);
+  }
+
+  function initVideosOnScroll(){
+    let videosLoaded = false;
+    const videosObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !videosLoaded) {
+          initVideos();
+          videosLoaded = true;
+          videosObserver.disconnect();
+        }
+      },
+      {
+        rootMargin: "200px" // preload slightly before visible
+      }
+    );
+    videosObserver.observe(document.getElementById("longVideos"));
+  }
+
+  function initAudienceOnScroll(){
+    let audienceLoaded = false;
+    const audienceObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !audienceLoaded) {
+          initAudience();
+          audienceLoaded = true;
+          audienceObserver.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    audienceObserver.observe(
+      document.getElementById("audienceSection")
+    );
   }
 
   function initVideos() {
@@ -1213,6 +1248,8 @@
       link_url: link.href
     });
   });
+
+
 
 </script>
 
