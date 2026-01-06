@@ -39,6 +39,40 @@
 
     a{text-decoration:none;color:inherit}
 
+    .brand-title{
+      position:relative;
+      display:inline-block;     /* 👈 text defines center */
+    }
+
+    .platform-line{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+
+      margin-top:2px;
+
+      font-size:1rem;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+
+      opacity:0.6;
+    }
+
+    .platform-line .yt-badge{
+      height:2em;      /* matches text height */
+      width:auto;
+      opacity:0.85;
+    }
+
+    .platform-text{
+      font-weight:500;
+    }
+
+
+
+
+
     @keyframes slideGlow {
       0% { opacity: .65 }
       50% { opacity: 1 }
@@ -738,7 +772,11 @@
   <div class="rain" id="rain"></div>
 
   <div>
-    <h1>CineTechFlow</h1>
+    <h1 class="brand-title">CineTechFlow</h1>
+    <div class="platform-line">
+      <img src="youtube_logo.png" alt="" class="yt-badge">
+      <span class="platform-text">YouTube Channel</span>
+    </div>
     <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
 
     <div class="actions">
@@ -1373,6 +1411,16 @@ document.addEventListener("click", function (e) {
     platform: platform,
     link_url: link.href
   });
+});
+
+
+  window.addEventListener("load", () => {
+  const yt = document.querySelector(".yt-badge");
+  yt.classList.add("intro");
+
+  setTimeout(() => {
+    yt.classList.remove("intro");
+  }, 700);
 });
 
 
