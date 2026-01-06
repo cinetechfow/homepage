@@ -908,6 +908,16 @@
     initVideos();
     initAudience();
     initWhyLine();
+    const hero = document.getElementById("hero");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) pauseAllRain();
+        else resumeAllRain();
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(hero);
   }
 
   function initVideos() {
@@ -915,7 +925,7 @@
       .then(r => r.json())
       .then(v => {
         longVideos.innerHTML = v.map(
-          id => `<iframe src="https://www.youtube.com/embed/${id}"></iframe>`
+          id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
         ).join("");
       });
 
@@ -923,7 +933,7 @@
       .then(r => r.json())
       .then(v => {
         shortVideos.innerHTML = v.map(
-          id => `<iframe src="https://www.youtube.com/embed/${id}"></iframe>`
+          id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
         ).join("");
       });
   }
