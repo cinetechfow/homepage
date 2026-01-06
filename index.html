@@ -120,6 +120,8 @@
       margin:28px auto 36px;
       max-width:720px;
 
+      min-height: 2.5em; /* prevents layout jump */
+
       font-size:clamp(1.15rem, 2.2vw, 1.45rem);
       font-weight:500;
       line-height:1.45;
@@ -134,6 +136,7 @@
       transition:
         opacity .8s ease,
         transform .8s ease;
+
     }
 
     .why-line.show{
@@ -156,21 +159,6 @@
       justify-content:center;
       flex-wrap:wrap;
     }
-    
-    .telugu-tip{
-      position:absolute;
-      bottom:-52px;
-      left:50%;
-      transform:translateX(-50%);
-      background:var(--glass);
-      backdrop-filter:blur(10px);
-      border-radius:12px;
-      padding:8px 12px;
-      font-size:.75rem;
-      white-space:nowrap;
-      display:none;
-    }
-    .action-pill.active .telugu-tip{display:block}
 
    .cta{
     padding:14px 34px;
@@ -610,6 +598,11 @@
         font-size:2rem;
       }
 
+      .why-line{
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
     }
 
     @media (min-width: 769px){
@@ -658,10 +651,6 @@
     <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
 
     <div class="actions">
-      <div class="action-pill" id="teluguBtn">
-        🎧 Telugu Content
-        <div class="telugu-tip">Every story. Every breakdown. Explained in Telugu.</div>
-      </div>
       <a class="cta"
          href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1"
          onclick="gtag('event','subscribe_click',{event_category:'engagement'})">
@@ -965,6 +954,9 @@
   }
 
   function initWhyLine() {
+    whyEl.textContent = whyLines[0];
+    whyEl.classList.add("show");
+    whyIndex = 1;
     rotateWhyLine();
     setInterval(rotateWhyLine, 4500);
   }
@@ -1065,14 +1057,6 @@
       });
     });
   }
-
-
-
-
-  /* TELUGU TOOLTIP */
-  document.getElementById("teluguBtn").onclick=e=>{
-    e.currentTarget.classList.toggle("active");
-  };
 
   /* SCROLL */
   const cue=document.getElementById("scrollCue");
