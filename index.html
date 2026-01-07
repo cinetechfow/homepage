@@ -1,1439 +1,1475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CineTechFlow</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="logo_black.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-
-  <style>
-    :root{
-      --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    :root{
-      --red:#ff3b3b;
-      --bg:#050505;
-      --text:#f1f1f1;
-      --glass:rgba(0,0,0,.6);
-      --red-main: #e53935;     /* primary brand red */
-      --red-soft: #ff6b6b;     /* subtle highlights */
-      --red-dark: #b71c1c;     /* depth / hover */
-      --bg: #050505;
-      --text: #f1f1f1;
-      --glass: rgba(0,0,0,.6);
-    }
-    *{box-sizing:border-box;user-select:none}
-    body{
-      margin:0;
-      font-family: var(--font-primary);
-      font-weight:400;
-      line-height:1.6;
-      background:var(--bg);
-      color:var(--text);
-      overflow-x:hidden;
-    }
-
-    a{text-decoration:none;color:inherit}
-
-    .brand-title{
-      position:relative;
-      display:inline-block;     /* 👈 text defines center */
-    }
-
-    .platform-line{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-
-      margin-top:2px;
-
-      font-size:1rem;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-
-      opacity:0.6;
-    }
-
-    .platform-line .yt-badge{
-      height:2em;      /* matches text height */
-      width:auto;
-      opacity:0.85;
-    }
-
-    .platform-text{
-      font-weight:500;
-    }
-
-
-
-
-
-    @keyframes slideGlow {
-      0% { opacity: .65 }
-      50% { opacity: 1 }
-      100% { opacity: .65 }
-    }
-
-    /* HEADER */
-    header{
-      position:fixed;
-      top:54px;
-      left:22px;
-      z-index:100;
-    }
-    header img{height:52px}
-
-    .top-bar{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:36px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      font-size:0.65rem;
-      letter-spacing:0.16em;
-      text-transform:uppercase;
-
-      background:rgba(0,0,0,.92);   /* 🔥 solid separation */
-      backdrop-filter:blur(6px);
-
-      color:rgba(255,255,255,.75);
-      z-index:1000;
-    }
-
-    .top-bar .yt{
-      color:#ff3b3b;
-      text-shadow:0 0 8px rgba(255,59,59,.35);
-      padding:0 4px;        /* 👈 spacing left & right */
-      letter-spacing:0.04em; /* 👈 subtle clarity */
-    }
-
-    .top-bar{
-      position: relative;
-      overflow: hidden;
-    }
-
-    .top-bar::after{
-      content:"";
-      position:absolute;
-      top:0;
-      left:-40%;
-      width:40%;
-      height:100%;
-      background:linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.25),
-        transparent
-      );
-      animation: scan 6s ease-in-out infinite;
-    }
-
-    @keyframes scan{
-      0%   { left:-40%; opacity:0 }
-      15%  { opacity:1 }
-      50%  { left:100%; opacity:0 }
-      100% { left:100%; opacity:0 }
-    }
-
-
-    /* HERO */
-    .hero{
-      min-height:100vh;
-      background:
-        linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.96)),
-        url("bg1.jpg") center/cover no-repeat;
-      display:flex;
-      padding-top:36px;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-      z-index:1;
-    }
-    .hero h1{font-size:clamp(2.8rem,6vw,4.2rem)}
-    .why-line{
-      margin:28px auto 36px;
-      max-width:720px;
-
-      min-height: 2.5em; /* prevents layout jump */
-
-      font-size:clamp(1.15rem, 2.2vw, 1.45rem);
-      font-weight:400;
-      letter-spacing:0.01em;
-      line-height:1.55;
-
-      color:#f2f2f2;
-      opacity:0;
-
-      letter-spacing:.015em;
-      text-align:center;
-
-      transform:translateY(10px);
-      transition:
-        opacity .8s ease,
-        transform .8s ease;
-
-    }
-
-    .why-line.show{
-      opacity:.96;
-      transform:translateY(0);
-    }
-    .why-line.center{ text-align:center; margin-bottom:18px }
-    .why-line.subtle{ text-align:center; font-size:.95rem; opacity:.85 }
-    .why-line.micro{ font-size:.9rem; opacity:.75 }
-
-    .line1{margin-top:16px}
-
-
-
-    .actions{
-      margin-top:26px;
-      display:flex;
-      gap:12px;
-      z-index: 50;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-
-    .cta{
-      display: inline-flex;
-      align-items: center;
-
-      padding: 10px 22px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.88);
-      color: #000;
-
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-
-      border: 1px solid rgba(0,0,0,0.08);
-      cursor: pointer;
-
-      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-
-      transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        background .25s ease;
-    }
-
-
-    .cta:hover{
-      transform: translateY(-1px);
-      background: #fff;
-      box-shadow:
-        0 12px 30px rgba(0,0,0,0.25);
-    }
-
-    .cta.secondary{
-      background: transparent;
-      box-shadow: none;
-      position: relative;
-      color: rgba(255,255,255,0.95);
-      border-color: rgba(255,255,255,0.35);
-    }
-
-    .cta.secondary::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      bottom:-6px;
-      width:28px;
-      height:2px;
-      background: var(--red);
-      opacity:0.75;
-      transform:translateX(-50%);
-      border-radius:2px;
-      opacity:0.6;
-      animation: softPulse 3.2s ease-in-out infinite;
-    }
-
-    /* gentle hover feedback */
-    .cta.secondary:hover{
-      background: rgba(255,255,255,0.08);
-      box-shadow: none;
-      transform: none;
-    }
-
-    @keyframes softPulse{
-      0%,100%{opacity:.7}
-      50%{opacity:1}
-    }
-
-    /* STATS */
-    .stats{
-      position: relative;
-      margin-top:36px;
-      display:flex;
-      gap:54px;
-      justify-content:center;
-      flex-wrap:wrap;
-      padding:26px 40px;
-      border-radius:28px;
-      background:var(--glass);
-      backdrop-filter:blur(18px);
-      z-index:20;
-    }
-    .stat{text-align:center}
-    .stat .num{
-      font-size:2.8rem;
-      font-weight:800;
-      color:var(--red-main);
-    }
-    .stat .label{
-      font-size:.9rem;
-      letter-spacing:.08em;
-      margin-top:6px;
-      opacity:.8;
-    }
-
-    /* SCROLL */
-    .scroll-cue{
-      position:absolute;
-      bottom:22px;
-      left:50%;
-      transform:translateX(-50%);
-      transition:opacity .3s;
-    }
-
-    /* RAIN */
-    .rain span{
-      position:absolute;
-      font-weight:600;
-      opacity:.35;
-      color:rgba(255,255,255,0.9);  /* soft white */
-      cursor:pointer;
-      animation:rain linear forwards;
-      transition:transform .3s,color .3s,opacity .3s;
-    }
-    .rain span.active{
-      opacity:1;
-      color:var(--red);
-      transform:scale(1.25);
-      animation-play-state:paused;
-    }
-    .rain span small{
-      display:block;
-      font-size:.65em;
-      opacity:.6;
-      margin-top:4px;
-    }
-    @keyframes rain{
-      to{transform:translateY(140vh)}
-    }
-
-    /* DESKTOP CARD */
-    .rain-card{
-      position:absolute;
-      top:100%;
-      left:0;
-      margin-top:10px;
-      background:rgba(0,0,0,.88);
-      backdrop-filter:blur(12px);
-      border-radius:14px;
-      padding:10px 12px;
-      font-size:.72rem;
-      color:#fff;
-      width:260px;
-      display:none;
-      z-index:100;
-    }
-    .rain-card .title{
-      color:var(--red-soft);
-      font-weight:600;
-      margin-bottom:4px;
-    }
-
-    /* MOBILE CARD */
-    .mobile-card{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:-100%;
-      background:rgba(0,0,0,.92);
-      backdrop-filter:blur(14px);
-      border-radius:18px 18px 0 0;
-      padding:18px 20px 24px;
-      transition:bottom .35s ease;
-      z-index:999;
-      will-change: transform;
-    }
-    .mobile-card.active{bottom:0}
-    .mobile-card .title{
-      color:var(--red);
-      font-weight:700;
-      margin-bottom:8px;
-    }
-    .mobile-card .desc{
-      font-size:.85rem;
-      opacity:.9;
-    }
-    .mobile-card .close{
-      position:absolute;
-      right:16px;
-      top:14px;
-      font-size:1.2rem;
-      opacity:.7;
-      cursor:pointer;
-    }
-
-    /* SECTIONS */
-    section{
-      padding:80px 20px;
-      max-width:1200px;
-      margin:auto;
-    }
-    h2{
-      text-transform:uppercase;
-      font-size:1.05rem;
-      letter-spacing:0.16em;
-      font-weight:600;
-      opacity:0.85;
-      margin-bottom:34px;
-    }
-    /* FLOW CARDS */
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:24px;
-    }
-    .card{
-      background:#111;
-      padding:26px;
-      border-radius:18px;
-    }
-    .card h3{
-      color: rgba(255,255,255,0.9);
-      font-weight: 600;
-    }
-
-    .card p{
-      font-size:0.85rem;
-      line-height:1.6;
-      opacity:0.8;
-    }
-
-    /* VIDEOS */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-      gap:24px;
-    }
-    iframe{
-      width:100%;
-      height:200px;
-      border:none;
-      border-radius:16px;
-    }
-
-    /* AUDIENCE */
-    .tabs{
-      display:flex;
-      gap:14px;
-      margin-bottom:22px;
-    }
-    .tab{
-      padding:8px 20px;
-
-      font-size:0.85rem;
-      font-weight:500;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.35);
-
-      color:rgba(255,255,255,.85);
-      background:transparent;
-
-      cursor:pointer;
-
-      transition:
-        background .25s ease,
-        color .25s ease,
-        border-color .25s ease;
-    }
-    .tab.active{
-      background:#ffffff;
-      color:#000000;
-      border-color:#ffffff;
-    }
-
-    /* FOLLOW */
-    .follow{
-      background:#fff;
-      color:#000;
-      text-align:center;
-      padding:60px 20px;
-    }
-    .follow-icons{
-      margin-top:16px;
-      display:flex;
-      justify-content:center;
-      gap:22px;
-    }
-    .follow-icons img{
-      width:36px;
-      transition:transform .25s;
-    }
-    .follow-icons img:hover{transform:scale(1.15)}
-
-    footer{
-      text-align:center;
-      padding:30px;
-      opacity:.6;
-    }
-
-    .table-wrapper{
-      overflow-x:auto;
-      display:flex;
-      justify-content:left;
-    }
-
-    .card h3 .accent{
-      color: var(--red-soft);
-    }
-
-    .data-table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:0.9rem;
-      max-width:620px;   /* 👈 key line */
-    }
-
-    .data-table tr.total {
-      background: rgba(255,255,255,0.04);
-      font-weight: 700;
-    }
-
-    .data-table tr:first-child {
-      font-weight:700;
-      background:rgba(255,255,255,.04);
-    }
-
-    .data-table tr.total td {
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-
-    .data-table th,
-    .data-table td{
-      padding:12px 14px;
-      text-align:left;
-    }
-
-    .data-table th{
-      font-size:0.7rem;
-      letter-spacing:0.2em;
-      font-weight:600;
-      opacity:0.7;
-      border-bottom:1px solid rgba(255,255,255,.2);
-    }
-
-    .data-table td{
-      border-bottom:1px solid rgba(255,255,255,.06);
-      font-size:0.85rem;
-    }
-
-    .data-table tr:last-child td{
-      border-bottom:none;
-    }
-
-    .data-table .num{
-      color:var(--red);
-      font-weight:600;
-      text-align:right;
-    }
-
-
-    /* TOOL CARDS — CLEAN VERSION */
-    .tool-card{
-      background:#0e0e0e;
-      padding:22px;
-      border-radius:16px;
-      box-shadow:0 12px 30px rgba(0,0,0,0.45);
-    }
-
-    /* Title — smaller, calmer */
-    .tool-card h3{
-      font-size:1.05rem;
-      font-weight:600;
-      margin-bottom:8px;
-      color:#ff3b3b;
-    }
-
-    /* Description — subtle, editorial */
-    .tool-card p{
-      font-size:0.82rem;
-      line-height:1.45;
-      opacity:0.7;
-      margin-bottom:16px;
-    }
-
-    /* Button — NOT a button, more like a link */
-    .tool-link{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-
-      padding:6px 14px;
-      font-size:0.78rem;
-      font-weight:500;
-
-      border-radius:999px;
-      background:rgba(255,255,255,0.08);
-      color:#ffffff;
-
-      border:1px solid rgba(255,255,255,0.18);
-      text-decoration:none;
-
-      transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
-    }
-
-    .tool-link:hover{
-      background:rgba(255,255,255,0.15);
-      border-color:rgba(255,255,255,0.35);
-      transform:translateY(-1px);
-    }
-
-
-    .tools-section{
-      text-align:left;
-    }
-
-    .tools-intro{
-      max-width:720px;
-      margin:0 0 36px 0;   /* 👈 left aligned, not centered */
-      opacity:0.7;
-      font-size:0.9rem;
-    }
-
-    .tool-card h3{
-      font-size:1.05rem;
-      font-weight:500;
-      margin-bottom:6px;
-      color:#f1f1f1;      /* neutral white */
-      letter-spacing:0.01em;
-    }
-
-    .tool-card p{
-      font-size:0.78rem;
-      line-height:1.4;
-      opacity:0.6;
-      margin-bottom:14px;
-    }
-
-
-    @media (max-width:768px){
-      .data-table{
-        font-size:0.85rem;
-      }
-      .data-table{
-        max-width:100%;
-      }
-
-      .data-table th,
-      .data-table td{
-        padding:10px 8px;
-      }
-
-      body{
-        line-height:1.7;
-      }
-
-      .card p{
-        font-size:0.88rem;
-      }
-
-      .why-line{
-        font-size:1.05rem;
-      }
-
-      .cta{
-        width: 100%;
-        max-width: 280px;
-        text-align: center;
-      }
-
-      .hero{
-        background:
-          linear-gradient(
-            180deg,
-            rgba(0,0,0,0.86),
-            rgba(0,0,0,0.99)
-          ),
-          url("bg-mobile.png") center/cover no-repeat;
-      }
-    }
-
-
-    @media (max-width:768px){
-      .stats-desktop{
-        display: none;
-      }
-      .stats-mobile{
-        display: flex;
-      }
-     .hero h1{
-        margin-bottom: 4px;
-      }
-      .line1{
-        font-size: 0.85rem;
-        opacity: 0.8;
-      }
-
-     .top-bar{
-        font-size: 0.6rem;        /* smaller text */
-        letter-spacing: 0.1em;   /* tighter spacing */
-        padding: 10px 14px;      /* more breathing space */
-        white-space: normal;     /* allow wrap */
-        line-height: 1.25;       /* clean 2-line if needed */
-        text-align: center;
-      }
-
-     .line1{
-        font-size: 0.7rem;     /* 🔽 reduced */
-        line-height: 1.35;
-        opacity: 0.85;
-        margin-top: 12px;
-      }
-
-      /* Re-show stats AFTER hero */
-      body::after{
-        content:"";
-        display:block;
-      }
-
-      .mobile-stats{
-        display:flex;
-        gap:32px;
-        justify-content:center;
-        padding:28px 16px;
-        background:rgba(0,0,0,.85);
-        backdrop-filter:blur(10px);
-      }
-
-      .mobile-stats .num{
-        font-size:2rem;
-      }
-
-      .why-line{
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-    }
-
-    @media (min-width: 769px){
-      .stats-desktop{
-        display: flex;
-      }
-      .stats-mobile{
-        display: none;
-      }
-      .hero h1{
-        margin-bottom: 6px;
-      }
-      .line1{
-        opacity: 0.9;
-        letter-spacing: 0.01em;
-      }
-    }
-
-
-  </style>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L2Y12N3W05"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-L2Y12N3W05');
-  </script>
+    <meta charset="UTF-8">
+    <title>CineTechFlow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo_black.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root{
+          --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        :root{
+          --red:#ff3b3b;
+          --bg:#050505;
+          --text:#f1f1f1;
+          --glass:rgba(0,0,0,.6);
+          --red-main: #e53935;     /* primary brand red */
+          --red-soft: #ff6b6b;     /* subtle highlights */
+          --red-dark: #b71c1c;     /* depth / hover */
+          --bg: #050505;
+          --text: #f1f1f1;
+          --glass: rgba(0,0,0,.6);
+        }
+        *{box-sizing:border-box;user-select:none}
+        body{
+          margin:0;
+          font-family: var(--font-primary);
+          font-weight:400;
+          line-height:1.6;
+          background:var(--bg);
+          color:var(--text);
+          overflow-x:hidden;
+        }
+    
+        a{text-decoration:none;color:inherit}
+    
+        .brand-title{
+          position:relative;
+          display:inline-block;     /* 👈 text defines center */
+        }
+    
+        .platform-line{
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          gap:8px;
+    
+          margin-top:2px;
+    
+          font-size:1rem;
+          letter-spacing:0.18em;
+          text-transform:uppercase;
+    
+          opacity:0.6;
+        }
+    
+        .platform-line .yt-badge{
+          height:2em;      /* matches text height */
+          width:auto;
+          opacity:0.85;
+        }
+    
+        .platform-text{
+          font-weight:500;
+        }
+    
+    
+    
+    
+    
+        @keyframes slideGlow {
+          0% { opacity: .65 }
+          50% { opacity: 1 }
+          100% { opacity: .65 }
+        }
+    
+        /* HEADER */
+        header{
+          position:fixed;
+          top:54px;
+          left:22px;
+          z-index:100;
+        }
+        header img{height:52px}
+    
+        .top-bar{
+          position:fixed;
+          top:0;
+          left:0;
+          width:100%;
+          height:36px;
+    
+          display:flex;
+          align-items:center;
+          justify-content:center;
+    
+          font-size:0.65rem;
+          letter-spacing:0.16em;
+          text-transform:uppercase;
+    
+          background:rgba(0,0,0,.92);   /* 🔥 solid separation */
+          backdrop-filter:blur(6px);
+    
+          color:rgba(255,255,255,.75);
+          z-index:1000;
+        }
+    
+        .top-bar .yt{
+          color:#ff3b3b;
+          text-shadow:0 0 8px rgba(255,59,59,.35);
+          padding:0 4px;        /* 👈 spacing left & right */
+          letter-spacing:0.04em; /* 👈 subtle clarity */
+        }
+    
+        .top-bar{
+          position: relative;
+          overflow: hidden;
+        }
+    
+        .top-bar::after{
+          content:"";
+          position:absolute;
+          top:0;
+          left:-40%;
+          width:40%;
+          height:100%;
+          background:linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.25),
+            transparent
+          );
+          animation: scan 6s ease-in-out infinite;
+        }
+    
+        @keyframes scan{
+          0%   { left:-40%; opacity:0 }
+          15%  { opacity:1 }
+          50%  { left:100%; opacity:0 }
+          100% { left:100%; opacity:0 }
+        }
+    
+    
+        /* HERO */
+        .hero{
+          min-height:100vh;
+          background:
+            linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.96)),
+            url("bg1.jpg") center/cover no-repeat;
+          display:flex;
+          padding-top:36px;
+          align-items:center;
+          justify-content:center;
+          text-align:center;
+          position:relative;
+          overflow:hidden;
+          z-index:1;
+        }
+        .hero h1{font-size:clamp(2.8rem,6vw,4.2rem)}
+        .why-line{
+          margin:28px auto 36px;
+          max-width:720px;
+    
+          min-height: 2.5em; /* prevents layout jump */
+    
+          font-size:clamp(1.15rem, 2.2vw, 1.45rem);
+          font-weight:400;
+          letter-spacing:0.01em;
+          line-height:1.55;
+    
+          color:#f2f2f2;
+          opacity:0;
+    
+          letter-spacing:.015em;
+          text-align:center;
+    
+          transform:translateY(10px);
+          transition:
+            opacity .8s ease,
+            transform .8s ease;
+    
+        }
+    
+        .why-line.show{
+          opacity:.96;
+          transform:translateY(0);
+        }
+        .why-line.center{ text-align:center; margin-bottom:18px }
+        .why-line.subtle{ text-align:center; font-size:.95rem; opacity:.85 }
+        .why-line.micro{ font-size:.9rem; opacity:.75 }
+    
+        .line1{margin-top:16px}
+    
+    
+    
+        .actions{
+          margin-top:26px;
+          display:flex;
+          gap:12px;
+          z-index: 50;
+          justify-content:center;
+          flex-wrap:wrap;
+        }
+    
+        .cta{
+          display: inline-flex;
+          align-items: center;
+    
+          padding: 10px 22px;
+          border-radius: 10px;
+          background: rgba(255,255,255,0.88);
+          color: #000;
+    
+          font-size: 0.82rem;
+          font-weight: 500;
+          letter-spacing: 0.02em;
+    
+          border: 1px solid rgba(0,0,0,0.08);
+          cursor: pointer;
+    
+          box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    
+          transition:
+            transform .25s ease,
+            box-shadow .25s ease,
+            background .25s ease;
+        }
+    
+    
+        .cta:hover{
+          transform: translateY(-1px);
+          background: #fff;
+          box-shadow:
+            0 12px 30px rgba(0,0,0,0.25);
+        }
+    
+        .cta.secondary{
+          background: transparent;
+          box-shadow: none;
+          position: relative;
+          color: rgba(255,255,255,0.95);
+          border-color: rgba(255,255,255,0.35);
+        }
+    
+        .cta.secondary::after{
+          content:"";
+          position:absolute;
+          left:50%;
+          bottom:-6px;
+          width:28px;
+          height:2px;
+          background: var(--red);
+          opacity:0.75;
+          transform:translateX(-50%);
+          border-radius:2px;
+          opacity:0.6;
+          animation: softPulse 3.2s ease-in-out infinite;
+        }
+    
+        /* gentle hover feedback */
+        .cta.secondary:hover{
+          background: rgba(255,255,255,0.08);
+          box-shadow: none;
+          transform: none;
+        }
+    
+        @keyframes softPulse{
+          0%,100%{opacity:.7}
+          50%{opacity:1}
+        }
+    
+        /* STATS */
+        .stats{
+          position: relative;
+          margin-top:36px;
+          display:flex;
+          gap:54px;
+          justify-content:center;
+          flex-wrap:wrap;
+          padding:26px 40px;
+          border-radius:28px;
+          background:var(--glass);
+          backdrop-filter:blur(18px);
+          z-index:20;
+        }
+        .stat{text-align:center}
+        .stat .num{
+          font-size:2.8rem;
+          font-weight:800;
+          color:var(--red-main);
+        }
+        .stat .label{
+          font-size:.9rem;
+          letter-spacing:.08em;
+          margin-top:6px;
+          opacity:.8;
+        }
+    
+        /* SCROLL */
+        .scroll-cue{
+          position:absolute;
+          bottom:22px;
+          left:50%;
+          transform:translateX(-50%);
+          transition:opacity .3s;
+        }
+    
+        /* RAIN */
+        .rain span{
+          position:absolute;
+          font-weight:600;
+          opacity:.35;
+          color:rgba(255,255,255,0.9);  /* soft white */
+          cursor:pointer;
+          animation:rain linear forwards;
+          transition:transform .3s,color .3s,opacity .3s;
+        }
+        .rain span.active{
+          opacity:1;
+          color:var(--red);
+          transform:scale(1.25);
+          animation-play-state:paused;
+        }
+        .rain span small{
+          display:block;
+          font-size:.65em;
+          opacity:.6;
+          margin-top:4px;
+        }
+        @keyframes rain{
+          to{transform:translateY(140vh)}
+        }
+    
+        /* DESKTOP CARD */
+        .rain-card{
+          position:absolute;
+          top:100%;
+          left:0;
+          margin-top:10px;
+          background:rgba(0,0,0,.88);
+          backdrop-filter:blur(12px);
+          border-radius:14px;
+          padding:10px 12px;
+          font-size:.72rem;
+          color:#fff;
+          width:260px;
+          display:none;
+          z-index:100;
+        }
+        .rain-card .title{
+          color:var(--red-soft);
+          font-weight:600;
+          margin-bottom:4px;
+        }
+    
+        /* MOBILE CARD */
+        .mobile-card{
+          position:fixed;
+          left:0;
+          right:0;
+          bottom:-100%;
+          background:rgba(0,0,0,.92);
+          backdrop-filter:blur(14px);
+          border-radius:18px 18px 0 0;
+          padding:18px 20px 24px;
+          transition:bottom .35s ease;
+          z-index:999;
+          will-change: transform;
+        }
+        .mobile-card.active{bottom:0}
+        .mobile-card .title{
+          color:var(--red);
+          font-weight:700;
+          margin-bottom:8px;
+        }
+        .mobile-card .desc{
+          font-size:.85rem;
+          opacity:.9;
+        }
+        .mobile-card .close{
+          position:absolute;
+          right:16px;
+          top:14px;
+          font-size:1.2rem;
+          opacity:.7;
+          cursor:pointer;
+        }
+    
+        /* SECTIONS */
+        section{
+          padding:80px 20px;
+          max-width:1200px;
+          margin:auto;
+        }
+        h2{
+          text-transform:uppercase;
+          font-size:1.05rem;
+          letter-spacing:0.16em;
+          font-weight:600;
+          opacity:0.85;
+          margin-bottom:34px;
+        }
+        /* FLOW CARDS */
+        .cards{
+          display:grid;
+          grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+          gap:24px;
+        }
+        .card{
+          background:#111;
+          padding:26px;
+          border-radius:18px;
+        }
+        .card h3{
+          color: rgba(255,255,255,0.9);
+          font-weight: 600;
+        }
+    
+        .card p{
+          font-size:0.85rem;
+          line-height:1.6;
+          opacity:0.8;
+        }
+    
+        /* VIDEOS */
+        .grid{
+          display:grid;
+          grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+          gap:24px;
+        }
+        iframe{
+          width:100%;
+          height:200px;
+          border:none;
+          border-radius:16px;
+        }
+    
+        /* AUDIENCE */
+        .tabs{
+          display:flex;
+          gap:14px;
+          margin-bottom:22px;
+        }
+        .tab{
+          padding:8px 20px;
+    
+          font-size:0.85rem;
+          font-weight:500;
+          letter-spacing:.04em;
+          text-transform:uppercase;
+    
+          border-radius:999px;
+          border:1px solid rgba(255,255,255,.35);
+    
+          color:rgba(255,255,255,.85);
+          background:transparent;
+    
+          cursor:pointer;
+    
+          transition:
+            background .25s ease,
+            color .25s ease,
+            border-color .25s ease;
+        }
+        .tab.active{
+          background:#ffffff;
+          color:#000000;
+          border-color:#ffffff;
+        }
+    
+        /* FOLLOW */
+        .follow{
+          background:#fff;
+          color:#000;
+          text-align:center;
+          padding:60px 20px;
+        }
+        .follow-icons{
+          margin-top:16px;
+          display:flex;
+          justify-content:center;
+          gap:22px;
+        }
+        .follow-icons img{
+          width:36px;
+          transition:transform .25s;
+        }
+        .follow-icons img:hover{transform:scale(1.15)}
+    
+        footer{
+          text-align:center;
+          padding:30px;
+          opacity:.6;
+        }
+    
+        .table-wrapper{
+          overflow-x:auto;
+          display:flex;
+          justify-content:left;
+        }
+    
+        .card h3 .accent{
+          color: var(--red-soft);
+        }
+    
+        .data-table{
+          width:100%;
+          border-collapse:collapse;
+          font-size:0.9rem;
+          max-width:620px;   /* 👈 key line */
+        }
+    
+        .data-table tr.total {
+          background: rgba(255,255,255,0.04);
+          font-weight: 700;
+        }
+    
+        .data-table tr:first-child {
+          font-weight:700;
+          background:rgba(255,255,255,.04);
+        }
+    
+        .data-table tr.total td {
+          padding-top: 16px;
+          padding-bottom: 16px;
+        }
+    
+        .data-table th,
+        .data-table td{
+          padding:12px 14px;
+          text-align:left;
+        }
+    
+        .data-table th{
+          font-size:0.7rem;
+          letter-spacing:0.2em;
+          font-weight:600;
+          opacity:0.7;
+          border-bottom:1px solid rgba(255,255,255,.2);
+        }
+    
+        .data-table td{
+          border-bottom:1px solid rgba(255,255,255,.06);
+          font-size:0.85rem;
+        }
+    
+        .data-table tr:last-child td{
+          border-bottom:none;
+        }
+    
+        .data-table .num{
+          color:var(--red);
+          font-weight:600;
+          text-align:right;
+        }
+    
+    
+        /* TOOL CARDS — CLEAN VERSION */
+        .tool-card{
+          background:#0e0e0e;
+          padding:22px;
+          border-radius:16px;
+          box-shadow:0 12px 30px rgba(0,0,0,0.45);
+        }
+    
+        /* Title — smaller, calmer */
+        .tool-card h3{
+          font-size:1.05rem;
+          font-weight:600;
+          margin-bottom:8px;
+          color:#ff3b3b;
+        }
+    
+        /* Description — subtle, editorial */
+        .tool-card p{
+          font-size:0.82rem;
+          line-height:1.45;
+          opacity:0.7;
+          margin-bottom:16px;
+        }
+    
+        /* Button — NOT a button, more like a link */
+        .tool-link{
+          display:inline-flex;
+          align-items:center;
+          gap:6px;
+    
+          padding:6px 14px;
+          font-size:0.78rem;
+          font-weight:500;
+    
+          border-radius:999px;
+          background:rgba(255,255,255,0.08);
+          color:#ffffff;
+    
+          border:1px solid rgba(255,255,255,0.18);
+          text-decoration:none;
+    
+          transition:
+            background .2s ease,
+            border-color .2s ease,
+            transform .2s ease;
+        }
+    
+        .tool-link:hover{
+          background:rgba(255,255,255,0.15);
+          border-color:rgba(255,255,255,0.35);
+          transform:translateY(-1px);
+        }
+    
+    
+        .tools-section{
+          text-align:left;
+        }
+    
+        .tools-intro{
+          max-width:720px;
+          margin:0 0 36px 0;   /* 👈 left aligned, not centered */
+          opacity:0.7;
+          font-size:0.9rem;
+        }
+    
+        .tool-card h3{
+          font-size:1.05rem;
+          font-weight:500;
+          margin-bottom:6px;
+          color:#f1f1f1;      /* neutral white */
+          letter-spacing:0.01em;
+        }
+    
+        .tool-card p{
+          font-size:0.78rem;
+          line-height:1.4;
+          opacity:0.6;
+          margin-bottom:14px;
+        }
+    
+    
+        @media (max-width:768px){
+          .data-table{
+            font-size:0.85rem;
+          }
+          .data-table{
+            max-width:100%;
+          }
+    
+          .data-table th,
+          .data-table td{
+            padding:10px 8px;
+          }
+    
+          body{
+            line-height:1.7;
+          }
+    
+          .card p{
+            font-size:0.88rem;
+          }
+    
+          .why-line{
+            font-size:1.05rem;
+          }
+    
+          .cta{
+            width: 100%;
+            max-width: 280px;
+            text-align: center;
+          }
+    
+          .hero{
+            background:
+              linear-gradient(
+                180deg,
+                rgba(0,0,0,0.86),
+                rgba(0,0,0,0.99)
+              ),
+              url("bg-mobile.png") center/cover no-repeat;
+          }
+        }
+    
+    
+        @media (max-width:768px){
+          .stats-desktop{
+            display: none;
+          }
+          .stats-mobile{
+            display: flex;
+          }
+         .hero h1{
+            margin-bottom: 4px;
+          }
+          .line1{
+            font-size: 0.85rem;
+            opacity: 0.8;
+          }
+    
+         .top-bar{
+            font-size: 0.6rem;        /* smaller text */
+            letter-spacing: 0.1em;   /* tighter spacing */
+            padding: 10px 14px;      /* more breathing space */
+            white-space: normal;     /* allow wrap */
+            line-height: 1.25;       /* clean 2-line if needed */
+            text-align: center;
+          }
+    
+         .line1{
+            font-size: 0.7rem;     /* 🔽 reduced */
+            line-height: 1.35;
+            opacity: 0.85;
+            margin-top: 12px;
+          }
+    
+          /* Re-show stats AFTER hero */
+          body::after{
+            content:"";
+            display:block;
+          }
+    
+          .mobile-stats{
+            display:flex;
+            gap:32px;
+            justify-content:center;
+            padding:28px 16px;
+            background:rgba(0,0,0,.85);
+            backdrop-filter:blur(10px);
+          }
+    
+          .mobile-stats .num{
+            font-size:2rem;
+          }
+    
+          .why-line{
+            padding-left: 20px;
+            padding-right: 20px;
+          }
+    
+        }
+    
+        @media (min-width: 769px){
+          .stats-desktop{
+            display: flex;
+          }
+          .stats-mobile{
+            display: none;
+          }
+          .hero h1{
+            margin-bottom: 6px;
+          }
+          .line1{
+            opacity: 0.9;
+            letter-spacing: 0.01em;
+          }
+        }
+
+
+    </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L2Y12N3W05"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-L2Y12N3W05');
+    </script>
 </head>
 
 <body>
 <div class="top-bar">
-  OFFICIAL WEBSITE OF THE CINETECHFLOW <span class="yt">YOUTUBE</span> CHANNEL
+    OFFICIAL WEBSITE OF THE CINETECHFLOW <span class="yt">YOUTUBE</span> CHANNEL
 </div>
 
 <header>
-  <img src="logo_black.jpg">
+    <img src="logo_black.jpg">
 </header>
 
 
 <div class="hero" id="hero">
-  <div class="rain" id="rain"></div>
+    <div class="rain" id="rain"></div>
 
-  <div>
-    <h1 class="brand-title">CineTechFlow</h1>
-    <div class="platform-line">
-      <img src="youtube_logo.png" alt="" class="yt-badge">
-      <span class="platform-text">YouTube Channel</span>
+    <div>
+        <h1 class="brand-title">CineTechFlow</h1>
+        <div class="platform-line">
+            <img src="youtube_logo.png" alt="" class="yt-badge">
+            <span class="platform-text">YouTube Channel</span>
+        </div>
+        <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
+
+        <div class="actions">
+            <a class="cta"
+               href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1"
+               onclick="gtag('event','subscribe_click',{event_category:'engagement'})">
+                Subscribe Our Channel
+            </a>
+            <a class="cta idea-btn secondary"
+               href="https://forms.gle/ftajqesi3KiQMkN59"
+               target="_blank"
+               onclick="gtag('event','idea_submit_click',{event_category:'engagement'})">
+                Submit Your Idea For Next Video
+            </a>
+        </div>
+
+        <div class="why-line" id="whyLine"></div>
+
+        <div class="stats stats-desktop">
+            <div class="stat">
+                <div class="num" id="subCount">0</div>
+                <div class="label">SUBSCRIBERS</div>
+            </div>
+            <div class="stat">
+                <div class="num" id="viewCount">0</div>
+                <div class="label">VIEWS</div>
+            </div>
+            <div class="stat">
+                <div class="num" id="videoCount">0</div>
+                <div class="label">VIDEOS</div>
+            </div>
+        </div>
+
     </div>
-    <div class="line1">Cinema decoded. Technology explained. Stories engineered.</div>
 
-    <div class="actions">
-      <a class="cta"
-         href="https://www.youtube.com/@CineTechFlow?sub_confirmation=1"
-         onclick="gtag('event','subscribe_click',{event_category:'engagement'})">
-        Subscribe Our Channel
-      </a>
-      <a class="cta idea-btn secondary"
-         href="https://forms.gle/ftajqesi3KiQMkN59"
-         target="_blank"
-         onclick="gtag('event','idea_submit_click',{event_category:'engagement'})">
-        Submit Your Idea For Next Video
-      </a>
-    </div>
-
-    <div class="why-line" id="whyLine"></div>
-
-    <div class="stats stats-desktop">
-      <div class="stat"><div class="num" id="subCount">0</div><div class="label">SUBSCRIBERS</div></div>
-      <div class="stat"><div class="num" id="viewCount">0</div><div class="label">VIEWS</div></div>
-      <div class="stat"><div class="num" id="videoCount">0</div><div class="label">VIDEOS</div></div>
-    </div>
-
-  </div>
-
-  <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
+    <div class="scroll-cue" id="scrollCue">Scroll ↓</div>
 </div>
 
 <div class="stats mobile-stats stats-mobile">
-  <div class="stat">
-    <div class="num" id="mSubCount">1.1K</div>
-    <div class="label">SUBSCRIBERS</div>
-  </div>
-  <div class="stat">
-    <div class="num" id="mViewCount">301.6K</div>
-    <div class="label">VIEWS</div>
-  </div>
-  <div class="stat">
-    <div class="num" id="mVideoCount">33</div>
-    <div class="label">VIDEOS</div>
-  </div>
+    <div class="stat">
+        <div class="num" id="mSubCount">1.1K</div>
+        <div class="label">SUBSCRIBERS</div>
+    </div>
+    <div class="stat">
+        <div class="num" id="mViewCount">301.6K</div>
+        <div class="label">VIEWS</div>
+    </div>
+    <div class="stat">
+        <div class="num" id="mVideoCount">33</div>
+        <div class="label">VIDEOS</div>
+    </div>
 </div>
 
 <div class="mobile-card" id="mobileCard">
-  <div class="close" id="closeMobile">✕</div>
-  <div class="title" id="mobileTitle"></div>
-  <div class="desc" id="mobileDesc"></div>
+    <div class="close" id="closeMobile">✕</div>
+    <div class="title" id="mobileTitle"></div>
+    <div class="desc" id="mobileDesc"></div>
 </div>
 
 <section>
-  <h2>WHAT’S IN IT ?</h2>
-  <div class="cards">
-    <div class="card"><h3>Cinema FLOW <span class="accent">🎬</span></h3><p> Fast-tracked movie updates, breakdowns and Behind the scenes.</p></div>
-    <div class="card"><h3>Tech FLOW 🌍</h3><p>Global news, digital trends, curious tech experiments, and complex ideas explained with speed and clarity.</p></div>
-    <div class="card"><h3>Creator FLOW 💡</h3><p>Tips to help new youtube creators instantly grow their channel based on MY PERSONAL EXPERIENCES.</p></div>
-    <div class="card"><h3>Narrative FLOW ✍️ </h3><p>Unique digital stories and entertaining narratives that hook you from the very first frame.</p></div>
-  </div>
+    <h2>WHAT’S IN IT ?</h2>
+    <div class="cards">
+        <div class="card"><h3>Cinema FLOW <span class="accent">🎬</span></h3>
+            <p> Fast-tracked movie updates, breakdowns and Behind the scenes.</p></div>
+        <div class="card"><h3>Tech FLOW 🌍</h3>
+            <p>Global news, digital trends, curious tech experiments, and complex ideas explained with speed and
+                clarity.</p></div>
+        <div class="card"><h3>Creator FLOW 💡</h3>
+            <p>Tips to help new youtube creators instantly grow their channel based on MY PERSONAL EXPERIENCES.</p>
+        </div>
+        <div class="card"><h3>Narrative FLOW ✍️ </h3>
+            <p>Unique digital stories and entertaining narratives that hook you from the very first frame.</p></div>
+    </div>
 </section>
 
 <section>
-  <h2>OUR RECENT VIDEOS</h2>
-  <div id="longVideos" class="grid"></div>
+    <h2>OUR RECENT VIDEOS</h2>
+    <div id="longVideos" class="grid"></div>
 </section>
 
 <section>
-  <h2>OUR RECENT SHORTS</h2>
-  <div id="shortVideos" class="grid"></div>
+    <h2>OUR RECENT SHORTS</h2>
+    <div id="shortVideos" class="grid"></div>
 </section>
 
 <section class="tools-section">
-  <h2>TOOLS I USE & RECOMMEND</h2>
+    <h2>TOOLS I USE & RECOMMEND</h2>
 
-  <p class="tools-intro">
-    These are tools and resources I personally use or confidently recommend
-    for content creation, cinema breakdowns, and creator growth.
-  </p>
+    <p class="tools-intro">
+        These are tools and resources I personally use or confidently recommend
+        for content creation, cinema breakdowns, and creator growth.
+    </p>
 
-  <div class="cards">
+    <div class="cards">
 
-    <!-- Filmora Editing Software -->
-    <div class="card tool-card">
-      <h3>💻 Wondershare Filmora (Video Editing Software)</h3>
-      <p >
-        Clean, beginner-friendly video editor.
-        Perfect for YouTube creators who want speed without complexity.
-      </p>
-      <a href="https://amzn.to/4qgD6V1" target="_blank" rel="nofollow sponsored" class="tool-link" data-product="Wondershare Filmora"
-      >
-        Buy on Amazon →
-      </a>
+        <!-- Filmora Editing Software -->
+        <div class="card tool-card">
+            <h3>💻 Wondershare Filmora (Video Editing Software)</h3>
+            <p>
+                Clean, beginner-friendly video editor.
+                Perfect for YouTube creators who want speed without complexity.
+            </p>
+            <a href="https://amzn.to/4qgD6V1" target="_blank" rel="nofollow sponsored" class="tool-link"
+               data-product="Wondershare Filmora"
+            >
+                Buy on Amazon →
+            </a>
+        </div>
+
+        <div class="card tool-card">
+            <h3>💻 Filmora Official Version (PC License)</h3>
+            <p>
+                Official Filmora editor license for desktop editing.
+                Ideal for long-form videos and cinematic breakdowns.
+            </p>
+            <a href="https://amzn.to/4be9lzu" target="_blank" rel="nofollow sponsored" class="tool-link"
+               data-product="Filmora PC License"
+            >
+                Buy on Amazon →
+            </a>
+        </div>
+
+        <div class="card tool-card">
+            <h3>💻 Filmora Latest Version (Single Device)</h3>
+            <p>
+                Latest Filmora release optimized for modern systems.
+                Smooth workflow for creators upgrading their setup.
+            </p>
+            <a href="https://amzn.to/4pop1DS" target="_blank" rel="nofollow sponsored" class="tool-link"
+               data-product="Filmora Latest Version"
+            >
+                Buy on Amazon →
+            </a>
+        </div>
+
+        <!-- Creator Books -->
+        <div class="card tool-card">
+            <h3>📘 YouTube Secrets – Sean Cannell</h3>
+            <p>
+                One of the most practical books for growing a YouTube channel
+                with strategy, not guesswork.
+            </p>
+            <a href="https://amzn.to/3YX5EXy" target="_blank" rel="nofollow sponsored" class="tool-link"
+               data-product="YouTube Secrets Book"
+            >
+                Buy on Amazon →
+            </a>
+        </div>
+
+        <div class="card tool-card">
+            <h3>📗 Think and Grow Rich – Napoleon Hill</h3>
+            <p>
+                Classic mindset book that helps creators think long-term,
+                beyond views and algorithms.
+            </p>
+            <a href="https://amzn.to/3YUzv2K" target="_blank" rel="nofollow sponsored" class="tool-link"
+               data-product="Think and Grow Rich Book"
+            >
+                Buy on Amazon →
+            </a>
+        </div>
+
+        <!-- Microphone -->
+        <div class="card tool-card">
+            <h3>🎤 FLYSPACE USB Microphone</h3>
+            <p>
+                Budget-friendly USB microphone for YouTube, podcasts,
+                and voice-over recording.
+            </p>
+            <a href="https://amzn.to/4qxr2hS" target="_blank" rel="nofollow sponsored" class="tool-link"
+               data-product="FLYSPACE USB Microphone"
+            >
+                Buy on Amazon →
+            </a>
+        </div>
+
     </div>
 
-    <div class="card tool-card">
-      <h3>💻 Filmora Official Version (PC License)</h3>
-      <p>
-        Official Filmora editor license for desktop editing.
-        Ideal for long-form videos and cinematic breakdowns.
-      </p>
-      <a href="https://amzn.to/4be9lzu" target="_blank" rel="nofollow sponsored" class="tool-link" data-product="Filmora PC License"
-      >
-        Buy on Amazon →
-      </a>
-    </div>
-
-    <div class="card tool-card">
-      <h3>💻 Filmora Latest Version (Single Device)</h3>
-      <p>
-        Latest Filmora release optimized for modern systems.
-        Smooth workflow for creators upgrading their setup.
-      </p>
-      <a href="https://amzn.to/4pop1DS" target="_blank" rel="nofollow sponsored" class="tool-link" data-product="Filmora Latest Version"
-      >
-        Buy on Amazon →
-      </a>
-    </div>
-
-    <!-- Creator Books -->
-    <div class="card tool-card">
-      <h3>📘 YouTube Secrets – Sean Cannell</h3>
-      <p>
-        One of the most practical books for growing a YouTube channel
-        with strategy, not guesswork.
-      </p>
-      <a href="https://amzn.to/3YX5EXy" target="_blank" rel="nofollow sponsored" class="tool-link" data-product="YouTube Secrets Book"
-      >
-        Buy on Amazon →
-      </a>
-    </div>
-
-    <div class="card tool-card">
-      <h3>📗 Think and Grow Rich – Napoleon Hill</h3>
-      <p>
-        Classic mindset book that helps creators think long-term,
-        beyond views and algorithms.
-      </p>
-      <a href="https://amzn.to/3YUzv2K" target="_blank" rel="nofollow sponsored" class="tool-link" data-product="Think and Grow Rich Book"
-      >
-        Buy on Amazon →
-      </a>
-    </div>
-
-    <!-- Microphone -->
-    <div class="card tool-card">
-      <h3>🎤 FLYSPACE USB Microphone</h3>
-      <p>
-        Budget-friendly USB microphone for YouTube, podcasts,
-        and voice-over recording.
-      </p>
-      <a href="https://amzn.to/4qxr2hS" target="_blank" rel="nofollow sponsored" class="tool-link" data-product="FLYSPACE USB Microphone"
-      >
-        Buy on Amazon →
-      </a>
-    </div>
-
-  </div>
-
-  <p style="font-size:0.72rem; opacity:0.55; max-width:720px; margin-top:18px;">
-    Disclosure: Some links on this page are affiliate links.
-    If you purchase through them, CineTechFlow may earn a small commission
-    at no extra cost to you.
-  </p>
+    <p style="font-size:0.72rem; opacity:0.55; max-width:720px; margin-top:18px;">
+        Disclosure: Some links on this page are affiliate links.
+        If you purchase through them, CineTechFlow may earn a small commission
+        at no extra cost to you.
+    </p>
 </section>
 
 <section id="audienceSection">
-  <h2>OUR AUDIENCE</h2>
-  <div class="tabs">
-    <div class="tab active" data-tab="cities">CITIES</div>
-    <div class="tab" data-tab="world">WORLD WIDE</div>
-  </div>
-  <div class="table-wrapper">
-    <table id="citiesTable" class="data-table"></table>
-    <table id="geoTable" class="data-table" style="display:none"></table>
-  </div>
+    <h2>OUR AUDIENCE</h2>
+    <div class="tabs">
+        <div class="tab active" data-tab="cities">CITIES</div>
+        <div class="tab" data-tab="world">WORLD WIDE</div>
+    </div>
+    <div class="table-wrapper">
+        <table id="citiesTable" class="data-table"></table>
+        <table id="geoTable" class="data-table" style="display:none"></table>
+    </div>
 </section>
 
 
-
-
 <div class="follow">
-  <strong>Follow us on</strong>
-  <div class="follow-icons">
-    <a href="https://www.youtube.com/@CineTechFlow" class="follow-link"
-       data-platform="Youtube"
-       target="_blank"
-       rel="noopener" ><img src="youtube.gif"></a>
-    <a href="https://www.instagram.com/cinetechflow/" class="follow-link"
-       data-platform="Instagram"
-       target="_blank"
-       rel="noopener" ><img src="insta.gif"></a>
-    <a href="https://x.com/cinetechflow" class="follow-link"
-       data-platform="Twitter(X)"
-       target="_blank"
-       rel="noopener" ><img src="twitter.gif"></a>
-    <a href="https://www.threads.com/@cinetechflow" class="follow-link"
-       data-platform="Threads"
-       target="_blank"
-       rel="noopener" ><img src="threads.gif"></a>
-  </div>
+    <strong>Follow us on</strong>
+    <div class="follow-icons">
+        <a href="https://www.youtube.com/@CineTechFlow" class="follow-link"
+           data-platform="Youtube"
+           target="_blank"
+           rel="noopener"><img src="youtube.gif"></a>
+        <a href="https://www.instagram.com/cinetechflow/" class="follow-link"
+           data-platform="Instagram"
+           target="_blank"
+           rel="noopener"><img src="insta.gif"></a>
+        <a href="https://x.com/cinetechflow" class="follow-link"
+           data-platform="Twitter(X)"
+           target="_blank"
+           rel="noopener"><img src="twitter.gif"></a>
+        <a href="https://www.threads.com/@cinetechflow" class="follow-link"
+           data-platform="Threads"
+           target="_blank"
+           rel="noopener"><img src="threads.gif"></a>
+    </div>
 </div>
 
 
-
 <footer>
-  <div class="footer-brand">
-    Cinema × Technology × Storytelling
-  </div>
+    <div class="footer-brand">
+        Cinema × Technology × Storytelling
+    </div>
 
-  © 2026 CineTechFlow · Created by
-  <a href="mailto:justctrllaugh@gmail.com"
-     style="color:var(--red)"
-     class="follow-link"
-     data-platform="E-mail">
-    Heisenberg
-  </a>
+    © 2026 CineTechFlow · Created by
+    <a href="mailto:justctrllaugh@gmail.com"
+       style="color:var(--red)"
+       class="follow-link"
+       data-platform="E-mail">
+        Heisenberg
+    </a>
 </footer>
 
 <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "CineTechFlow",
-    "url": "https://cinetechfow.github.io/homepage/",
-    "sameAs": [
-      "https://www.youtube.com/@CineTechFlow",
-      "https://www.instagram.com/cinetechflow",
-      "https://x.com/cinetechflow"
-    ]
-  }
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "CineTechFlow",
+        "url": "https://cinetechfow.github.io/homepage/",
+        "sameAs": [
+            "https://www.youtube.com/@CineTechFlow",
+            "https://www.instagram.com/cinetechflow",
+            "https://x.com/cinetechflow"
+        ]
+    }
 </script>
 
 <script>
 
+    const activeRainWords = new Set();
+  
+  
   const heroSection = document.getElementById("hero");
-
-window.addEventListener("load", () => {
+  
+  window.addEventListener("load", () => {
   if ("requestIdleCallback" in window) {
-    requestIdleCallback(initHeavyStuff);
+  requestIdleCallback(initHeavyStuff);
   } else {
-    setTimeout(initHeavyStuff, 200);
+  setTimeout(initHeavyStuff, 200);
   }
-});
-
-function initHeavyStuff() {
+  });
+  
+  function initHeavyStuff() {
   initRain();
   initVideosOnScroll();
   initAudienceOnScroll();
   initWhyLine();
   const hero = document.getElementById("hero");
   const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (!entry.isIntersecting) pauseAllRain();
-      else resumeAllRain();
-    },
-    { threshold: 0.1 }
+  ([entry]) => {
+    if (!entry.isIntersecting) pauseAllRain();
+    else resumeAllRain();
+  },
+  { threshold: 0.1 }
   );
-
+  
   observer.observe(hero);
-}
-
-function initVideosOnScroll(){
+  }
+  
+  function initVideosOnScroll(){
   let videosLoaded = false;
   const videosObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && !videosLoaded) {
-        initVideos();
-        videosLoaded = true;
-        videosObserver.disconnect();
-      }
-    },
-    {
-      rootMargin: "200px" // preload slightly before visible
+  ([entry]) => {
+    if (entry.isIntersecting && !videosLoaded) {
+      initVideos();
+      videosLoaded = true;
+      videosObserver.disconnect();
     }
+  },
+  {
+    rootMargin: "200px" // preload slightly before visible
+  }
   );
   videosObserver.observe(document.getElementById("longVideos"));
-}
-
-function initAudienceOnScroll(){
+  }
+  
+  function initAudienceOnScroll(){
   let audienceLoaded = false;
   const audienceObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && !audienceLoaded) {
-        initAudience();
-        audienceLoaded = true;
-        audienceObserver.disconnect();
-      }
-    },
-    { rootMargin: "200px" }
+  ([entry]) => {
+    if (entry.isIntersecting && !audienceLoaded) {
+      initAudience();
+      audienceLoaded = true;
+      audienceObserver.disconnect();
+    }
+  },
+  { rootMargin: "200px" }
   );
-
+  
   audienceObserver.observe(
-    document.getElementById("audienceSection")
+  document.getElementById("audienceSection")
   );
-}
-
-function initVideos() {
+  }
+  
+  function initVideos() {
   fetch("long_videos.json")
-    .then(r => r.json())
-    .then(v => {
-      longVideos.innerHTML = v.map(
-        id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
-      ).join("");
-    });
-
+  .then(r => r.json())
+  .then(v => {
+    longVideos.innerHTML = v.map(
+      id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
+    ).join("");
+  });
+  
   fetch("shorts.json")
-    .then(r => r.json())
-    .then(v => {
-      shortVideos.innerHTML = v.map(
-        id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
-      ).join("");
-    });
-}
-
-function initAudience() {
+  .then(r => r.json())
+  .then(v => {
+    shortVideos.innerHTML = v.map(
+      id => `<iframe loading="lazy" src="https://www.youtube.com/embed/${id}"></iframe>`
+    ).join("");
+  });
+  }
+  
+  function initAudience() {
   fetch("cities.csv")
+  .then(r => r.text())
+  .then(t => {
+    const rows = t.split("\n").slice(2,12)
+      .map(r => r.match(/(".*?"|[^",]+)(?=,|$)/g))
+      .map(r => [r[1].replace(/"/g,""), r[2]]);
+  
+    renderTable(
+      document.getElementById("citiesTable"),
+      ["CITY", "VIEWS"],
+      rows
+    );
+  });
+  
+  fetch("geography.csv")
     .then(r => r.text())
     .then(t => {
-      const rows = t.split("\n").slice(2,12)
-        .map(r => r.match(/(".*?"|[^",]+)(?=,|$)/g))
-        .map(r => [r[1].replace(/"/g,""), r[2]]);
-
+      let rows = t.split("\n")
+        .slice(1)
+        .map(r => r.split(","))
+        .filter(r => r[0] && r[1])
+        .map(r => [safeCountryName(r[0]), Number(r[1])]);
+  
+      const total = rows.reduce((s,r)=>s+r[1],0);
+      rows.unshift(["TOTAL", total]);
+  
       renderTable(
-        document.getElementById("citiesTable"),
-        ["CITY", "VIEWS"],
+        document.getElementById("geoTable"),
+        ["COUNTRY", "VIEWS"],
         rows
       );
     });
-
-  fetch("geography.csv")
-      .then(r => r.text())
-      .then(t => {
-        let rows = t.split("\n")
-          .slice(1)
-          .map(r => r.split(","))
-          .filter(r => r[0] && r[1])
-          .map(r => [safeCountryName(r[0]), Number(r[1])]);
-
-        const total = rows.reduce((s,r)=>s+r[1],0);
-        rows.unshift(["TOTAL", total]);
-
-        renderTable(
-          document.getElementById("geoTable"),
-          ["COUNTRY", "VIEWS"],
-          rows
-        );
-      });
-}
-
-function initWhyLine() {
+  }
+  
+  function initWhyLine() {
   whyEl.textContent = whyLines[0];
   whyEl.classList.add("show");
   whyIndex = 1;
   rotateWhyLine();
   setInterval(rotateWhyLine, 4500);
-}
-
-function initRain() {
-    fetch("rain_texts.json").then(r=>r.json()).then(words=>{
-    const rain=document.getElementById("rain");
-    const isMobile=window.innerWidth<=768;
-    const COLS=isMobile?2:3;
-    let tapCount=0,showTap=false;
-
-    const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
-
-    let hintShown = false;
-
-    if (isMobile) {
-      setTimeout(() => {
-        if (!hintShown) {
-          mTitle.textContent = "Quick Tip";
-          mDesc.textContent = "Tap on any rain fall text";
-          mobileCard.classList.add("active");
-          hintShown = true;
+  }
+  
+  function initRain() {
+  
+  fetch("rain_texts.json").then(r=>r.json()).then(words=>{
+  const rain=document.getElementById("rain");
+  const isMobile=window.innerWidth<=768;
+  const COLS=isMobile?2:3;
+  let tapCount=0,showTap=false;
+  
+  const lanes=[...Array(COLS)].map((_,i)=>({x:(i+.5)*(100/COLS)}));
+  
+  let hintShown = false;
+  
+  if (isMobile) {
+    setTimeout(() => {
+      if (!hintShown) {
+        mTitle.textContent = "Quick Tip";
+        mDesc.textContent = "Tap on any rain fall text";
+        mobileCard.classList.add("active");
+        hintShown = true;
+      }
+    }, 1200); // small delay feels intentional
+  }
+  
+  function spawn(lane,fast=false,seed=false){
+    let d;
+    let attempts = 0;
+  
+    do {
+      d = words[Math.floor(Math.random() * words.length)];
+      attempts++;
+    } while (activeRainWords.has(d.word) && attempts < 10);
+  
+    // If still duplicate after retries, skip spawn
+    if (activeRainWords.has(d.word)) {
+      d = words[Math.floor(Math.random() * words.length)];
+    }
+    const el=document.createElement("span");
+    activeRainWords.add(d.word);// 🔒 LOCK happens HERE
+    el.textContent=d.word;
+    const jitter = isMobile ? 3 : 10; // % range
+    const randomX = lane.x + (Math.random() * jitter * 2 - jitter);
+    el.style.left = randomX + "%";
+    el.style.top=seed?(10+Math.random()*70)+"%":"-15%";
+    el.style.animationDuration=(fast?9:(isMobile?26:18))+Math.random()*6+"s";
+  
+    if(isMobile && showTap){
+      const s=document.createElement("small");
+      s.textContent="(Tap)";
+      el.appendChild(s);
+    }
+  
+    if(isMobile){
+      el.onclick=()=>{
+        tapCount++;
+        if(tapCount>=2){
+          showTap=false;
+          document.querySelectorAll(".rain span small").forEach(s=>s.remove());
         }
-      }, 1200); // small delay feels intentional
+        mobileCard.classList.remove("active"); // hide hint if visible
+        mTitle.textContent=d.word;
+        mDesc.textContent=d.description;
+        mobileCard.classList.add("active");
+  
+        // ✅ GA TRACKING (ADD THIS)
+        gtag('event', 'rain_tap', {
+          event_category: 'interaction',
+          rain_word: d.word
+        });
+      };
+    }else{
+      const card=document.createElement("div");
+      card.className="rain-card";
+      card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
+      el.appendChild(card);
+      el.onmouseenter = () => {
+        pauseAllRain();                 // 🔴 pauses ALL rain
+        el.classList.add("active");
+        card.style.display = "block";
+  
+        // ✅ GA TRACKING (ADD THIS)
+        gtag('event', 'rain_hover', {
+          event_category: 'interaction',
+          rain_word: d.word
+        });
+      };
+  
+      el.onmouseleave = () => {
+        resumeAllRain();                // 🟢 resumes ALL rain
+        el.classList.remove("active");
+        card.style.display = "none";
+      };
     }
-
-    function spawn(lane,fast=false,seed=false){
-      const d=words[Math.floor(Math.random()*words.length)];
-      const el=document.createElement("span");
-      el.textContent=d.word;
-      const jitter = isMobile ? 3 : 10; // % range
-      const randomX = lane.x + (Math.random() * jitter * 2 - jitter);
-      el.style.left = randomX + "%";
-      el.style.top=seed?(10+Math.random()*70)+"%":"-15%";
-      el.style.animationDuration=(fast?9:(isMobile?26:18))+Math.random()*6+"s";
-
-      if(isMobile && showTap){
-        const s=document.createElement("small");
-        s.textContent="(Tap)";
-        el.appendChild(s);
-      }
-
-      if(isMobile){
-        el.onclick=()=>{
-          tapCount++;
-          if(tapCount>=2){
-            showTap=false;
-            document.querySelectorAll(".rain span small").forEach(s=>s.remove());
-          }
-          mobileCard.classList.remove("active"); // hide hint if visible
-          mTitle.textContent=d.word;
-          mDesc.textContent=d.description;
-          mobileCard.classList.add("active");
-
-          // ✅ GA TRACKING (ADD THIS)
-          gtag('event', 'rain_tap', {
-            event_category: 'interaction',
-            rain_word: d.word
-          });
-        };
-      }else{
-        const card=document.createElement("div");
-        card.className="rain-card";
-        card.innerHTML=`<div class="title">${d.word}</div>${d.description}`;
-        el.appendChild(card);
-        el.onmouseenter = () => {
-          pauseAllRain();                 // 🔴 pauses ALL rain
-          el.classList.add("active");
-          card.style.display = "block";
-
-          // ✅ GA TRACKING (ADD THIS)
-          gtag('event', 'rain_hover', {
-            event_category: 'interaction',
-            rain_word: d.word
-          });
-        };
-
-        el.onmouseleave = () => {
-          resumeAllRain();                // 🟢 resumes ALL rain
-          el.classList.remove("active");
-          card.style.display = "none";
-        };
-      }
-
-      const sizes = isMobile ? [0.75, 0.9, 1.05, 1.2] : [0.8, 0.95, 1.1, 1.3, 1.5, 1.7];
-
-      el.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + "rem";
-
-      el.onanimationend=()=>el.remove();
-      rain.appendChild(el);
-
-      setTimeout(()=>spawn(lane,false,false),(isMobile?2000:1500)+Math.random()*2000);
-    }
-
-    lanes.forEach((lane,i)=>{
-      spawn(lane,true,true);
-      setTimeout(()=>spawn(lane,true,true),600);
-    });
+  
+    const sizes = isMobile ? [0.75, 0.9, 1.05, 1.2] : [0.8, 0.95, 1.1, 1.3, 1.5, 1.7];
+  
+    el.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + "rem";
+  
+    el.onanimationend = () => {
+      activeRainWords.delete(d.word); // 🔓 unlock
+      el.remove();
+    };
+    rain.appendChild(el);
+  
+    setTimeout(()=>spawn(lane,false,false),(isMobile?2000:1500)+Math.random()*2000);
+  }
+  
+  lanes.forEach((lane,i)=>{
+    spawn(lane,true,true);
+    setTimeout(()=>spawn(lane,true,true),600);
   });
-}
-
-
-/* SCROLL */
-const cue=document.getElementById("scrollCue");
-window.addEventListener("scroll",()=>{
+  });
+  }
+  
+  
+  /* SCROLL */
+  const cue=document.getElementById("scrollCue");
+  window.addEventListener("scroll",()=>{
   cue.style.opacity=window.scrollY<80?1:0;
-});
-
-
-/* STATS */
-fetch("stats.json").then(r=>r.json()).then(s=>{
+  });
+  
+  
+  /* STATS */
+  fetch("stats.json").then(r=>r.json()).then(s=>{
   document.getElementById("subCount").textContent = formatNumber(s.subscribers);
   document.getElementById("viewCount").textContent = formatNumber(s.views);
   document.getElementById("videoCount").textContent = formatNumber(s.videos);
   document.getElementById("mSubCount").textContent = formatNumber(s.subscribers);
   document.getElementById("mViewCount").textContent = formatNumber(s.views);
   document.getElementById("mVideoCount").textContent = formatNumber(s.videos);
-});
-
-/* AUDIENCE */
-function renderTable(table, headers, rows){
+  });
+  
+  /* AUDIENCE */
+  function renderTable(table, headers, rows){
   table.innerHTML = `
-    <thead>
-      <tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr>
-    </thead>
-    <tbody>
-      ${rows.map(r=>`
-        <tr>
-          <td>${r[0]}</td>
-          <td class="num">${formatNumber(+r[1])}</td>
-        </tr>
-      `).join("")}
-    </tbody>
+  <thead>
+    <tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr>
+  </thead>
+  <tbody>
+    ${rows.map(r=>`
+      <tr>
+        <td>${r[0]}</td>
+        <td class="num">${formatNumber(+r[1])}</td>
+      </tr>
+    `).join("")}
+  </tbody>
   `;
-}
-
-const countryNames = new Intl.DisplayNames(
+  }
+  
+  const countryNames = new Intl.DisplayNames(
   ["en"],
   { type: "region" }
-);
-
-function safeCountryName(code){
+  );
+  
+  function safeCountryName(code){
   try{
-    return countryNames.of(code.toUpperCase()) || code;
+  return countryNames.of(code.toUpperCase()) || code;
   }catch(e){
-    return code; // fallback safely
+  return code; // fallback safely
   }
-}
-
-function getCountryName(code){
+  }
+  
+  function getCountryName(code){
   if(!code) return "";
-
+  
   const clean = code
-    .replace(/"/g, "")
-    .replace(/\uFEFF/g, "") // 🔥 remove BOM
-    .trim()
-    .toUpperCase();
-
+  .replace(/"/g, "")
+  .replace(/\uFEFF/g, "") // 🔥 remove BOM
+  .trim()
+  .toUpperCase();
+  
   // ISO country codes must be 2 letters
   if(clean.length !== 2) return clean;
-
+  
   try{
-    return countryNames.of(clean) || clean;
+  return countryNames.of(clean) || clean;
   }catch(e){
-    return clean; // fallback, never crash
+  return clean; // fallback, never crash
   }
-}
-
-
-
-document.querySelectorAll(".tab").forEach(tab=>{
+  }
+  
+  
+  
+  document.querySelectorAll(".tab").forEach(tab=>{
   tab.onclick=()=>{
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    tab.classList.add("active");
-
-    citiesTable.style.display = tab.dataset.tab==="cities" ? "table" : "none";
-    geoTable.style.display    = tab.dataset.tab==="world"  ? "table" : "none";
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  tab.classList.add("active");
+  
+  citiesTable.style.display = tab.dataset.tab==="cities" ? "table" : "none";
+  geoTable.style.display    = tab.dataset.tab==="world"  ? "table" : "none";
   };
-});
-
-
-
-/* CONTINUOUS RAIN WITH PRESEED */
-const mobileCard=document.getElementById("mobileCard");
-const mTitle=document.getElementById("mobileTitle");
-const mDesc=document.getElementById("mobileDesc");
-let tipManuallyClosed = false;
-document.getElementById("closeMobile").onclick = () => {
+  });
+  
+  
+  
+  /* CONTINUOUS RAIN WITH PRESEED */
+  const mobileCard=document.getElementById("mobileCard");
+  const mTitle=document.getElementById("mobileTitle");
+  const mDesc=document.getElementById("mobileDesc");
+  let tipManuallyClosed = false;
+  document.getElementById("closeMobile").onclick = () => {
   tipManuallyClosed = true;
   mobileCard.classList.remove("active");
-};
-const heroObserver = new IntersectionObserver(
+  };
+  const heroObserver = new IntersectionObserver(
   ([entry]) => {
-    if (entry.isIntersecting) {
-      // User came BACK to home
-      if (!tipManuallyClosed) {
-        mobileCard.classList.add("active");
-      }
-    } else {
-      // User LEFT home
-      if (mobileCard.classList.contains("active")) {
-        mobileCard.classList.remove("active");
-      }
+  if (entry.isIntersecting) {
+    // User came BACK to home
+    if (!tipManuallyClosed) {
+      mobileCard.classList.add("active");
     }
+  } else {
+    // User LEFT home
+    if (mobileCard.classList.contains("active")) {
+      mobileCard.classList.remove("active");
+    }
+  }
   },
   {
-    threshold: 0.15
+  threshold: 0.15
   }
-);
-
-heroObserver.observe(heroSection);
-
-
-function pauseAllRain(){
+  );
+  
+  heroObserver.observe(heroSection);
+  
+  
+  function pauseAllRain(){
   document.querySelectorAll(".rain span").forEach(el=>{
-      el.style.animationPlayState = "paused";
-    });
-}
-
-function resumeAllRain(){
-  document.querySelectorAll(".rain span").forEach(el=>{
-    el.style.animationPlayState = "running";
+    el.style.animationPlayState = "paused";
   });
-}
-
-const whyLines = [
+  }
+  
+  function resumeAllRain(){
+  document.querySelectorAll(".rain span").forEach(el=>{
+  el.style.animationPlayState = "running";
+  });
+  }
+  
+  const whyLines = [
   "Subscribe if you care about how cinema actually works — not just reviews.",
-"Hype kosam kaadu. Clarity kosam subscribe cheyyi.",
-"If you like cinema breakdowns with logic, not noise — subscribe.",
-"Movies ni choodadam kaadu, understand cheyyali anukunte — subscribe.",
-"Subscribe for ideas that stay with you even after the video ends."
-];
-
-const whyEl = document.getElementById("whyLine");
-let whyIndex = 0;
-
-function rotateWhyLine(){
+  "Hype kosam kaadu. Clarity kosam subscribe cheyyi.",
+  "If you like cinema breakdowns with logic, not noise — subscribe.",
+  "Movies ni choodadam kaadu, understand cheyyali anukunte — subscribe.",
+  "Subscribe for ideas that stay with you even after the video ends."
+  ];
+  
+  const whyEl = document.getElementById("whyLine");
+  let whyIndex = 0;
+  
+  function rotateWhyLine(){
   whyEl.classList.remove("show");
-
+  
   setTimeout(() => {
-    whyEl.textContent = whyLines[whyIndex];
-    whyEl.classList.add("show");
-    whyIndex = (whyIndex + 1) % whyLines.length;
+  whyEl.textContent = whyLines[whyIndex];
+  whyEl.classList.add("show");
+  whyIndex = (whyIndex + 1) % whyLines.length;
   }, 500);
-}
-
-function formatNumber(num) {
+  }
+  
+  function formatNumber(num) {
   if (num >= 1_000_000) {
-    return (num / 1_000_000).toFixed(2).replace(/\.00$/, "") + "M";
+  return (num / 1_000_000).toFixed(2).replace(/\.00$/, "") + "M";
   }
   if (num >= 1_000) {
-    return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
   }
   return num.toString();
-}
-
- /* Track amazon product links */
-document.addEventListener("click", function (e) {
+  }
+  
+  /* Track amazon product links */
+  document.addEventListener("click", function (e) {
   const link = e.target.closest(".tool-link");
   if (!link) return;
-
+  
   const productName = link.getAttribute("data-product") || "Unknown Tool";
-
+  
   gtag("event", "buy_click", {
-    event_category: "amazon affiliate",
-    event_label: productName,
-    product_name: productName,
-    link_url: link.href
+  event_category: "amazon affiliate",
+  event_label: productName,
+  product_name: productName,
+  link_url: link.href
   });
-});
- /* Track follow links */
-document.addEventListener("click", function (e) {
+  });
+  /* Track follow links */
+  document.addEventListener("click", function (e) {
   const link = e.target.closest(".follow-link");
   if (!link) return;
-
+  
   const platform = link.getAttribute("data-platform") || "Unknown";
-
+  
   gtag("event", "follow_click", {
-    event_category: "follow-engagement",
-    platform: platform,
-    link_url: link.href
+  event_category: "follow-engagement",
+  platform: platform,
+  link_url: link.href
   });
-});
-
-
+  });
+  
+  
   window.addEventListener("load", () => {
   const yt = document.querySelector(".yt-badge");
   yt.classList.add("intro");
-
+  
   setTimeout(() => {
-    yt.classList.remove("intro");
+  yt.classList.remove("intro");
   }, 700);
-});
-
+  });
 
 
 </script>
