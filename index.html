@@ -314,7 +314,8 @@
     .rain span{
       position:absolute;
       font-weight:600;
-      opacity:.25;
+      opacity:.35;
+      color:rgba(255,255,255,0.9);  /* soft white */
       cursor:pointer;
       animation:rain linear forwards;
       transition:transform .3s,color .3s,opacity .3s;
@@ -675,7 +676,7 @@
         background:
           linear-gradient(
             180deg,
-            rgba(0,0,0,0.82),
+            rgba(0,0,0,0.86),
             rgba(0,0,0,0.99)
           ),
           url("bg-mobile.png") center/cover no-repeat;
